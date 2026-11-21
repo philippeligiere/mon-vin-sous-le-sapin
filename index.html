@@ -166,7 +166,7 @@ input[aria-invalid=true]{border:2px solid var(--wine);background:light-dark(#fff
 <p class="alt" id="alt">Vous n'avez pas Gmail ? T&#233;l&#233;chargez votre bon de commande en PDF avec le bouton ci-dessus, puis envoyez-le-nous en pi&#232;ce jointe depuis votre messagerie habituelle &#224; <strong>philippebernard@laligiere.fr</strong>.</p>
 <div id="done" class="done" role="status" hidden>
 <p class="donetitle">Votre commande est bien enregistr&#233;e, nous revenons vers vous par SMS pour le r&#232;glement de cette commande en ligne.</p>
-<p class="note">Derni&#232;re &#233;tape : Gmail s'est ouvert avec la commande d&#233;j&#224; r&#233;dig&#233;e, pensez &#224; cliquer sur &#171; Envoyer &#187;. Sans Gmail, renvoyez-nous votre bon de commande PDF &#224; philippebernard@laligiere.fr. Pensez &#224; t&#233;l&#233;charger votre bon de commande en PDF pour le conserver.</p>
+<p class="note">Derni&#232;re &#233;tape : votre messagerie s'est ouverte avec la commande d&#233;j&#224; r&#233;dig&#233;e (vous &#234;tes en copie pour la recevoir aussi), pensez &#224; cliquer sur &#171; Envoyer &#187;. Sans Gmail, renvoyez-nous votre bon de commande PDF &#224; philippebernard@laligiere.fr. Pensez &#224; t&#233;l&#233;charger votre bon de commande en PDF pour le conserver.</p>
 </div>
 </div>
 </div></section>
@@ -586,7 +586,15 @@ $("pdf").href = url; $("pdf").dataset.url = url; $("pdf").download = `Bon-de-com
 pdfFile = {blob, name: `Bon-de-commande-${ref}.pdf`};
 $("mailtxt").textContent = EMAIL;
 const subj = encodeURIComponent(`Commande Mon vin sous le sapin ${ref} \u2013 ` + $("nom").value.trim()), bod = encodeURIComponent(txt);
-$("gmail").href = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(EMAIL)}&su=${subj}&body=${bod}`;
+const cc = encodeURIComponent($("email").value.trim());
+const mobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
+if (mobile) {
+$("gmail").href = `mailto:${EMAIL}?cc=${cc}&subject=${subj}&body=${bod}`;
+$("gmail").removeAttribute("target");
+$("gmail").textContent = "Envoyer ma commande par e-mail";
+} else {
+$("gmail").href = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(EMAIL)}&cc=${cc}&su=${subj}&body=${bod}`;
+}
 $("done").hidden = true;
 $("recap").style.display = "block";
 $("recap").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
