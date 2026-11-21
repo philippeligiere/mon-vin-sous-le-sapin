@@ -124,7 +124,7 @@ input[aria-invalid=true]{border:2px solid var(--wine);background:light-dark(#fff
 <h2>Votre commande</h2>
 <p class="lead">Une ligne par vin. Commencez par le crit&#232;re de votre choix : type de vin (sans alcool, low alcool, sans sulfites ajout&#233;s), domaine, appellation ou couleur. Les autres listes s'adaptent, puis choisissez la cuv&#233;e et le mill&#233;sime.</p>
 <div id="lines"></div>
-<div class="row"><button class="btn" id="add" type="button">+ Ajouter une ligne</button><span class="note">55 r&#233;f&#233;rences de 6 domaines. Les vins marqu&#233;s &#171; Sur demande &#187; ont un prix confirm&#233; par le domaine avant validation.</span></div>
+<div class="row"><button class="btn" id="add" type="button">+ Ajouter une ligne</button><span class="note">54 r&#233;f&#233;rences de 6 domaines. Les vins marqu&#233;s &#171; Sur demande &#187; ont un prix confirm&#233; par le domaine avant validation.</span></div>
 <div class="totals" aria-live="polite">
 <div><span>Total bouteilles</span><b id="tq">0</b></div>
 <div><span>Total vins HT</span><b id="tht">0,00 &#8364;</b></div>
@@ -247,18 +247,17 @@ const CAT = [
 {"d":"Mas des Volques (Duch\u00e9 d'Uz\u00e8s)","a":"IGP C\u00e9vennes","c":"Les Portes de Dieu","m":["Non communiqu\u00e9"],"col":"Blanc","ttc":null,"t":[]},
 {"d":"Mas des Volques (Duch\u00e9 d'Uz\u00e8s)","a":"AOP Duch\u00e9 d'Uz\u00e8s","c":"Volcae","m":["Non communiqu\u00e9"],"col":"Rouge","ttc":null,"t":[]},
 {"d":"Mas des Volques (Duch\u00e9 d'Uz\u00e8s)","a":"AOP Duch\u00e9 d'Uz\u00e8s","c":"Urnia","m":["Non communiqu\u00e9"],"col":"Ros\u00e9","ttc":null,"t":[]},
-{"d":"Domaine Trichon (Bugey)","a":"AOP Bugey","c":"Chardonnay","m":["Non communiqu\u00e9"],"col":"Blanc","ttc":null,"t":[]},
-{"d":"Domaine Trichon (Bugey)","a":"Roussette du Bugey","c":"Altesse","m":["Non communiqu\u00e9"],"col":"Blanc","ttc":null,"t":[]},
-{"d":"Domaine Trichon (Bugey)","a":"AOP Bugey","c":"Et si on essayait ?","m":["Non communiqu\u00e9"],"col":"Blanc","ttc":null,"t":["ssa"]},
-{"d":"Domaine Trichon (Bugey)","a":"AOP Bugey","c":"Gamay cuv\u00e9e \u00ab Petit Luc \u00bb","m":["Non communiqu\u00e9"],"col":"Rouge","ttc":null,"t":[]},
-{"d":"Domaine Trichon (Bugey)","a":"AOP Bugey","c":"Pinot Noir","m":["Non communiqu\u00e9"],"col":"Rouge","ttc":null,"t":[]},
-{"d":"Domaine Trichon (Bugey)","a":"AOP Bugey","c":"Mondeuse","m":["Non communiqu\u00e9"],"col":"Rouge","ttc":null,"t":[]},
-{"d":"Domaine Trichon (Bugey)","a":"Cr\u00e9mant du Bugey","c":"Extra-Brut","m":["Non communiqu\u00e9"],"col":"Blanc effervescent","ttc":null,"t":[]},
-{"d":"Domaine Trichon (Bugey)","a":"Cr\u00e9mant du Bugey","c":"Bugey Brut","m":["Non communiqu\u00e9"],"col":"Blanc effervescent","ttc":null,"t":[]},
-{"d":"Domaine Trichon (Bugey)","a":"Non pr\u00e9cis\u00e9e","c":"Secret","m":["Non communiqu\u00e9"],"col":"Blanc effervescent","ttc":null,"t":["la"]},
-{"d":"Domaine Trichon (Bugey)","a":"Non pr\u00e9cis\u00e9e","c":"Cuisse Rose","m":["Non communiqu\u00e9"],"col":"Ros\u00e9 effervescent","ttc":null,"t":["la"]},
-{"d":"Domaine Trichon (Bugey)","a":"Boisson sans alcool","c":"P\u00e9tillant Z\u00e9ro%","m":["Non communiqu\u00e9"],"col":"Blanc p\u00e9tillant","ttc":null,"t":["sa"]},
-{"d":"Domaine Trichon (Bugey)","a":"Boisson sans alcool","c":"100% Pur jus de raisin","m":["Non communiqu\u00e9"],"col":"Non pr\u00e9cis\u00e9e","ttc":null,"t":["sa"]}
+{"d":"Domaine Trichon (Bugey)","a":"AOP Bugey","c":"Chardonnay","m":["2020"],"col":"Blanc","ttc":12,"t":[]},
+{"d":"Domaine Trichon (Bugey)","a":"AOC Roussette du Bugey","c":"Altesse","m":["2025"],"col":"Blanc","ttc":14.5,"t":[]},
+{"d":"Domaine Trichon (Bugey)","a":"AOP Bugey","c":"Et si on essayait ?","m":["2025"],"col":"Blanc","ttc":12.5,"t":["ssa"]},
+{"d":"Domaine Trichon (Bugey)","a":"AOP Bugey","c":"Gamay cuv\u00e9e \u00ab Petit Luc \u00bb","m":["2019"],"col":"Rouge","ttc":10.5,"t":[]},
+{"d":"Domaine Trichon (Bugey)","a":"AOP Bugey","c":"Pinot Noir","m":["2023"],"col":"Rouge","ttc":11.5,"t":[]},
+{"d":"Domaine Trichon (Bugey)","a":"AOP Bugey","c":"Mondeuse","m":["2024"],"col":"Rouge","ttc":11.5,"t":[]},
+{"d":"Domaine Trichon (Bugey)","a":"AOC Bugey tradition","c":"Extra-Brut","m":["Non mill\u00e9sim\u00e9"],"col":"Blanc effervescent","ttc":12,"t":[]},
+{"d":"Domaine Trichon (Bugey)","a":"AOC Bugey tradition","c":"Brut","m":["Non mill\u00e9sim\u00e9"],"col":"Blanc effervescent","ttc":12,"t":[]},
+{"d":"Domaine Trichon (Bugey)","a":"Vin de France","c":"Cuisse Rose","m":["Non mill\u00e9sim\u00e9"],"col":"Ros\u00e9 effervescent","ttc":12,"t":["la"]},
+{"d":"Domaine Trichon (Bugey)","a":"Jus de raisin","c":"P\u00e9tillant Z\u00e9ro%","m":["2025"],"col":"Ros\u00e9","ttc":7.5,"t":["sa"]},
+{"d":"Domaine Trichon (Bugey)","a":"Jus de raisin","c":"100% Pur jus de raisin","m":["2025"],"col":"Ros\u00e9","ttc":5,"t":["sa"]}
 ];
 const eur = new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"});
 const $ = id => document.getElementById(id);
