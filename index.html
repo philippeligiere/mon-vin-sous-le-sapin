@@ -93,6 +93,7 @@ dd{margin:0}
 .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px}
 #recap{max-width:720px;margin-top:20px;padding:16px;border:1px solid var(--line);border-left:4px solid var(--vine);border-radius:10px;background:var(--card)}
 #recap pre{white-space:pre-wrap;font:14px/1.5 Inter,sans-serif;margin:10px 0}
+.alt{margin:14px 0 0;padding:12px 14px;border-radius:10px;background:light-dark(#fbf6ea,#241d10);border:1px solid light-dark(#ead9ad,#4a3c1c);font-size:15px;max-width:720px}.alt strong{white-space:nowrap}
 .ok-msg{margin-top:12px;padding:14px;border-radius:10px;border:2px solid var(--vine)}
 @media(max-width:600px){.cl{grid-template-columns:48px minmax(0,1fr) 44px}.cl .qty{grid-column:2}.cl .lt{grid-column:3/4;grid-row:2;text-align:right}.form{grid-template-columns:minmax(0,1fr)}}
 .empty{grid-column:1/-1;text-align:center;padding:48px 0;color:var(--mut)}
@@ -221,11 +222,13 @@ body[data-view=cmd] .tot .big b{color:#9b1c2c}
   </form>
   <div class="err" id="err" role="alert"></div>
   <div id="recap" hidden>
-    <h2>Récapitulatif</h2>
-    <p class="sub">Vérifiez puis cliquez sur « Envoyer ma commande » : votre messagerie s'ouvre avec la commande rédigée, à envoyer à philippebernard@laligiere.fr.</p>
+    <h2>Récapitulatif de votre commande</h2>
+    <p class="sub">Vérifiez votre commande puis envoyez-la au domaine (<strong class="om"></strong>) en cliquant sur « <span id="sendlbl">Envoyer avec Gmail</span> » :</p>
     <pre id="rtxt"></pre>
-    <div class="row"><a class="main" id="mailto" href="#">Envoyer ma commande</a><button class="back" id="copy" type="button">Copier le récapitulatif</button><span class="sub" id="copied"></span></div>
-    <div class="ok-msg" id="okmsg" hidden><b>Merci ! Pensez à cliquer sur « Envoyer » dans votre messagerie.</b> Si elle ne s'est pas ouverte, copiez le récapitulatif et envoyez-le à philippebernard@laligiere.fr. Nous revenons vers vous par SMS pour le règlement.</div>
+    <div class="row"><a class="main" id="gmail" href="#" target="_blank" rel="noopener">Envoyer avec Gmail</a></div>
+    <div class="row"><a class="back" id="pdf" href="#" download>Télécharger mon bon de commande (PDF)</a></div>
+    <p class="alt" id="alt">Vous n'avez pas Gmail ? Téléchargez votre bon de commande en PDF avec le bouton ci-dessus, puis envoyez-le-nous en pièce jointe depuis votre messagerie habituelle à <strong class="om"></strong>.</p>
+    <div class="ok-msg" id="okmsg" hidden><b>Votre commande est bien enregistrée, nous revenons vers vous par SMS pour le règlement de cette commande en ligne.</b><br>Dernière étape : votre messagerie s'est ouverte avec la commande déjà rédigée (vous êtes en copie pour la recevoir aussi), pensez à cliquer sur « Envoyer ». Sans Gmail, renvoyez-nous votre bon de commande PDF à <span class="om"></span>. Pensez à télécharger votre bon de commande en PDF pour le conserver.</div>
   </div>
   <div class="row"><a class="back" href="#tarif">← Découvrir les vins</a></div>
 </div></section>
@@ -355,6 +358,112 @@ function card(w){
  <div><dt>Accords mets et vins</dt><dd>${esc(w.x)}</dd></div></dl>
  <button class="buy${cart[w.i]?" in":""}" data-buy="${w.i}" type="button">${cart[w.i]?`Dans ma commande (${cart[w.i]}) · voir`:"Commander"}</button></div></article>`;
 }
+const ORDER_MAIL=(document.querySelector(".cond").textContent.match(/[\w.+-]+@[\w.-]+\.\w+/)||[""])[0];
+document.querySelectorAll(".om").forEach(e=>e.textContent=ORDER_MAIL);
+const WIN = {0x20AC:0x80,0x201A:0x82,0x2026:0x85,0x2022:0x95,0x2018:0x91,0x2019:0x92,0x201C:0x93,0x201D:0x94,0x2013:0x96,0x2014:0x97,0x0152:0x8C,0x0153:0x9C,0x00A0:0x20,0x202F:0x20,0x2009:0x20};
+function pdfStr(t){
+let o = "";
+for (const ch of String(t)) {
+let c = ch.codePointAt(0);
+if (WIN[c] !== undefined) c = WIN[c]; else if (c > 255 || (c >= 0x80 && c < 0xA0)) c = 63;
+if (c === 40 || c === 41 || c === 92) o += "\\" + ch;
+else if (c < 32 || c > 126) o += "\\" + c.toString(8).padStart(3,"0");
+else o += String.fromCharCode(c);
+}
+return o;
+}
+const HW = {" ":278,",":278,".":278,"-":333,"/":278,"%":889,"(":333,")":333,":":278,"\u20ac":556};
+const tw = (t, size) => [...String(t).replace(/[\u00a0\u202f]/g," ")].reduce((w, ch) => w + (/[0-9]/.test(ch) ? 556 : HW[ch] || (/[A-Z\u00c0-\u00dd]/.test(ch) ? 680 : /[il]/.test(ch) ? 222 : 520)), 0) * size / 1000;
+const cut = (t, n) => { t = String(t); return t.length > n ? t.slice(0, n - 1) + "\u2026" : t; };
+function makePDF(o){
+const W = 595, H = 842, M = 40, pages = [];
+let ops = [], y = 0;
+const rgb = h => [1,3,5].map(i => (parseInt(h.substr(i, 2), 16) / 255).toFixed(3)).join(" ");
+const rect = (x, yy, w, h, col) => ops.push(`${rgb(col)} rg ${x} ${H - yy - h} ${w} ${h} re f`);
+const line = (x1, yy, x2, col, wd) => ops.push(`${rgb(col)} RG ${wd || .6} w ${x1} ${H - yy} m ${x2} ${H - yy} l S`);
+const text = (t, x, yy, size, opt = {}) => {
+const xx = opt.right ? x - tw(t, size) : x;
+ops.push(`BT /${opt.bold ? "F2" : "F1"} ${size} Tf ${rgb(opt.col || "#1d1416")} rg ${xx.toFixed(1)} ${(H - yy).toFixed(1)} Td (${pdfStr(t)}) Tj ET`);
+};
+const newPage = () => { if (ops.length) pages.push(ops.join("\n")); ops = []; y = M; };
+const need = h => { if (y + h > H - 70) { footer(); newPage(); } };
+const footer = () => {
+line(M, H - 52, W - M,"#e7dde0");
+text("Domaine La Ligi\u00e8re \u00b7 Vacqueyras \u00b7 "+ORDER_MAIL, M, H - 38, 8, {col: "#6b5c60"});
+text("L'abus d'alcool est dangereux pour la sant\u00e9, \u00e0 consommer avec mod\u00e9ration.", W - M, H - 38, 8, {col: "#6b5c60", right: true});
+};
+newPage();
+rect(0, 0, W, 132,"#6b1a2c");
+text("Mon vin sous le sapin", M, 58, 28, {bold: true, col: "#ffffff"});
+text("Bon de commande \u00b7 Six vignerons, une seule commande", M, 82, 11, {col: "#ffffff"});
+text("Port offert d\u00e8s 18 bouteilles  \u00b7  Commandes jusqu'au 11 d\u00e9cembre  \u00b7  Livraison avant No\u00ebl", M, 110, 9.5, {bold: true, col: "#f6d78f"});
+const tx = W - 95;
+rect(tx + 21, 22, 8, 8,"#f6d78f");
+[[tx + 18, 36], [tx + 6, 62], [tx + 30, 62], [tx - 6, 88], [tx + 18, 88], [tx + 42, 88]].forEach(([bx, by]) => { rect(bx + 4, by, 6, 5,"#2c6b4c"); rect(bx, by + 6, 14, 18,"#2c6b4c"); });
+rect(tx + 19, 113, 12, 9,"#3a1d12");
+y = 160;
+text(`Commande n\u00b0 ${o.ref}`, M, y, 12, {bold: true});
+text(`Le ${o.date}`, W - M, y, 10, {right: true, col: "#6b5c60"});
+y += 26;
+rect(M, y - 14, W - 2 * M, 72,"#faf6f7");
+text("Client", M + 12, y + 2, 9, {bold: true, col: "#6b1a2c"});
+text(o.client, M + 12, y + 18, 11, {bold: true});
+text(`${o.email}  \u00b7  ${o.tel}`, M + 12, y + 33, 9.5);
+text(cut(`Livraison : ${o.adresse}`, 95), M + 12, y + 48, 9.5);
+y += 80;
+if (o.message) { text(cut(`Message : ${o.message}`, 110), M, y, 9, {col: "#6b5c60"}); y += 18; }
+const cQ = M + 8, cV = M + 46, cPU = W - M - 90, cT = W - M - 8;
+const head = () => {
+rect(M, y, W - 2 * M, 22,"#1f4a35");
+text("Qt\u00e9", cQ, y + 15, 9, {bold: true, col: "#ffffff"});
+text("Vin", cV, y + 15, 9, {bold: true, col: "#ffffff"});
+text("Prix TTC", cPU, y + 15, 9, {bold: true, col: "#ffffff", right: true});
+text("Total TTC", cT, y + 15, 9, {bold: true, col: "#ffffff", right: true});
+y += 22;
+};
+head();
+o.lines.forEach((l, i) => {
+if (y + 36 > H - 70) { footer(); newPage(); head(); }
+if (i % 2) rect(M, y, W - 2 * M, 34,"#faf6f7");
+text(String(l.q), cQ + 6, y + 14, 10, {bold: true});
+text(cut(`${l.c} \u00b7 ${l.m} \u00b7 ${l.col}`, 62), cV, y + 14, 10, {bold: true});
+text(cut(`${l.d}${l.cert ? " \u00b7 " + l.cert : ""} \u00b7 ${l.a}`, 82), cV, y + 27, 8.5, {col: "#6b5c60"});
+text(l.pu, cPU, y + 14, 10, {right: true});
+text(l.tot, cT, y + 14, 10, {right: true, bold: true});
+y += 34;
+});
+line(M, y, W - M,"#6b1a2c", 1.2);
+y += 18;
+need(150);
+const tl = W - M - 230;
+o.totals.forEach(([k, v, big]) => {
+if (big) { rect(tl - 10, y - 15, W - M - tl + 10, 26,"#6b1a2c"); text(k, tl, y + 2, 11, {bold: true, col: "#ffffff"}); text(v, W - M - 10, y + 2, 12, {bold: true, col: "#ffffff", right: true}); y += 30; }
+else { text(k, tl, y, 10, {col: "#6b5c60"}); text(v, W - M - 10, y, 10, {right: true}); y += 17; }
+});
+if (o.note) { text(o.note, M, y + 4, 9, {col: "#6b1a2c"}); y += 18; }
+y += 10; need(70);
+rect(M, y, W - 2 * M, 54,"#eef6f1");
+text("Votre commande est bien enregistr\u00e9e.", M + 14, y + 20, 11, {bold: true, col: "#1f4a35"});
+text("Nous revenons vers vous par SMS pour le r\u00e8glement de cette commande en ligne. Livraison avant No\u00ebl.", M + 14, y + 38, 9.5, {col: "#1f4a35"});
+footer();
+pages.push(ops.join("\n"));
+const objs = [];
+const kids = pages.map((_, i) => `${5 + i * 2} 0 R`).join(" ");
+objs[1] = "<< /Type /Catalog /Pages 2 0 R >>";
+objs[2] = `<< /Type /Pages /Kids [${kids}] /Count ${pages.length} >>`;
+objs[3] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>";
+objs[4] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>";
+pages.forEach((c, i) => {
+objs[5 + i * 2] = `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${6 + i * 2} 0 R >>`;
+objs[6 + i * 2] = `<< /Length ${c.length} >>\nstream\n${c}\nendstream`;
+});
+let out = "%PDF-1.4\n", offs = [];
+for (let i = 1; i < objs.length; i++) { offs[i] = out.length; out += `${i} 0 obj\n${objs[i]}\nendobj\n`; }
+const xref = out.length;
+out += `xref\n0 ${objs.length}\n0000000000 65535 f \n` + offs.slice(1).map(n => String(n).padStart(10,"0") + " 00000 n \n").join("");
+out += `trailer\n<< /Size ${objs.length} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+return new Blob([out], {type: "application/pdf"});
+}
 let cart={};
 try{cart=JSON.parse(localStorage.getItem("mvsls-cart")||"{}")||{}}catch(e){}
 const saveCart=()=>{try{localStorage.setItem("mvsls-cart",JSON.stringify(cart))}catch(e){}};
@@ -433,13 +542,26 @@ $("form").addEventListener("submit",e=>{e.preventDefault();const pb=[],bad=[];co
  REQ.forEach(([id])=>$(id).setAttribute("aria-invalid",bad.includes(id)));
  if(pb.length){$("err").innerHTML=`<b>À corriger :</b><ul>${pb.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;$("recap").hidden=true;return}
  $("err").innerHTML="";
- const rows=Object.entries(cart).map(([i,k])=>{const w=W[i];return `- ${k} x ${w.n}${w.m?" "+w.m:""} (${w.d}, ${w.a}, ${w.c}) | ${w.p?eur(w.p)+" = "+eur(w.p*k):"prix sur demande"}`});
- const txt=`COMMANDE « MON VIN SOUS LE SAPIN »\n${rows.join("\n")}\n\nBouteilles : ${t.q}\nTotal vins TTC : ${eur(t.v)}\nFrais de port : ${t.q>=SEUIL?"offerts":eur(t.port)}\nTOTAL À PAYER TTC : ${eur(t.v+t.port)}${t.n?`\n+ ${t.n} bouteille(s) au prix sur demande`:""}\n\nClient : ${$("prenom").value.trim()} ${$("nom").value.trim()}\nE-mail : ${$("email").value.trim()}\nTéléphone : ${$("tel").value.trim()}\nLivraison : ${$("adr").value.trim()}, ${$("cp").value.trim()} ${$("ville").value.trim()}${$("msg").value.trim()?"\nMessage : "+$("msg").value.trim():""}`;
+ const now=new Date(),p2=n=>String(n).padStart(2,"0");
+ const ref=`MVS-${String(now.getFullYear()).slice(2)}${p2(now.getMonth()+1)}${p2(now.getDate())}-${p2(now.getHours())}${p2(now.getMinutes())}${p2(now.getSeconds())}`;
+ const ids=Object.keys(cart).map(Number).sort((a,b)=>(W[b].p||0)-(W[a].p||0));
+ const rows=ids.map(i=>{const w=W[i],k=cart[i];return `- ${k} x ${w.n}${w.m?" "+w.m:""} (${w.d}, ${w.a}, ${w.c}) | ${w.p?eur(w.p)+" = "+eur(w.p*k):"prix sur demande"}`});
+ const who=`${$("prenom").value.trim()} ${$("nom").value.trim()}`,adr=`${$("adr").value.trim()}, ${$("cp").value.trim()} ${$("ville").value.trim()}`,msg=$("msg").value.trim();
+ const txt=`COMMANDE « MON VIN SOUS LE SAPIN » – N° ${ref}\n\n${rows.join("\n")}\n\nBouteilles : ${t.q}\nTotal vins TTC : ${eur(t.v)}\nFrais de port : ${t.q>=SEUIL?"offerts":eur(t.port)}\nTOTAL À PAYER TTC : ${eur(t.v+t.port)}${t.n?`\n+ ${t.n} bouteille(s) au prix sur demande`:""}\n\nClient : ${who}\nE-mail : ${$("email").value.trim()}\nTéléphone : ${$("tel").value.trim()}\nLivraison : ${adr}${msg?"\nMessage : "+msg:""}`;
  $("rtxt").textContent=txt;
- $("mailto").href=`mailto:philippebernard@laligiere.fr?subject=${encodeURIComponent("Commande Mon vin sous le sapin – "+$("nom").value.trim())}&body=${encodeURIComponent(txt)}`;
+ const ht=t.v/1.2;
+ const blob=makePDF({ref,date:now.toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"}),client:who,email:$("email").value.trim(),tel:$("tel").value.trim(),adresse:adr,message:msg,
+  lines:ids.map(i=>{const w=W[i],k=cart[i];return{q:k,c:w.n,m:w.m||"",col:w.c,d:w.d,a:w.a,cert:w.b==="BIO"?"Bio":(w.b||""),pu:w.p?eur(w.p):"Sur demande",tot:w.p?eur(w.p*k):"À confirmer"}}),
+  totals:[["Total bouteilles",String(t.q)],["Total vins HT",eur(ht)],["TVA 20 %",eur(t.v-ht)],["Total vins TTC",eur(t.v)],["Frais de port",t.q>=SEUIL?"Offerts":`${eur(t.port)} (${t.q} x ${eur(PORT)})`],["Total à payer TTC",eur(t.v+t.port),true]],
+  note:t.n?`+ ${t.n} bouteille${t.n>1?"s":""} au prix sur demande, confirmé${t.n>1?"s":""} par le domaine avant règlement.`:""});
+ try{if($("pdf").dataset.url)URL.revokeObjectURL($("pdf").dataset.url)}catch(e){}
+ const url=URL.createObjectURL(blob);$("pdf").href=url;$("pdf").dataset.url=url;$("pdf").download=`Bon-de-commande-${ref}.pdf`;
+ const subj=encodeURIComponent(`Commande Mon vin sous le sapin ${ref} – `+$("nom").value.trim()),bod=encodeURIComponent(txt),cc=encodeURIComponent($("email").value.trim()),to=encodeURIComponent(ORDER_MAIL);
+ const mobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Macintosh/.test(navigator.userAgent));
+ if(mobile){$("gmail").href=`mailto:${to}?cc=${cc}&subject=${subj}&body=${bod}`;$("gmail").removeAttribute("target");$("gmail").textContent=$("sendlbl").textContent="Envoyer ma commande par e-mail"}
+ else{$("gmail").href=`https://mail.google.com/mail/?view=cm&fs=1&to=${to}&cc=${cc}&su=${subj}&body=${bod}`}
  $("okmsg").hidden=true;$("recap").hidden=false;document.querySelectorAll(".steps li").forEach(l=>l.classList.add("on"));$("recap").scrollIntoView({block:"start"})});
-$("mailto").addEventListener("click",()=>{$("okmsg").hidden=false});
-$("copy").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("rtxt").textContent);$("copied").textContent="Copié."}catch(e){$("copied").textContent="Sélectionnez le texte ci-dessus pour le copier."}});
+$("gmail").addEventListener("click",()=>{$("okmsg").hidden=false;setTimeout(()=>$("okmsg").scrollIntoView({block:"nearest"}),300)});
 window.addEventListener("hashchange",route);
 badge();route();
 }
