@@ -3,626 +3,397 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mon vin sous le sapin</title>
+<title>Tarif Mon vin sous le sapin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:light dark;
---bg:light-dark(#ffffff,#141012);--ink:light-dark(#1d1416,#f3ecee);--mute:light-dark(#6b5c60,#b9a9ad);
---wine:light-dark(#6b1a2c,#8f2a40);--fir:light-dark(#1f4a35,#5fa07e);--gold:light-dark(#b8892c,#e0b85a);
---card:light-dark(#faf6f7,#1d1719);--line:light-dark(#e7dde0,#382c30);--field:light-dark(#ffffff,#120d0f)}
+/* VOICE: carte des vins de caviste, sobre et chaleureuse
+   IDEA: le tarif imprimé posé sur le comptoir du caveau
+   PICTURE: une bouteille dessinée par cuvée, teinte selon la couleur du vin
+   COLOUR and TYPE: blanc, encre, grenat dominant, vert vigne en appui ; DM Serif Display + Inter
+   LAYOUT: bandeau grenat avec conditions, barre de tri, grille de fiches */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#16110f);--ink:light-dark(#1d1716,#f2ece8);--mut:light-dark(#6c605c,#b6aaa4);--line:light-dark(#e8e1dd,#33292a);--card:light-dark(#fff,#1f1817);--tint:light-dark(#f7f2ef,#261d1c);--gr:#6d1b2e;--vine:light-dark(#4e6b2f,#9cbc74);--acc:#c8963e}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Source Sans 3",system-ui,sans-serif;overflow-x:clip;padding-bottom:120px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
 .band{padding:clamp(24px,4vw,56px) max(5vw,16px)}
 .wrap{max-width:1240px;margin:0 auto}
-header{background:var(--wine);color:#fff}
-header .wrap{display:flex;gap:24px;align-items:center;justify-content:space-between}
-h1{font:700 clamp(32px,5vw,50px)/1.05 "Playfair Display",Georgia,serif;margin:0 0 10px;text-wrap:balance}
-h2{font:600 26px/1.15 "Playfair Display",Georgia,serif;margin:0 0 6px}
-header p{margin:0;max-width:62ch;opacity:.92}
-.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-.pill{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);border-radius:99px;padding:5px 12px;font-size:14px;white-space:nowrap}
-.pill b{color:#f6d78f}
-.tree{flex:none;width:130px;height:150px}
-@media(max-width:600px){.tree{display:none}}
-.lead{color:var(--mute);margin:0 0 18px}
-#lines{display:grid;gap:12px}
-.line{position:relative;display:grid;gap:10px 12px;align-items:end;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 66px 14px 14px;
-grid-template-columns:repeat(24,minmax(0,1fr))}
-.ft,.fk{grid-column:span 4}.fd,.fa{grid-column:span 8}
-.fc{grid-column:span 7}.fm,.q{grid-column:span 4}.fh,.fp,.ftot{grid-column:span 3}
-.f{display:flex;flex-direction:column;gap:4px}
-.f>span{display:flex;align-items:center;gap:2px;min-height:22px;font-size:13px;color:var(--mute);font-weight:600}
-select,input,textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:8px;min-height:44px;padding:8px 10px;width:100%}
-select:disabled{opacity:.5}
-.cert{display:inline-block;font-style:normal;font-size:12px;font-weight:700;line-height:1;padding:3px 7px;border-radius:99px;margin-inline-start:4px;vertical-align:1px;white-space:nowrap}
-.cert.bio{background:light-dark(#e3f1e8,#1d3a2a);color:light-dark(#1f6b42,#8fd3a8)}
-.cert.hve{background:light-dark(#e6eef8,#1c2b40);color:light-dark(#1f4f8a,#9cc2ef)}
-option.pale{color:light-dark(#cfc5c8,#4a3f43);font-style:italic}
-select:focus-visible,input:focus-visible,textarea:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:1px}
-.qty{display:flex}
-.qty input{text-align:center;border-radius:0;border-inline:0;-moz-appearance:textfield}
-.qty input::-webkit-inner-spin-button{-webkit-appearance:none}
-.qty button{flex:none;width:40px;min-height:44px;border:1px solid var(--line);background:var(--field);color:var(--ink);font-size:20px;cursor:pointer}
+header{background:var(--gr);color:#fff}
+header h1{font:400 clamp(32px,5vw,52px)/1.05 "DM Serif Display",Georgia,serif;margin:0 0 8px;text-wrap:balance}
+header p{margin:0;max-width:62ch;opacity:.9}
+.cond{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:20px;font-size:15px}
+.logos{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;align-items:center}.logos img{height:52px;width:auto;max-width:150px;object-fit:contain;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,.1)}
+.cond b{color:#f3d9a0;font-weight:600}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:14px max(5vw,16px)}
+.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;max-width:1240px;margin:0 auto}
+label.f{display:flex;flex-direction:column;font-size:13px;color:var(--mut);gap:4px}
+select,input[type=search]{font:16px Inter,sans-serif;min-height:44px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);width:100%}
+select:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;max-width:1240px;margin:10px auto 0;align-items:center}
+.chip{font:14px Inter,sans-serif;min-height:40px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--gr);border-color:var(--gr);color:#fff}
+.count{margin-left:auto;font-size:14px;color:var(--mut)}
+h2.dom{font:400 28px/1.1 "DM Serif Display",Georgia,serif;margin:36px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--gr);grid-column:1/-1;display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+h2.dom small{font:14px Inter,sans-serif;color:var(--mut)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr));gap:16px;max-width:1240px;margin:0 auto}
+.card{display:grid;grid-template-columns:96px minmax(0,1fr);background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;break-inside:avoid}
+.vis{background:var(--tint);display:flex;align-items:flex-end;justify-content:center;padding:14px 6px}
+.vis.ph{background:#fff;align-items:center}.vis img{max-width:84px;max-height:200px;width:auto;height:auto;display:block}
+.vis svg{width:70px;height:auto;filter:drop-shadow(0 6px 6px rgba(0,0,0,.18))}
+.body{padding:14px 16px 16px}
+.top{display:flex;gap:10px;justify-content:space-between;align-items:flex-start}
+.card h3{font:400 22px/1.15 "DM Serif Display",Georgia,serif;margin:0}
+.price{font:600 20px/1.2 Inter,sans-serif;white-space:nowrap;color:var(--gr)}
+:root[data-theme=dark] .price{color:#e7a2b0}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .price{color:#e7a2b0}}
+.price.ask{font-size:13px;font-weight:500;color:var(--mut);text-align:right}
+.sub{font-size:14px;color:var(--mut);margin:2px 0 8px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.tag{font-size:12.5px;padding:2px 8px;border-radius:6px;background:var(--tint);white-space:nowrap}
+.tag.bio{color:var(--vine);font-weight:600}
+.tag.sp{background:var(--gr);color:#fff}
+dl{margin:0;font-size:14.5px;display:grid;gap:6px}
+dt{font-weight:600;font-size:13px;color:var(--mut)}
+dd{margin:0}
+.tv{font-size:11.5px;color:var(--acc);font-weight:600;margin-left:4px;white-space:nowrap}
+.tabs{position:sticky;top:0;z-index:6;background:var(--gr);display:flex;gap:4px;padding:0 max(5vw,16px);overflow-x:auto}
+.tabs a{color:#fff;opacity:.8;text-decoration:none;font-weight:600;padding:14px 16px;border-bottom:3px solid transparent;white-space:nowrap;min-height:48px}
+.tabs a[aria-current=page]{opacity:1;border-color:#f3d9a0}
+.tabs b{background:#f3d9a0;color:#3a0f1a;border-radius:99px;padding:1px 8px;margin-left:6px;font-size:13px}
+.bar{top:48px}
+.buy{margin-top:12px;min-height:44px;padding:8px 18px;border-radius:8px;border:1px solid var(--gr);background:var(--gr);color:#fff;font:600 15px Inter,sans-serif;cursor:pointer}
+.buy.in{background:transparent;color:var(--gr)}
+:root[data-theme=dark] .buy.in{color:#e7a2b0;border-color:#e7a2b0}
+.back{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:8px 16px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:600 15px Inter,sans-serif;cursor:pointer;text-decoration:none}
+#vCmd h2{font:400 30px/1.1 "DM Serif Display",Georgia,serif;margin:22px 0 8px}
+.cl{display:grid;grid-template-columns:48px minmax(0,1fr) auto auto 44px;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.cl.hl{background:var(--tint);border-radius:8px}
+.cl img,.cl .mini{width:48px;height:72px;object-fit:contain}
+.cl .mini svg{width:30px;height:auto;display:block;margin:auto}
+.cl .n{font-weight:600}.cl .s{font-size:13.5px;color:var(--mut)}
+.qty{display:flex}.qty button{width:40px;min-height:44px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:20px;cursor:pointer}
 .qty button:first-child{border-radius:8px 0 0 8px}.qty button:last-child{border-radius:0 8px 8px 0}
-.num output{display:block;min-height:44px;line-height:44px;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-.ftot output{font-weight:700}
-.del{position:absolute;top:12px;right:12px;width:44px;height:44px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--mute);font-size:22px;cursor:pointer}
-.del:hover{color:var(--wine);border-color:var(--wine)}
-@media(max-width:900px){.line{grid-template-columns:repeat(6,minmax(0,1fr))}
-.ft,.fk,.fm{grid-column:span 2}.fd,.fa,.fc{grid-column:span 4}.q,.fh,.fp,.ftot{grid-column:span 3}}
-@media(max-width:600px){.line{grid-template-columns:repeat(2,minmax(0,1fr));padding:14px}
-.ft,.fd,.fa,.fk,.fc,.fm,.q,.ftot{grid-column:span 2}.fh,.fp{grid-column:span 1}
-.ft{padding-right:56px}.num output{text-align:left}.ftot output{font-size:18px}}
-.btn{min-height:44px;border-radius:8px;padding:10px 18px;font:600 16px "Source Sans 3",sans-serif;cursor:pointer;border:1px solid var(--fir);background:transparent;color:var(--fir)}
-.btn.main{background:var(--fir);color:#fff;border-color:var(--fir)}
-.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:14px}
-.note{font-size:14px;color:var(--mute)}
-.totals{margin-top:22px;border-top:2px solid var(--wine);padding-top:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-#portbox.free b{color:var(--fir)}
-.goal{margin-top:16px;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:14px 16px;transition:border-color .3s,background .3s}
-.goal.done{border-color:var(--fir);background:light-dark(#eef6f1,#16241c)}
-.goalhead{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;justify-content:space-between}
-.goalhead strong{font-size:20px;font-variant-numeric:tabular-nums}
-.goal.done .goalhead strong,.goal.done #portmsg{color:var(--fir)}
-.ticks{display:flex;justify-content:space-between;font-size:13px;color:var(--mute);margin-top:4px}
-.chip{background:rgba(255,255,255,.16);border-radius:99px;padding:3px 10px;font-weight:700;white-space:nowrap}
-.chip.done{background:#2c6b4c}
-.totals div{background:var(--card);border-radius:10px;padding:12px 14px}
-.totals span{display:block;font-size:13px;color:var(--mute);font-weight:600}
-.totals b{font-size:clamp(20px,3vw,26px);font-variant-numeric:tabular-nums;white-space:nowrap}
-.totals .big b{color:var(--wine)}
-@media(max-width:600px){.totals{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.meter{height:14px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:10px}
-.meter i{display:block;height:100%;width:0;background:var(--gold);transition:width .4s,background .3s}
-.goal.done .meter i{background:var(--fir)}
-@media(prefers-reduced-motion:reduce){.meter i,.goal{transition:none}}
-#portmsg{font-weight:600;color:var(--wine)}
-.client{max-width:720px}
-.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.grid2 .full{grid-column:1/-1}
-@media(max-width:600px){.grid2{grid-template-columns:minmax(0,1fr)}}
-.err{color:var(--wine);font-weight:600;scroll-margin-top:16px}.err:focus{outline:none}
-.err:not(:empty){margin:16px 0;padding:12px 16px;border:2px solid var(--wine);border-radius:10px;background:light-dark(#fbeef1,#2a1419)}
-.err p{margin:0 0 6px}.err ul{margin:0;padding-left:20px;font-weight:400}
-.req{color:var(--wine);font-weight:700;margin-left:2px}
-input[aria-invalid=true]{border:2px solid var(--wine);background:light-dark(#fff6f8,#1f0f13)}
-#recap{display:none;margin-top:20px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--fir);border-radius:10px;padding:16px}
-.done{margin-top:16px;padding:16px 18px;border-radius:10px;background:light-dark(#eef6f1,#16241c);border:2px solid var(--fir)}
-.donetitle{margin:0 0 6px;font:600 20px/1.3 "Playfair Display",Georgia,serif;color:var(--fir)}
-.done .note{margin:0}
-.alt{margin:14px 0 0;padding:12px 14px;border-radius:10px;background:light-dark(#fbf6ea,#241d10);border:1px solid light-dark(#ead9ad,#4a3c1c);font-size:15px}.alt strong{white-space:nowrap}
-#recap pre{white-space:pre-wrap;font:14px/1.5 "Source Sans 3",sans-serif;margin:10px 0;overflow-x:auto}
-.bar{position:fixed;inset:auto 0 0 0;background:var(--wine);color:#fff;padding:10px max(5vw,16px);z-index:5;box-shadow:0 -6px 20px rgba(0,0,0,.18)}
-.bar .wrap{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;justify-content:space-between}
-.bar .t{display:flex;flex-wrap:wrap;gap:4px 20px;font-variant-numeric:tabular-nums}
-.bar .t span{white-space:nowrap}.bar b{color:#f6d78f;font-size:18px}
-.bar a{color:#fff;font-weight:700;background:rgba(255,255,255,.16);border-radius:8px;padding:8px 14px;text-decoration:none;white-space:nowrap}
+.qty input{width:52px;text-align:center;border-radius:0;border-inline:0;min-height:44px;font:16px Inter,sans-serif;background:var(--card);color:var(--ink);border:1px solid var(--line);-moz-appearance:textfield}
+.lt{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;min-width:84px;font-weight:600}
+.rm{width:44px;height:44px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--mut);font-size:22px;cursor:pointer}
+.tot{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:18px}
+.tot div{background:var(--tint);border-radius:10px;padding:12px 14px}.tot span{display:block;font-size:13px;color:var(--mut)}
+.tot b{font-size:22px;white-space:nowrap;font-variant-numeric:tabular-nums}.tot .big b{color:var(--gr)}
+.meter{height:12px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:12px}.meter i{display:block;height:100%;background:var(--acc);width:0;transition:width .4s}
+.meter.ok i{background:var(--vine)}
+@media(prefers-reduced-motion:reduce){.meter i{transition:none}}
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:720px}
+.form .full{grid-column:1/-1}
+.form input,.form textarea{font:16px Inter,sans-serif;min-height:44px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);width:100%}
+.form input[aria-invalid=true]{border:2px solid var(--gr)}
+.req{color:var(--gr)}
+.err:not(:empty){margin:14px 0;padding:12px 16px;border:2px solid var(--gr);border-radius:10px;max-width:720px}
+.err ul{margin:4px 0 0;padding-left:20px}
+.main{min-height:48px;padding:10px 22px;border-radius:8px;border:0;background:var(--gr);color:#fff;font:600 16px Inter,sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px}
+#recap{max-width:720px;margin-top:20px;padding:16px;border:1px solid var(--line);border-left:4px solid var(--vine);border-radius:10px;background:var(--card)}
+#recap pre{white-space:pre-wrap;font:14px/1.5 Inter,sans-serif;margin:10px 0}
+.ok-msg{margin-top:12px;padding:14px;border-radius:10px;border:2px solid var(--vine)}
+@media(max-width:600px){.cl{grid-template-columns:48px minmax(0,1fr) 44px}.cl .qty{grid-column:2}.cl .lt{grid-column:3/4;grid-row:2;text-align:right}.form{grid-template-columns:minmax(0,1fr)}}
+.empty{grid-column:1/-1;text-align:center;padding:48px 0;color:var(--mut)}
+footer{font-size:13.5px;color:var(--mut);border-top:1px solid var(--line)}
+footer p{max-width:80ch;margin:0 0 6px}
+@media(max-width:600px){.card{grid-template-columns:76px minmax(0,1fr)}.vis.ph{background:#fff;align-items:center}.vis img{max-width:84px;max-height:200px;width:auto;height:auto;display:block}
+.vis svg{width:56px}.bar{position:static}}
+@media print{.bar{display:none}header{background:none;color:#000}.logos{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;align-items:center}.logos img{height:52px;width:auto;max-width:150px;object-fit:contain;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,.1)}
+.cond b{color:#000}.card{border-color:#ccc}}
 </style>
 </head>
 <body>
-<header class="band">
-<div class="wrap">
-<div>
-<h1>Mon vin sous le sapin</h1>
-<p>Six vignerons en direct, sans interm&#233;diaire : tout est g&#233;r&#233; par les domaines eux-m&#234;mes. Vous payez le prix du caveau de chacun, vous m&#233;langez leurs vins dans un m&#234;me carton et tout arrive en une seule livraison.</p>
-<div class="pills"><span class="pill">Port <b>offert</b> d&#232;s 18 bouteilles, sinon 2 &#8364; par bouteille</span><span class="pill">Commande avant le <b>11 d&#233;cembre</b></span><span class="pill">Livraison <b>avant No&#235;l</b></span></div>
+<header class="band"><div class="wrap">
+  <h1>Mon vin sous le sapin</h1>
+  <p>Le tarif complet des 6 domaines partenaires réunis par le Domaine La Ligière. Vous pouvez panacher les bouteilles dans vos cartons, au prix caveau.</p>
+  <div class="cond">
+    <span><b>Port offert</b> dès 18 bouteilles</span>
+    <span><b>2 €</b> de port par bouteille en dessous</span>
+    <span>Commande avant le <b>11 décembre</b>, livrée avant Noël</span>
+    <span>Commandes : philippebernard@laligiere.fr</span>
+  </div>
+  <div class="logos" aria-label="Les 6 domaines">
+    <img src="img/logo-ll.webp" alt="Domaine La Ligière"><img src="img/logo-ja.webp" alt="Domaine Juliette Avril"><img src="img/logo-dc.webp" alt="Domaine des Combat"><img src="img/logo-am.webp" alt="Domaine de l'Amauve"><img src="img/logo-mv.webp" alt="Mas des Volques"><img src="img/logo-tr.webp" alt="Domaine Trichon">
+  </div>
+</div></header>
+
+<nav class="tabs" aria-label="Navigation">
+  <a href="#tarif" id="tTarif">Descriptif des vins</a>
+  <a href="#commande" id="tCmd">Commander <b id="tCount" hidden>0</b></a>
+</nav>
+<div id="vTarif">
+<div class="bar">
+  <div class="ctl">
+    <label class="f">Domaine<select id="fDom"></select></label>
+    <label class="f">Couleur<select id="fCol"></select></label>
+    <label class="f">Appellation<select id="fApp"></select></label>
+    <label class="f">Trier par<select id="fSort">
+      <option value="dom">Domaine</option>
+      <option value="col">Couleur</option>
+      <option value="app">Appellation</option>
+      <option value="pa">Prix croissant</option>
+      <option value="pd">Prix décroissant</option>
+      <option value="nom">Nom de cuvée</option>
+    </select></label>
+    <label class="f"><span>Rechercher</span><input type="search" id="fQ" placeholder="Cuvée, cépage, plat…"></label>
+  </div>
+  <div class="chips" id="chips">
+    <button class="chip" data-s="Sans alcool" aria-pressed="false">Sans alcool</button>
+    <button class="chip" data-s="Low alcool" aria-pressed="false">Low alcool</button>
+    <button class="chip" data-s="Sans sulfites ajoutés" aria-pressed="false">Sans sulfites ajoutés</button>
+    <button class="chip" data-s="BIO" aria-pressed="false">Bio</button>
+    <span class="count" id="count"></span>
+  </div>
 </div>
-<svg class="tree" viewBox="0 0 130 150" aria-hidden="true">
-<defs><g id="b"><rect x="-5" y="-26" width="10" height="9" rx="2"/><path d="M-5-18h10l3 6v20a3 3 0 0 1-3 3h-10a3 3 0 0 1-3-3v-20z"/></g></defs>
-<path d="M65 8l6 12h-12z" fill="#f6d78f"/>
-<g fill="#2c6b4c"><use href="#b" x="65" y="48"/><use href="#b" x="51" y="84"/><use href="#b" x="79" y="84"/>
-<use href="#b" x="37" y="120"/><use href="#b" x="65" y="120"/><use href="#b" x="93" y="120"/></g>
-<g fill="#f6d78f" opacity=".9"><circle cx="65" cy="40" r="2.5"/><circle cx="51" cy="76" r="2.5"/><circle cx="79" cy="76" r="2.5"/><circle cx="37" cy="112" r="2.5"/><circle cx="65" cy="112" r="2.5"/><circle cx="93" cy="112" r="2.5"/></g>
-<rect x="58" y="134" width="14" height="12" rx="2" fill="#3a1d12"/>
-</svg>
+
+<main class="band"><div class="grid" id="grid"></div></main>
 </div>
-</header>
-<main>
-<section class="band"><div class="wrap">
-<h2>Votre commande</h2>
-<p class="lead">Une ligne par vin. Commencez par le crit&#232;re de votre choix : type de vin (sans alcool, low alcool, sans sulfites ajout&#233;s), domaine, appellation ou couleur. Les autres listes s'adaptent, puis choisissez la cuv&#233;e et le mill&#233;sime.</p>
-<div id="lines"></div>
-<div class="row"><button class="btn" id="add" type="button">+ Ajouter une ligne</button><span class="note">54 r&#233;f&#233;rences de 6 domaines. Les vins marqu&#233;s &#171; Sur demande &#187; ont un prix confirm&#233; par le domaine avant validation.</span></div>
-<div class="totals" aria-live="polite">
-<div><span>Total bouteilles</span><b id="tq">0</b></div>
-<div><span>Total vins HT</span><b id="tht">0,00 &#8364;</b></div>
-<div><span>TVA 20 %</span><b id="ttva">0,00 &#8364;</b></div>
-<div><span>Total vins TTC</span><b id="tttc">0,00 &#8364;</b></div>
-<div id="portbox"><span>Frais de port</span><b id="tport">0,00 &#8364;</b></div>
-<div class="big"><span>Total &#224; payer TTC</span><b id="tpay">0,00 &#8364;</b></div>
-</div>
-<p class="note" id="ondemand"></p>
-<div class="goal" id="goal">
-<div class="goalhead"><strong id="goalcount">0 / 18 bouteilles</strong><span id="portmsg"></span></div>
-<div class="meter"><i id="meter"></i></div>
-<div class="ticks" aria-hidden="true"><span>0</span><span>6</span><span>12</span><span>18 &#183; port offert</span></div>
-</div>
+<section id="vCmd" class="band" hidden><div class="wrap">
+  <a class="back" href="#tarif">← Retourner au descriptif des vins</a>
+  <h2>Votre commande</h2>
+  <div id="cart"></div>
+  <div class="tot" aria-live="polite">
+    <div><span>Bouteilles</span><b id="kq">0</b></div>
+    <div><span>Total vins TTC</span><b id="kv">0 €</b></div>
+    <div><span>Frais de port</span><b id="kp">0 €</b></div>
+    <div class="big"><span>Total à payer TTC</span><b id="kt">0 €</b></div>
+  </div>
+  <div class="meter" id="meter"><i id="mi"></i></div>
+  <p class="sub" id="pmsg"></p>
+  <p class="sub" id="dem"></p>
+  <h2>Vos coordonnées</h2>
+  <p class="sub">Les champs marqués <b class="req">*</b> sont obligatoires. Le règlement vous est demandé ensuite par SMS.</p>
+  <form id="form" class="form" novalidate>
+    <label class="f"><span>Nom <b class="req">*</b></span><input id="nom" autocomplete="family-name"></label>
+    <label class="f"><span>Prénom <b class="req">*</b></span><input id="prenom" autocomplete="given-name"></label>
+    <label class="f"><span>E-mail <b class="req">*</b></span><input id="email" type="email" autocomplete="email"></label>
+    <label class="f"><span>Téléphone <b class="req">*</b></span><input id="tel" type="tel" autocomplete="tel"></label>
+    <label class="f full"><span>Adresse de livraison <b class="req">*</b></span><input id="adr" autocomplete="street-address"></label>
+    <label class="f"><span>Code postal <b class="req">*</b></span><input id="cp" inputmode="numeric" autocomplete="postal-code"></label>
+    <label class="f"><span>Ville <b class="req">*</b></span><input id="ville" autocomplete="address-level2"></label>
+    <label class="f full"><span>Message (facultatif)</span><textarea id="msg" rows="3" placeholder="Créneau de livraison, message cadeau…"></textarea></label>
+    <div class="full"><button class="main" type="submit">Valider ma commande</button></div>
+  </form>
+  <div class="err" id="err" role="alert"></div>
+  <div id="recap" hidden>
+    <h2>Récapitulatif</h2>
+    <p class="sub">Vérifiez puis cliquez sur « Envoyer ma commande » : votre messagerie s'ouvre avec la commande rédigée, à envoyer à philippebernard@laligiere.fr.</p>
+    <pre id="rtxt"></pre>
+    <div class="row"><a class="main" id="mailto" href="#">Envoyer ma commande</a><button class="back" id="copy" type="button">Copier le récapitulatif</button><span class="sub" id="copied"></span></div>
+    <div class="ok-msg" id="okmsg" hidden><b>Merci ! Pensez à cliquer sur « Envoyer » dans votre messagerie.</b> Si elle ne s'est pas ouverte, copiez le récapitulatif et envoyez-le à philippebernard@laligiere.fr. Nous revenons vers vous par SMS pour le règlement.</div>
+  </div>
+  <div class="row"><a class="back" href="#tarif">← Retourner au descriptif des vins</a></div>
 </div></section>
-<section class="band" id="coord" style="padding-top:0"><div class="wrap client">
-<h2>Vos coordonn&#233;es</h2>
-<p class="lead">Pour la livraison et la confirmation de votre commande. Les champs marqu&#233;s d'un <b class="req">*</b> sont obligatoires.</p>
-<form id="form" novalidate>
-<div class="err" id="err" role="alert" aria-live="assertive" tabindex="-1"></div>
-<div class="grid2">
-<label class="f"><span>Nom<b class="req" aria-hidden="true">*</b></span><input id="nom" autocomplete="family-name" required></label>
-<label class="f"><span>Pr&#233;nom<b class="req" aria-hidden="true">*</b></span><input id="prenom" autocomplete="given-name" required></label>
-<label class="f"><span>E-mail<b class="req" aria-hidden="true">*</b></span><input id="email" type="email" autocomplete="email" required></label>
-<label class="f"><span>T&#233;l&#233;phone<b class="req" aria-hidden="true">*</b></span><input id="tel" type="tel" autocomplete="tel" required></label>
-<label class="f full"><span>Adresse de livraison<b class="req" aria-hidden="true">*</b></span><input id="adr" autocomplete="street-address" required></label>
-<label class="f"><span>Code postal<b class="req" aria-hidden="true">*</b></span><input id="cp" inputmode="numeric" autocomplete="postal-code" required></label>
-<label class="f"><span>Ville<b class="req" aria-hidden="true">*</b></span><input id="ville" autocomplete="address-level2" required></label>
-<label class="f full"><span>Message (facultatif)</span><textarea id="msg" rows="3" placeholder="Cr&#233;neau de livraison, message cadeau&#8230;"></textarea></label>
-</div>
-<button class="btn main" type="submit">Valider ma commande</button>
-</form>
-<div id="recap" aria-live="polite">
-<h2>R&#233;capitulatif de votre commande</h2>
-<p class="note">V&#233;rifiez votre commande puis envoyez-la au domaine (<strong id="mailtxt"></strong>) en cliquant sur &#171; Envoyer avec Gmail &#187; :</p>
-<pre id="recaptxt"></pre>
-<div class="row send"><a class="btn main" id="gmail" href="#" target="_blank" rel="noopener">Envoyer avec Gmail</a></div>
-<div class="row"><a class="btn" id="pdf" href="#" download>T&#233;l&#233;charger mon bon de commande (PDF)</a><span class="note" id="copied"></span></div>
-<p class="alt" id="alt">Vous n'avez pas Gmail ? T&#233;l&#233;chargez votre bon de commande en PDF avec le bouton ci-dessus, puis envoyez-le-nous en pi&#232;ce jointe depuis votre messagerie habituelle &#224; <strong>philippebernard@laligiere.fr</strong>.</p>
-<div id="done" class="done" role="status" hidden>
-<p class="donetitle">Votre commande est bien enregistr&#233;e, nous revenons vers vous par SMS pour le r&#232;glement de cette commande en ligne.</p>
-<p class="note">Derni&#232;re &#233;tape : votre messagerie s'est ouverte avec la commande d&#233;j&#224; r&#233;dig&#233;e (vous &#234;tes en copie pour la recevoir aussi), pensez &#224; cliquer sur &#171; Envoyer &#187;. Sans Gmail, renvoyez-nous votre bon de commande PDF &#224; philippebernard@laligiere.fr. Pensez &#224; t&#233;l&#233;charger votre bon de commande en PDF pour le conserver.</p>
-</div>
-</div>
-</div></section>
-</main>
-<div class="bar"><div class="wrap">
-<div class="t"><span class="chip" id="bchip">0 / 18</span><span>Bouteilles <b id="bq">0</b></span><span>Port <b id="bport">0,00 &#8364;</b></span><span>&#192; payer <b id="bttc">0,00 &#8364;</b></span></div>
-<a href="#coord" id="barsubmit">Valider ma commande</a>
-</div></div>
+
+<footer class="band"><div class="wrap">
+  <p>Prix TTC la bouteille 75 cl, sauf mention contraire. « Prix sur demande » : tarif non communiqué à ce jour.</p>
+  <p>Visuels non contractuels. Les cépages marqués « à valider » sont ceux de l'appellation ou une estimation, à confirmer avec chaque domaine avant diffusion. Les descriptifs de dégustation et accords sont rédigés pour ce tarif.</p>
+  <p>L'abus d'alcool est dangereux pour la santé, à consommer avec modération.</p>
+</div></footer>
+
 <script>
 {
-const EMAIL = "philippebernard@laligiere.fr"; // adresse de r\u00e9ception des commandes
-const TVA = 0.20;
-const REQ = [["nom","Nom"],["prenom","Pr\u00e9nom"],["email","E-mail"],["tel","T\u00e9l\u00e9phone"],["adr","Adresse de livraison"],["cp","Code postal"],["ville","Ville"]];
-const CHECK = {
-email: {re: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, msg: "adresse e-mail invalide"},
-tel: {re: /^\+?\d{9,15}$/, msg: "num\u00e9ro de t\u00e9l\u00e9phone invalide"},
-cp: {re: /^\d{5}$/, msg: "code postal \u00e0 5 chiffres attendu"}
-};
-const SEUIL = 18;          // port offert \u00e0 partir de 18 bouteilles
-const PORT_BTL = 2;        // sinon 2 \u20ac TTC de port par bouteille
-const shipping = q => (q > 0 && q < SEUIL) ? q * PORT_BTL : 0;
-const DOMAINES = ["Domaine La Ligi\u00e8re (Vacqueyras)","Domaine Juliette Avril (Ch\u00e2teauneuf-du-Pape)","Domaine des Combat (Crozes-Hermitage)","Domaine de l'Amauve (S\u00e9guret)","Mas des Volques (Duch\u00e9 d'Uz\u00e8s)","Domaine Trichon (Bugey)"];
-const CERT = {
-"Domaine La Ligi\u00e8re (Vacqueyras)":"BIO",
-"Domaine Juliette Avril (Ch\u00e2teauneuf-du-Pape)":"HVE",
-"Domaine des Combat (Crozes-Hermitage)":"HVE",
-"Domaine de l'Amauve (S\u00e9guret)":"BIO",
-"Domaine Trichon (Bugey)":"BIO"
-};
-const certBadge = d => CERT[d] ? `<em class="cert ${/bio/i.test(CERT[d]) ? "bio" : "hve"}">${esc(CERT[d])}</em>` : "";
-const TYPES = [
-{v:"", l:"Tous les vins"},
-{v:"sa", l:"Sans alcool"},
-{v:"la", l:"Low alcool"},
-{v:"ssa", l:"Sans sulfites ajout\u00e9s"}
+const LL="Domaine La Ligière",JA="Domaine Juliette Avril",DC="Domaine des Combat",AM="Domaine de l'Amauve",MV="Mas des Volques",TR="Domaine Trichon";
+const LOC={[LL]:"Vacqueyras",[JA]:"Châteauneuf-du-Pape",[DC]:"Crozes-Hermitage",[AM]:"Séguret",[MV]:"Duché d'Uzès",[TR]:"Bugey"};
+const DCOL={[LL]:"#6d1b2e",[JA]:"#1f3d5c",[DC]:"#3c2a4d",[AM]:"#8a5a1f",[MV]:"#2f5d50",[TR]:"#4e6b2f"};
+// d domaine, a appellation, n cuvée, c couleur, s spécificité, b label, m millésime, p prix, g cépages, v cépages vérifiés, t dégustation, x accords, r remarque
+const W=[
+{d:LL,a:"IGP Méditerranée",n:"Sud Absolu",c:"Blanc",img:"ll-sud-blanc",b:"BIO",m:"2024",p:8,g:"Assemblage de cépages blancs méditerranéens",t:"Vif et fruité, notes d'agrumes et de fleurs blanches.",x:"Apéritif, salades composées, poissons grillés."},
+{d:LL,a:"IGP Méditerranée",n:"Le Viognier",img:"ll-viognier",c:"Blanc",b:"BIO",m:"2026",p:10,g:"Viognier",v:1,t:"Nez d'abricot et de pêche blanche, bouche ronde et florale.",x:"Cuisine asiatique, volaille à la crème, chèvre frais."},
+{d:LL,a:"AOP Vacqueyras",n:"Le Chemin Blanc",img:"ll-chemin-blanc",c:"Blanc",b:"BIO",m:"2024",p:16,r:"Existe en magnum",g:"Grenache blanc, clairette, roussanne, viognier",t:"Ample, fruits jaunes et amande, finale fraîche.",x:"Saint-Jacques, poissons en sauce, volaille."},
+{d:LL,a:"IGP Méditerranée",n:"Sud Absolu",c:"Rosé",img:"ll-sud-rose",b:"BIO",m:"2025",p:8,g:"Grenache, cinsault",t:"Léger et désaltérant, fruits rouges acidulés.",x:"Apéritif, grillades, cuisine d'été."},
+{d:LL,a:"AOP Vacqueyras",n:"La Ligière rosé",img:"ll-rose",c:"Rosé",b:"BIO",m:"2025",p:14,g:"Grenache, cinsault, syrah",t:"Rosé de gastronomie, structuré, fruits rouges et épices douces.",x:"Tapenade, tian provençal, cuisine épicée."},
+{d:LL,a:"IGP Méditerranée",n:"Le Canébier",img:"ll-canebier",c:"Rouge",b:"BIO",m:"2022",p:9,g:"Grenache, syrah, carignan",t:"Fruité et gourmand, à boire sur le fruit.",x:"Charcuterie, pizza, barbecue."},
+{d:LL,a:"AOP Côtes-du-Rhône",n:"Les Costebelles",img:"ll-costebelles",c:"Rouge",b:"BIO",m:"2024",p:10.5,g:"Grenache, syrah",t:"Fruits rouges, souple et digeste.",x:"Viandes blanches, pâtes, repas du quotidien."},
+{d:LL,a:"AOP Côtes-du-Rhône",n:"Les Capelles",img:"ll-capelles",c:"Rouge",b:"BIO",m:"2023",p:11.5,g:"Grenache, syrah, mourvèdre",t:"Fruits noirs, garrigue, tanins fondus.",x:"Côte de porc, lasagnes, fromages doux."},
+{d:LL,a:"AOP Beaumes-de-Venise",n:"Les Garennes",img:"ll-garennes",c:"Rouge",b:"BIO",m:"2024",p:14,r:"Existe en magnum",g:"Grenache, syrah",t:"Fraîcheur des Dentelles, fruits noirs et poivre.",x:"Agneau, gibier à plume, fromages affinés."},
+{d:LL,a:"AOP Vacqueyras",n:"Le Classique",img:"ll-classique",c:"Rouge",b:"BIO",m:"2024",p:14,g:"Grenache, syrah, mourvèdre",t:"Fruits noirs mûrs, épices et garrigue, belle structure.",x:"Daube provençale, gigot, côte de bœuf."},
+{d:LL,a:"AOP Vacqueyras",n:"Mourre de la Caille",img:"ll-mourre",c:"Rouge",b:"BIO",m:"2024",p:16,r:"Existe en magnum",g:"Grenache, syrah, mourvèdre",t:"Cuvée de terroir, concentrée : cassis, réglisse, thym.",x:"Gibier, bœuf braisé, plats truffés."},
+{d:LL,a:"AOP Vacqueyras",n:"Fumitarde",img:"ll-fumitarde",c:"Rouge",b:"BIO",m:"2023",p:18,r:"Existe en magnum",g:"Grenache, syrah, mourvèdre",t:"Puissant et profond, notes fumées et fruits confiturés.",x:"Civet, magret, plats mijotés."},
+{d:LL,a:"AOP Vacqueyras",n:".G",img:"ll-g",c:"Rouge",b:"BIO",m:"2023",p:22,g:"Assemblage Vacqueyras, à préciser",t:"Haut de gamme, dense et soyeux, beau potentiel de garde.",x:"Filet de bœuf, pigeon, fromages de caractère."},
+{d:LL,a:"AOP Gigondas",n:"Les Bergines",img:"ll-bergines",c:"Rouge",b:"BIO",m:"2023",p:22,g:"Grenache, syrah, mourvèdre",t:"Puissance et finesse, fruits noirs, épices, touche minérale.",x:"Gibier, agneau de sept heures, cèpes."},
+{d:LL,a:"AOP Muscat de Beaumes-de-Venise",n:"Chante Coucou Blanc",img:"ll-muscat-blanc",c:"Vin doux",s:"",b:"BIO",m:"2024",p:14,g:"Muscat à petits grains",v:1,t:"Vin doux naturel au nez explosif : fruits exotiques, agrumes confits, fleurs.",x:"Apéritif, foie gras, melon, desserts aux fruits."},
+{d:LL,a:"AOP Muscat de Beaumes-de-Venise",n:"Chante Coucou Rosé",img:"ll-muscat-rose",c:"Vin doux",rose:1,b:"BIO",m:"2024",p:10,g:"Muscat à petits grains noirs",v:1,t:"Vin doux naturel, notes de rose, litchi et fruits rouges.",x:"Apéritif, fraisier, desserts aux fruits rouges."},
+{d:LL,a:"AOP Côtes-du-Rhône",n:"Ad Terraneus",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2023",p:13,g:"Grenache, syrah",t:"Fruit croquant, très digeste.",x:"Charcuterie, tapas, cuisine du marché."},
+{d:LL,a:"Vin de France",n:"C'est pas grave !",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2023",p:12,g:"Assemblage de cépages rouges",t:"Gourmand et désaltérant.",x:"Apéro entre amis, burgers, grillades."},
+{d:LL,a:"IGP Méditerranée",n:"Insomnia",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2024",p:11,g:"Assemblage de cépages rouges méditerranéens",t:"Fruit pur et éclatant, souple.",x:"Viandes grillées, cuisine du monde."},
+{d:LL,a:"Boisson partiellement fermentée",n:"Je Veux des Bulles dans ma Vie",c:"Effervescent",s:"Low alcool",b:"BIO",m:"2025",p:10,r:"5,5 % vol.",g:"Raisin partiellement fermenté, cépage à préciser",t:"Bulles légères et fruitées, 5,5 % vol.",x:"Apéritif, brunch, desserts légers."},
+{d:JA,a:"AOP Châteauneuf-du-Pape",n:"Cuvée Maxence",img:"ja-maxence",c:"Rouge",b:"HVE",m:"2018",p:43.5,g:"Grenache, syrah, mourvèdre",t:"Puissance, élégance et finesse, grande garde.",x:"Gibier, lièvre, plats truffés."},
+{d:JA,a:"AOP Châteauneuf-du-Pape",n:"Traditionnel",c:"Rouge",b:"HVE",m:"2022",p:30,g:"Grenache, syrah, mourvèdre",t:"La rondeur domine et gagne tout le palais, fruits noirs et épices.",x:"Agneau, bœuf en sauce, fromages affinés."},
+{d:JA,a:"AOP Cairanne",n:"Cuvée Maïlys",c:"Rouge",b:"HVE",m:"2021",p:15,g:"Grenache, syrah, mourvèdre",t:"Rond, ample et généreux, tanins souples et mûrs.",x:"Volaille rôtie, magret, ratatouille."},
+{d:JA,a:"AOP Côtes-du-Rhône Villages Plan de Dieu",n:"Cuvée Léandre",c:"Rouge",b:"HVE",m:"2021",p:12.5,g:"Grenache, syrah",t:"Belle concentration tannique, avec rondeur et souplesse.",x:"Grillades, côte de veau, terrines."},
+{d:JA,a:"AOP Côtes-du-Rhône",n:"Côtes-du-Rhône",c:"Rouge",b:"HVE",m:"2022",p:10.5,g:"Grenache, syrah",t:"Plus riche qu'un Côtes-du-Rhône classique, fruité et gourmand.",x:"Pizza, charcuterie, plats du quotidien."},
+{d:DC,a:"AOP Crozes-Hermitage",n:"Cuvée Domaine Blanc",img:"dc-blanc",c:"Blanc",b:"HVE",g:"Marsanne, roussanne",t:"Fleurs blanches et fruits jaunes, bouche ronde et fraîche.",x:"Poissons de rivière, volaille à la crème, chèvre."},
+{d:DC,a:"AOP Crozes-Hermitage",n:"Cuvée Domaine Rouge",img:"dc-rouge",c:"Rouge",b:"HVE",g:"Syrah",v:1,t:"Syrah du nord : fruits noirs, violette, poivre.",x:"Côte de bœuf, saucisson, cuisine bistrot."},
+{d:DC,a:"AOP Crozes-Hermitage",n:"Cuvée Bacchus",img:"dc-bacchus",c:"Rouge",b:"HVE",g:"Syrah",v:1,t:"Plus structuré : mûre, réglisse, épices.",x:"Gibier, agneau, fromages affinés."},
+{d:DC,a:"AOP Crozes-Hermitage",n:"Cuvée Exception'Elle",img:"dc-exception",c:"Rouge",b:"HVE",g:"Syrah",v:1,t:"Cuvée de prestige, dense et élégante, belle garde.",x:"Filet de bœuf, pigeon, plats en sauce."},
+{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"La Daurèle",c:"Blanc",b:"BIO",g:"Grenache blanc, clairette, viognier, ugni blanc",v:1,t:"Frais et floral, notes de fruits blancs.",x:"Apéritif, poissons, chèvre frais."},
+{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Le rosé de Simone",c:"Rosé",b:"BIO",g:"Grenache noir, mourvèdre, cinsault, carignan",v:1,t:"Rosé de caractère, fruits rouges et épices.",x:"Cuisine méditerranéenne, grillades."},
+{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Laurances",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Fruits rouges, souple et frais.",x:"Viandes blanches, charcuterie."},
+{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Estelles",c:"Rouge",b:"BIO",g:"Grenache noir, syrah, mourvèdre",v:1,t:"Fruits noirs, garrigue, belle structure.",x:"Agneau, daube."},
+{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Les Merrelies",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Concentré, fruits mûrs et épices.",x:"Viandes rouges, gibier."},
+{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Réserve",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Ample et épicé, belle profondeur.",x:"Bœuf braisé, fromages affinés."},
+{d:AM,a:"AOP Côtes-du-Rhône",n:"Le Vin d'Adrien",img:"am-adrien",c:"Rouge",b:"BIO",g:"Grenache noir, syrah, cinsault, carignan",v:1,t:"Fruité et facile, plaisir immédiat.",x:"Repas du quotidien, pizza."},
+{d:AM,a:"IGP Vaucluse",n:"Le rosé d'Yvonne",c:"Rosé",b:"BIO",g:"Grenache noir, caladoc",v:1,t:"Léger et fruité.",x:"Apéritif, salades."},
+{d:AM,a:"IGP Vaucluse",n:"La vigne de Louis",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Gourmand et souple.",x:"Grillades, barbecue."},
+{d:MV,a:"AOP Duché d'Uzès",n:"Alba Dolia",c:"Blanc",g:"Viognier, grenache blanc, roussanne",t:"Fruits blancs et fleurs, bouche fraîche.",x:"Poissons grillés, brandade."},
+{d:MV,a:"AOP Duché d'Uzès (à confirmer)",n:"Esus",c:"Rouge",g:"Syrah, grenache",t:"Fruits noirs et garrigue.",x:"Viandes rouges, gardiane de taureau."},
+{d:MV,a:"IGP Cévennes",n:"Les Portes de Dieu",img:"mv-portes",c:"Blanc",g:"Chardonnay",v:1,t:"Ample, fruits jaunes et notes beurrées.",x:"Volaille, poissons en sauce."},
+{d:MV,a:"AOP Duché d'Uzès",n:"Volcae",c:"Rouge",g:"Syrah, grenache",t:"Structuré, fruits mûrs et épices.",x:"Gigot, côte de bœuf."},
+{d:MV,a:"AOP Duché d'Uzès",n:"Urnia",c:"Rosé",g:"Grenache, cinsault, syrah",t:"Frais et fruité.",x:"Apéritif, cuisine d'été."},
+{d:TR,a:"AOP Bugey",n:"Chardonnay",img:"tr-chardonnay",c:"Blanc",b:"BIO",m:"2020",p:12,g:"Chardonnay",v:1,t:"Fin et minéral, fruits blancs et noisette.",x:"Poissons de lac, volaille, comté."},
+{d:TR,a:"AOC Roussette du Bugey",n:"Altesse",img:"tr-altesse",c:"Blanc",b:"BIO",m:"2025",p:14.5,g:"Altesse",v:1,t:"Amande, fruits secs, bergamote, belle fraîcheur.",x:"Fondue, poissons de lac, beaufort."},
+{d:TR,a:"AOP Bugey",n:"Et si on essayait ?",img:"tr-essayait",c:"Blanc",s:"Sans sulfites ajoutés",b:"BIO",m:"2025",p:12.5,g:"Cépage blanc à préciser",t:"Fruit pur et vivant.",x:"Apéritif, fruits de mer."},
+{d:TR,a:"AOP Bugey",n:"Gamay « Petit Luc »",img:"tr-gamay",c:"Rouge",b:"BIO",m:"2019",p:10.5,g:"Gamay",v:1,t:"Léger et croquant, fruits rouges.",x:"Charcuterie, quiche, cuisine bistrot."},
+{d:TR,a:"AOP Bugey",n:"Pinot Noir",img:"tr-pinot",c:"Rouge",b:"BIO",m:"2023",p:11.5,g:"Pinot noir",v:1,t:"Fin et délicat, cerise et sous-bois.",x:"Volaille rôtie, saumon, champignons."},
+{d:TR,a:"AOP Bugey",n:"Mondeuse",img:"tr-mondeuse",c:"Rouge",b:"BIO",m:"2024",p:11.5,g:"Mondeuse",v:1,t:"Poivrée, violette et fruits noirs.",x:"Diots, gibier, plats savoyards."},
+{d:TR,a:"AOC Bugey tradition",n:"Extra-Brut",img:"tr-extra-brut2",c:"Effervescent",b:"BIO",p:12,g:"Chardonnay, pinot noir, molette, aligoté",v:1,t:"Bulles fines, très sec et ciselé.",x:"Apéritif, huîtres."},
+{d:TR,a:"AOC Bugey tradition",n:"Brut",img:"tr-brut2",c:"Effervescent",b:"BIO",p:12,g:"Chardonnay, pinot noir",t:"Bulles fines, fruité et frais.",x:"Apéritif, desserts légers."},
+{d:TR,a:"Vin de France",n:"Cuisse Rose",img:"tr-cuisse-rose2",c:"Effervescent",rose:1,s:"Low alcool",b:"BIO",p:12,r:"8-9 % vol., exclusivité du domaine",g:"Cépages à préciser",t:"Pétillant rosé léger, petits fruits rouges.",x:"Apéritif, desserts aux fruits rouges."},
+{d:TR,a:"Jus de raisin",n:"Pétillant Zéro %",img:"tr-zero",c:"Sans alcool",s:"Sans alcool",b:"BIO",m:"2025",p:7.5,g:"100 % jus de raisin, pasteurisé et gazéifié",v:1,t:"Bulles et fruit, sans alcool.",x:"Apéritif pour tous, goûter de fête."},
+{d:TR,a:"Jus de raisin",n:"100 % Pur jus de raisin",img:"tr-jus",c:"Sans alcool",s:"Sans alcool",b:"BIO",m:"2025",p:5,g:"Assemblage de plusieurs cépages",v:1,t:"Pur jus, naturellement sucré.",x:"Petit-déjeuner, goûter."}
 ];
-const CAT = [
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"IGP M\u00e9diterran\u00e9e","c":"Sud Absolu","m":["2024"],"col":"Blanc","ttc":8,"t":[]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"IGP M\u00e9diterran\u00e9e","c":"Le Viognier","m":["2026"],"col":"Blanc","ttc":10,"t":[]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"AOP Vacqueyras","c":"Le Chemin Blanc","m":["2024"],"col":"Blanc","ttc":16,"t":[]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"IGP M\u00e9diterran\u00e9e","c":"Sud Absolu","m":["2025"],"col":"Ros\u00e9","ttc":8,"t":[]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"AOP Vacqueyras","c":"La Ligi\u00e8re ros\u00e9","m":["2025"],"col":"Ros\u00e9","ttc":14,"t":[]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"IGP M\u00e9diterran\u00e9e","c":"Le Can\u00e9bier","m":["2022"],"col":"Rouge","ttc":9,"t":[]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"AOP C\u00f4tes-du-Rh\u00f4ne","c":"Les Costebelles","m":["2024"],"col":"Rouge","ttc":10.5,"t":[]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"AOP C\u00f4tes-du-Rh\u00f4ne","c":"Les Capelles","m":["2023"],"col":"Rouge","ttc":11.5,"t":[]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"AOP Beaumes-de-Venise","c":"Les Garennes","m":["2024"],"col":"Rouge","ttc":14,"t":[]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"AOP Vacqueyras","c":"Le Classique","m":["2024"],"col":"Rouge","ttc":14,"t":[]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"AOP Vacqueyras","c":"Mourre de la Caille","m":["2024"],"col":"Rouge","ttc":16,"t":[]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"AOP Vacqueyras","c":"Fumitarde","m":["2023"],"col":"Rouge","ttc":18,"t":[]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"AOP Vacqueyras","c":".G","m":["2023"],"col":"Rouge","ttc":22,"t":[]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"AOP Gigondas","c":"Les Bergines","m":["2023"],"col":"Rouge","ttc":22,"t":[]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"AOP Muscat de Beaumes-de-Venise","c":"Chante Coucou Blanc","m":["2024"],"col":"Blanc (VDN)","ttc":14,"t":[]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"AOP Muscat de Beaumes-de-Venise","c":"Chante Coucou Ros\u00e9","m":["2024"],"col":"Ros\u00e9 (VDN)","ttc":10,"t":[]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"AOP C\u00f4tes-du-Rh\u00f4ne","c":"Ad Terraneus","m":["2023"],"col":"Rouge","ttc":13,"t":["ssa"]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"Vin de France","c":"C'est pas grave !","m":["2023"],"col":"Rouge","ttc":12,"t":["ssa"]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"IGP M\u00e9diterran\u00e9e","c":"Insomnia","m":["2024"],"col":"Rouge","ttc":11,"t":["ssa"]},
-{"d":"Domaine La Ligi\u00e8re (Vacqueyras)","a":"Boisson partiellement ferment\u00e9e","c":"Je Veux des Bulles dans ma Vie","m":["2025"],"col":"Blanc effervescent","ttc":10,"t":["la"]},
-{"d":"Domaine Juliette Avril (Ch\u00e2teauneuf-du-Pape)","a":"AOP Ch\u00e2teauneuf-du-Pape","c":"Cuv\u00e9e Maxence","m":["2018"],"col":"Rouge","ttc":43.5,"t":[]},
-{"d":"Domaine Juliette Avril (Ch\u00e2teauneuf-du-Pape)","a":"AOP Ch\u00e2teauneuf-du-Pape","c":"Traditionnel","m":["2022"],"col":"Rouge","ttc":30.0,"t":[]},
-{"d":"Domaine Juliette Avril (Ch\u00e2teauneuf-du-Pape)","a":"AOP Cairanne","c":"Cuv\u00e9e Ma\u00eflys","m":["2021"],"col":"Rouge","ttc":15.0,"t":[]},
-{"d":"Domaine Juliette Avril (Ch\u00e2teauneuf-du-Pape)","a":"AOP C\u00f4tes-du-Rh\u00f4ne Villages Plan de Dieu","c":"Cuv\u00e9e L\u00e9andre","m":["2021"],"col":"Rouge","ttc":12.5,"t":[]},
-{"d":"Domaine Juliette Avril (Ch\u00e2teauneuf-du-Pape)","a":"AOP C\u00f4tes-du-Rh\u00f4ne","c":"C\u00f4tes-du-Rh\u00f4ne","m":["2022"],"col":"Rouge","ttc":10.5,"t":[]},
-{"d":"Domaine des Combat (Crozes-Hermitage)","a":"AOP Crozes-Hermitage","c":"Cuv\u00e9e Domaine Blanc","m":["Non communiqu\u00e9"],"col":"Blanc","ttc":null,"t":[]},
-{"d":"Domaine des Combat (Crozes-Hermitage)","a":"AOP Crozes-Hermitage","c":"Cuv\u00e9e Domaine Rouge","m":["Non communiqu\u00e9"],"col":"Rouge","ttc":null,"t":[]},
-{"d":"Domaine des Combat (Crozes-Hermitage)","a":"AOP Crozes-Hermitage","c":"Cuv\u00e9e Bacchus","m":["Non communiqu\u00e9"],"col":"Rouge","ttc":null,"t":[]},
-{"d":"Domaine des Combat (Crozes-Hermitage)","a":"AOP Crozes-Hermitage","c":"Cuv\u00e9e Exception'Elle","m":["Non communiqu\u00e9"],"col":"Rouge","ttc":null,"t":[]},
-{"d":"Domaine de l'Amauve (S\u00e9guret)","a":"AOP C\u00f4tes-du-Rh\u00f4ne Villages S\u00e9guret","c":"La Daur\u00e8le","m":["Non communiqu\u00e9"],"col":"Blanc","ttc":null,"t":[]},
-{"d":"Domaine de l'Amauve (S\u00e9guret)","a":"AOP C\u00f4tes-du-Rh\u00f4ne Villages S\u00e9guret","c":"Le ros\u00e9 de Simone","m":["Non communiqu\u00e9"],"col":"Ros\u00e9","ttc":null,"t":[]},
-{"d":"Domaine de l'Amauve (S\u00e9guret)","a":"AOP C\u00f4tes-du-Rh\u00f4ne Villages S\u00e9guret","c":"Laurances","m":["Non communiqu\u00e9"],"col":"Rouge","ttc":null,"t":[]},
-{"d":"Domaine de l'Amauve (S\u00e9guret)","a":"AOP C\u00f4tes-du-Rh\u00f4ne Villages S\u00e9guret","c":"Estelles","m":["Non communiqu\u00e9"],"col":"Rouge","ttc":null,"t":[]},
-{"d":"Domaine de l'Amauve (S\u00e9guret)","a":"AOP C\u00f4tes-du-Rh\u00f4ne Villages S\u00e9guret","c":"Les Merrelies","m":["Non communiqu\u00e9"],"col":"Rouge","ttc":null,"t":[]},
-{"d":"Domaine de l'Amauve (S\u00e9guret)","a":"AOP C\u00f4tes-du-Rh\u00f4ne Villages S\u00e9guret","c":"R\u00e9serve","m":["Non communiqu\u00e9"],"col":"Rouge","ttc":null,"t":[]},
-{"d":"Domaine de l'Amauve (S\u00e9guret)","a":"AOP C\u00f4tes-du-Rh\u00f4ne","c":"Le Vin d'Adrien","m":["Non communiqu\u00e9"],"col":"Rouge","ttc":null,"t":[]},
-{"d":"Domaine de l'Amauve (S\u00e9guret)","a":"IGP Vaucluse","c":"Le ros\u00e9 d'Yvonne","m":["Non communiqu\u00e9"],"col":"Ros\u00e9","ttc":null,"t":[]},
-{"d":"Domaine de l'Amauve (S\u00e9guret)","a":"IGP Vaucluse","c":"La vigne de Louis","m":["Non communiqu\u00e9"],"col":"Rouge","ttc":null,"t":[]},
-{"d":"Mas des Volques (Duch\u00e9 d'Uz\u00e8s)","a":"AOP Duch\u00e9 d'Uz\u00e8s","c":"Alba Dolia","m":["Non communiqu\u00e9"],"col":"Blanc","ttc":null,"t":[]},
-{"d":"Mas des Volques (Duch\u00e9 d'Uz\u00e8s)","a":"AOP Duch\u00e9 d'Uz\u00e8s","c":"Esus","m":["Non communiqu\u00e9"],"col":"Rouge","ttc":null,"t":[]},
-{"d":"Mas des Volques (Duch\u00e9 d'Uz\u00e8s)","a":"IGP C\u00e9vennes","c":"Les Portes de Dieu","m":["Non communiqu\u00e9"],"col":"Blanc","ttc":null,"t":[]},
-{"d":"Mas des Volques (Duch\u00e9 d'Uz\u00e8s)","a":"AOP Duch\u00e9 d'Uz\u00e8s","c":"Volcae","m":["Non communiqu\u00e9"],"col":"Rouge","ttc":null,"t":[]},
-{"d":"Mas des Volques (Duch\u00e9 d'Uz\u00e8s)","a":"AOP Duch\u00e9 d'Uz\u00e8s","c":"Urnia","m":["Non communiqu\u00e9"],"col":"Ros\u00e9","ttc":null,"t":[]},
-{"d":"Domaine Trichon (Bugey)","a":"AOP Bugey","c":"Chardonnay","m":["2020"],"col":"Blanc","ttc":12,"t":[]},
-{"d":"Domaine Trichon (Bugey)","a":"AOC Roussette du Bugey","c":"Altesse","m":["2025"],"col":"Blanc","ttc":14.5,"t":[]},
-{"d":"Domaine Trichon (Bugey)","a":"AOP Bugey","c":"Et si on essayait ?","m":["2025"],"col":"Blanc","ttc":12.5,"t":["ssa"]},
-{"d":"Domaine Trichon (Bugey)","a":"AOP Bugey","c":"Gamay cuv\u00e9e \u00ab Petit Luc \u00bb","m":["2019"],"col":"Rouge","ttc":10.5,"t":[]},
-{"d":"Domaine Trichon (Bugey)","a":"AOP Bugey","c":"Pinot Noir","m":["2023"],"col":"Rouge","ttc":11.5,"t":[]},
-{"d":"Domaine Trichon (Bugey)","a":"AOP Bugey","c":"Mondeuse","m":["2024"],"col":"Rouge","ttc":11.5,"t":[]},
-{"d":"Domaine Trichon (Bugey)","a":"AOC Bugey tradition","c":"Extra-Brut","m":["Non mill\u00e9sim\u00e9"],"col":"Blanc effervescent","ttc":12,"t":[]},
-{"d":"Domaine Trichon (Bugey)","a":"AOC Bugey tradition","c":"Brut","m":["Non mill\u00e9sim\u00e9"],"col":"Blanc effervescent","ttc":12,"t":[]},
-{"d":"Domaine Trichon (Bugey)","a":"Vin de France","c":"Cuisse Rose","m":["Non mill\u00e9sim\u00e9"],"col":"Ros\u00e9 effervescent","ttc":12,"t":["la"]},
-{"d":"Domaine Trichon (Bugey)","a":"Jus de raisin","c":"P\u00e9tillant Z\u00e9ro%","m":["2025"],"col":"Ros\u00e9","ttc":7.5,"t":["sa"]},
-{"d":"Domaine Trichon (Bugey)","a":"Jus de raisin","c":"100% Pur jus de raisin","m":["2025"],"col":"Ros\u00e9","ttc":5,"t":["sa"]}
-];
-const eur = new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"});
-const $ = id => document.getElementById(id);
-const uniq = a => [...new Set(a)];
-const esc = s => String(s).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
-const blank = () => ({t:"",d:"",a:"",col:"",c:"",m:"",q:1,auto:[]});
-const ofType = t => CAT.filter(x => !t || (x.t || []).includes(t));
-const KEY = "mvsls-commande-v2";
-let lines;
-try { lines = JSON.parse(localStorage.getItem(KEY)) } catch(e) {}
-if (!Array.isArray(lines) || !lines.length) lines = [blank()];
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(lines)) } catch(e) {} };
-function pick(list, val){ if (list.length === 1) return list[0]; return list.includes(val) ? val : ""; }
-const FACETS = ["t","d","a","col"];
-const ckey = x => x.d + "||" + x.c;
-const short = d => d.replace(/^Domaine (de |des )?/,"").replace(/\s*\(.*\)$/,"");
-function resolve(l){
-if (!Array.isArray(l.auto)) l.auto = [];
-l.auto.forEach(k => l[k] = ""); l.auto = [];
-const user = k => !!l[k];
-const test = (x, k) => k === "t" ? (x.t || []).includes(l.t) : x[k] === l[k];
-const match = (x, skip) => FACETS.every(k => k === skip || !user(k) || test(x, k));
-const opts = {};
-for (let pass = 0; pass < 2; pass++) for (const k of FACETS) {
-const cand = CAT.filter(x => match(x, k));
-opts[k] = k === "t" ? cand : uniq(cand.map(x => x[k]));
-if (k !== "t" && l[k] && !opts[k].includes(l[k])) l[k] = "";
-if (k === "t" && l.t && !cand.some(x => (x.t || []).includes(l.t))) l.t = "";
-}
-const candC = CAT.filter(x => match(x, null));
-const C = uniq(candC.map(ckey));
-if (l.c && !C.includes(l.c)) { l.c = ""; l.m = ""; }
-if (!l.c && C.length === 1) l.c = C[0];
-let M = [], item = null;
-if (l.c) {
-const R = candC.filter(x => ckey(x) === l.c);
-const fill = rows => ["d","a","col"].forEach(k => {
-const v = uniq(rows.map(x => x[k])); if (!l[k] && v.length === 1) { l[k] = v[0]; l.auto.push(k); }
-});
-fill(R);
-M = uniq(R.flatMap(x => x.m)); l.m = pick(M, l.m);
-const R2 = R.filter(x => x.m.includes(l.m));
-fill(R2);
-if (R2.length === 1) item = R2[0];
-} else l.m = "";
-const dom = x => !l.d || x.d === l.d;
-return {
-T: opts.t, D: opts.d, A: opts.a, K: opts.col, C, candC, M, item,
-Aall: l.d ? uniq(CAT.filter(dom).map(x => x.a)) : null, Kall: l.d ? uniq(CAT.filter(dom).map(x => x.col)) : null
+const COLS=["Rouge","Blanc","Rosé","Effervescent","Vin doux","Sans alcool"];
+const DOMS=[LL,JA,DC,AM,MV,TR];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const eur=p=>p.toLocaleString("fr-FR",{minimumFractionDigits:p%1?2:0,maximumFractionDigits:2})+" €";
+const $=id=>document.getElementById(id);
+const fill=(el,label,arr)=>el.innerHTML=`<option value="">${label}</option>`+arr.map(v=>`<option>${esc(v)}</option>`).join("");
+fill($("fDom"),"Tous les domaines",DOMS);
+fill($("fCol"),"Toutes les couleurs",COLS);
+fill($("fApp"),"Toutes les appellations",[...new Set(W.map(w=>w.a))].sort((a,b)=>a.localeCompare(b,"fr")));
+
+const SH={
+ bourg:{d:"M24 6h12v52c0 14 16 22 16 42v88a6 6 0 0 1-6 6H14a6 6 0 0 1-6-6v-88c0-20 16-28 16-42z",cap:[24,6,12,22],lab:[10,118,40,50]},
+ champ:{d:"M24 6h12v48c0 18 18 24 18 46v88a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6v-88c0-22 18-28 18-46z",cap:[22,4,16,44],lab:[9,118,42,50]},
+ flute:{d:"M26 6h8v60c0 10 12 16 12 30v92a5 5 0 0 1-5 5H19a5 5 0 0 1-5-5V96c0-14 12-20 12-30z",cap:[25,6,10,26],lab:[15,120,30,48]},
+ jus:{d:"M25 52h10v18c0 8 15 12 15 24v94a6 6 0 0 1-6 6H16a6 6 0 0 1-6-6V94c0-12 15-16 15-24z",cap:[24,44,12,12],lab:[11,126,38,46]}
 };
+function glass(w){
+ if(w.c==="Rouge")return["#2a0d16","#5a1a2b"];
+ if(w.c==="Rosé"||w.rose)return["#e98b98","#f6c3c8"];
+ if(w.c==="Sans alcool")return["#c95d73","#e9a2b0"];
+ if(w.c==="Vin doux")return["#c99a2e","#ecd27a"];
+ return["#cbb45a","#efe2a2"];
 }
-function sel(k, list, val, ph, all, label){
-const lab = label || (v => v);
-const off = (all || []).filter(v => !list.includes(v));
-return `<select data-k="${k}" ${list.length ? "" : "disabled"}><option value="">${ph}</option>${
-list.map(v => `<option value="${esc(v)}" ${v === val ? "selected" : ""}>${esc(lab(v))}</option>`).join("")}${
-off.map(v => `<option value="${esc(v)}" disabled class="pale">${esc(lab(v))} \u2013 non disponible avec vos choix</option>`).join("")}</select>`;
+function lines(t,max){const ws=t.replace(/[«»]/g,"").split(/\s+/);const out=[];let cur="";for(const x of ws){if((cur+" "+x).trim().length>max&&cur){out.push(cur);cur=x}else cur=(cur+" "+x).trim()}if(cur)out.push(cur);return out.slice(0,3)}
+let uid=0;
+function bottle(w){
+ const k=w.c==="Effervescent"?"champ":w.c==="Vin doux"?"flute":w.c==="Sans alcool"?"jus":"bourg";
+ const s=SH[k],[g1,g2]=glass(w),id="g"+(uid++),dc=DCOL[w.d];
+ const capCol=k==="champ"?"#c8963e":k==="jus"?"#d8d2cc":dc;
+ const [lx,ly,lw,lh]=s.lab,max=k==="flute"?7:9;
+ const L=lines(w.n,max),fs=k==="flute"?5.2:6;
+ const y0=ly+lh/2-(L.length-1)*fs*0.6+2;
+ return `<svg viewBox="0 0 60 200" role="img" aria-label="Bouteille ${esc(w.n)}"><defs><linearGradient id="${id}" x1="0" x2="1"><stop offset="0" stop-color="${g1}"/><stop offset=".45" stop-color="${g2}"/><stop offset="1" stop-color="${g1}"/></linearGradient></defs>
+ <path d="${s.d}" fill="url(#${id})"/>
+ <rect x="${s.cap[0]}" y="${s.cap[1]}" width="${s.cap[2]}" height="${s.cap[3]}" rx="2" fill="${capCol}"/>
+ <rect x="${lx}" y="${ly}" width="${lw}" height="${lh}" rx="2" fill="#fbf8f4"/>
+ <rect x="${lx}" y="${ly}" width="${lw}" height="5" fill="${dc}"/>
+ <text text-anchor="middle" font-family="DM Serif Display,Georgia,serif" font-size="${fs}" fill="#1d1716">${L.map((t,i)=>`<tspan x="30" y="${(y0+i*fs*1.2).toFixed(1)}">${esc(t)}</tspan>`).join("")}</text>
+ <text x="30" y="${ly+lh-4}" text-anchor="middle" font-family="Inter,sans-serif" font-size="3.6" fill="${dc}">${esc(LOC[w.d].toUpperCase())}</text>
+ <rect x="${k==="flute"?17:12}" y="${k==="jus"?96:104}" width="4" height="80" rx="2" fill="#fff" opacity=".22"/></svg>`;
 }
-function typeSel(val, cand){
-return `<select data-k="t">${TYPES.map(x => {
-const n = x.v ? cand.filter(c => (c.t || []).includes(x.v)).length : cand.length;
-return `<option value="${x.v}" ${x.v === val ? "selected" : ""} ${n || !x.v ? "" : 'disabled class="pale"'}>${esc(x.l)} (${n})</option>`;
-}).join("")}</select>`;
+function card(w){
+ const tags=[`<span class="tag">${w.c==="Vin doux"?(w.rose?"Rosé (VDN)":"Blanc (VDN)"):w.c==="Effervescent"?(w.rose?"Rosé effervescent":"Blanc effervescent"):esc(w.c)}</span>`];
+ if(w.m)tags.push(`<span class="tag">${w.m}</span>`);
+ if(w.b)tags.push(`<span class="tag bio">${w.b==="BIO"?"Bio":w.b}</span>`);
+ if(w.s)tags.push(`<span class="tag sp">${esc(w.s)}</span>`);
+ if(w.r)tags.push(`<span class="tag">${esc(w.r)}</span>`);
+ const price=w.p?`<div class="price">${eur(w.p)}</div>`:`<div class="price ask">Prix sur demande</div>`;
+ return `<article class="card"><div class="vis${w.img?" ph":""}">${w.img?`<img src="img/${w.img}.webp" alt="Bouteille ${esc(w.n)}" loading="lazy">`:bottle(w)}</div><div class="body">
+ <div class="top"><h3>${esc(w.n)}</h3>${price}</div>
+ <div class="sub">${esc(w.d)} · ${esc(w.a)}</div>
+ <div class="tags">${tags.join("")}</div>
+ <dl><div><dt>Cépages${w.v?"":'<span class="tv">à valider</span>'}</dt><dd>${esc(w.g)}</dd></div>
+ <div><dt>Dégustation</dt><dd>${esc(w.t)}</dd></div>
+ <div><dt>Accords mets et vins</dt><dd>${esc(w.x)}</dd></div></dl>
+ <button class="buy${cart[w.i]?" in":""}" data-buy="${w.i}" type="button">${cart[w.i]?`Dans ma commande (${cart[w.i]}) · voir`:"Commander"}</button></div></article>`;
 }
-function domSel(val, D){
-const ordered = [...DOMAINES.filter(d => D.includes(d)), ...DOMAINES.filter(d => !D.includes(d))];
-return `<select data-k="d"><option value="">Tous les domaines</option>${ordered.map(d => {
-const ok = D.includes(d);
-return `<option value="${esc(d)}" ${d === val ? "selected" : ""} ${ok ? "" : 'disabled class="pale"'}>${esc(d)}${CERT[d] ? " \u00b7 " + esc(CERT[d]) : ""}${ok ? "" : " \u2013 non disponible avec vos choix"}</option>`;
-}).join("")}</select>`;
+let cart={};
+try{cart=JSON.parse(localStorage.getItem("mvsls-cart")||"{}")||{}}catch(e){}
+const saveCart=()=>{try{localStorage.setItem("mvsls-cart",JSON.stringify(cart))}catch(e){}};
+const SEUIL=18,PORT=2,ship=q=>q>0&&q<SEUIL?q*PORT:0;
+function totals(){let q=0,v=0,n=0;for(const[i,k]of Object.entries(cart)){q+=k;W[i].p?v+=W[i].p*k:n+=k}return{q,v,n,port:ship(q)}}
+function badge(){const{q}=totals();$("tCount").hidden=!q;$("tCount").textContent=q}
+function drawCart(hl){
+ const ids=Object.keys(cart).map(Number);
+ $("cart").innerHTML=ids.length?ids.map(i=>{const w=W[i],k=cart[i];
+  const vis=w.img?`<img src="img/${w.img}.webp" alt="">`:`<span class="mini">${bottle(w)}</span>`;
+  return `<div class="cl${i===hl?" hl":""}" data-i="${i}" id="cl${i}">${vis}<div><div class="n">${esc(w.n)}${w.m?" "+w.m:""}</div><div class="s">${esc(w.d)} · ${esc(w.c)} · ${w.p?eur(w.p)+" la bouteille":"prix sur demande"}</div></div>
+  <div class="qty"><button type="button" data-st="-1" aria-label="Retirer une bouteille">−</button><input type="number" min="0" value="${k}" aria-label="Quantité ${esc(w.n)}" data-q><button type="button" data-st="1" aria-label="Ajouter une bouteille">+</button></div>
+  <div class="lt">${w.p?eur(w.p*k):"À confirmer"}</div><button class="rm" type="button" aria-label="Retirer ${esc(w.n)}">×</button></div>`}).join(""):
+  `<p class="sub">Votre commande est vide. Retournez au descriptif et cliquez sur « Commander » sous les vins de votre choix.</p>`;
+ sums();
 }
-function lineHTML(l, i){
-const o = resolve(l);
-const cuvLabel = k => { const [d, c] = k.split("||"); return l.d && !l.auto.includes("d") ? c : `${c} \u2014 ${short(d)}`; };
-return `<label class="f ft"><span>Type de vin</span>${typeSel(l.t || "", o.T)}</label>
-<label class="f fd"><span>Domaine ${certBadge(l.d)}</span>${domSel(l.d, o.D)}</label>
-<label class="f fa"><span>Appellation</span>${sel("a", o.A, l.a,"Toutes", o.Aall)}</label>
-<label class="f fk"><span>Couleur</span>${sel("col", o.K, l.col,"Toutes", o.Kall)}</label>
-<label class="f fc"><span>Cuv\u00e9e</span>${sel("c", o.C, l.c, `Choisir\u2026 (${o.C.length})`, null, cuvLabel)}</label>
-<label class="f fm"><span>Mill\u00e9sime</span>${sel("m", o.M, l.m,"\u2014")}</label>
-<div class="f q"><span>Quantit\u00e9</span><div class="qty"><button type="button" data-step="-1" aria-label="Retirer une bouteille">\u2212</button><input type="number" min="0" step="1" inputmode="numeric" data-k="q" value="${l.q}" aria-label="Quantit\u00e9"><button type="button" data-step="1" aria-label="Ajouter une bouteille">+</button></div></div>
-<div class="f num fh"><span>Prix HT</span><output class="ht"></output></div>
-<div class="f num fp"><span>Prix TTC</span><output class="ttc"></output></div>
-<div class="f num ftot"><span>Total TTC</span><output class="lt"></output></div>
-<button type="button" class="del" aria-label="Supprimer la ligne">\u00d7</button>`;
+function sums(){const t=totals(),ok=t.q>=SEUIL;
+ $("kq").textContent=t.q;$("kv").textContent=eur(t.v);$("kp").textContent=ok?"Offert":eur(t.port);$("kt").textContent=eur(t.v+t.port);
+ $("mi").style.width=Math.min(t.q/SEUIL,1)*100+"%";$("meter").classList.toggle("ok",ok);
+ $("pmsg").textContent=ok?"Port offert !":t.q?`Encore ${SEUIL-t.q} bouteille${SEUIL-t.q>1?"s":""} pour le port offert (vous économisez ${eur(t.port)}).`:`Port offert dès ${SEUIL} bouteilles, panachage possible.`;
+ $("dem").textContent=t.n?`Dont ${t.n} bouteille${t.n>1?"s":""} au prix sur demande, non comptée${t.n>1?"s":""} dans le total : le prix vous est confirmé avant règlement.`:"";
+ badge();saveCart();
 }
-function fillPrices(el, l){
-const it = resolve(l).item;
-const pr = it && it.ttc != null;
-el.querySelector(".ht").textContent = pr ? eur.format(it.ttc / (1 + TVA)) : it ? "Sur demande" : "\u2014";
-el.querySelector(".ttc").textContent = pr ? eur.format(it.ttc) : it ? "Sur demande" : "\u2014";
-el.querySelector(".lt").textContent = pr ? eur.format(it.ttc * l.q) : it ? "\u00c0 confirmer" : "\u2014";
+function setQ(i,k){k=Math.max(0,k|0);if(k)cart[i]=k;else delete cart[i];}
+function route(){const c=location.hash==="#commande";$("vTarif").hidden=c;$("vCmd").hidden=!c;
+ $("tTarif").toggleAttribute("aria-current",!c);$("tCmd").toggleAttribute("aria-current",c);
+ if(c){$("tCmd").setAttribute("aria-current","page")}else{$("tTarif").setAttribute("aria-current","page")}
+ if(c)drawCart(window._hl);else render();window._hl=null;window.scrollTo(0,0);
+ if(c&&$("cl"+window._lastHl))$("cl"+window._lastHl).scrollIntoView({block:"center"});window._lastHl=null}
+const spec=new Set();
+const norm=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+function render(){
+ uid=0;
+ const d=$("fDom").value,c=$("fCol").value,a=$("fApp").value,so=$("fSort").value,q=norm($("fQ").value.trim());
+ let list=W.map((w,i)=>({...w,i})).filter(w=>(!d||w.d===d)&&(!c||w.c===c)&&(!a||w.a===a)
+  &&[...spec].every(s=>s==="BIO"?w.b==="BIO":(w.s||"")===s)
+  &&(!q||norm([w.n,w.d,w.a,w.g,w.t,w.x,w.c].join(" ")).includes(q)));
+ const key={dom:w=>w.d,col:w=>w.c,app:w=>w.a}[so];
+ const cmp={dom:(x,y)=>DOMS.indexOf(x.d)-DOMS.indexOf(y.d)||x.i-y.i,
+  col:(x,y)=>COLS.indexOf(x.c)-COLS.indexOf(y.c)||DOMS.indexOf(x.d)-DOMS.indexOf(y.d)||x.i-y.i,
+  app:(x,y)=>x.a.localeCompare(y.a,"fr")||(x.p||999)-(y.p||999),
+  pa:(x,y)=>(x.p||1e9)-(y.p||1e9),pd:(x,y)=>(y.p||-1)-(x.p||-1),
+  nom:(x,y)=>x.n.localeCompare(y.n,"fr")}[so];
+ list.sort(cmp);
+ let html="",last=null;
+ for(const w of list){
+  if(key){const k=key(w);if(k!==last){const nb=list.filter(z=>key(z)===k).length;html+=`<h2 class="dom">${esc(k)}${so==="dom"?` <small>${esc(LOC[k])}</small>`:""} <small>${nb} réf.</small></h2>`;last=k}}
+  html+=card(w);
+ }
+ $("grid").innerHTML=html||`<p class="empty">Aucune cuvée ne correspond à ces critères.</p>`;
+ $("count").textContent=`${list.length} cuvée${list.length>1?"s":""} sur ${W.length}`;
+ try{localStorage.setItem("mvsls",JSON.stringify({d,c,a,so}))}catch(e){}
 }
-function renderLine(i){
-const el = $("lines").children[i];
-el.innerHTML = lineHTML(lines[i], i);
-fillPrices(el, lines[i]);
-}
-function renderAll(){
-$("lines").innerHTML = lines.map((l, i) => `<div class="line" data-i="${i}"></div>`).join("");
-lines.forEach((l, i) => renderLine(i));
-totals();
-}
-function totals(){
-let q = 0, ttc = 0, nq = 0;
-lines.forEach(l => { const it = resolve(l).item; if (it) { q += l.q; if (it.ttc != null) ttc += it.ttc * l.q; else nq += l.q; } });
-$("ondemand").textContent = nq ? `Dont ${nq} bouteille${nq > 1 ? "s" : ""} au prix sur demande, non incluse${nq > 1 ? "s" : ""} dans les totaux : le domaine vous confirme le prix avant validation.` : "";
-const ht = ttc / (1 + TVA), port = shipping(q), done = q >= SEUIL, left = SEUIL - q;
-$("tq").textContent = $("bq").textContent = q;
-$("tht").textContent = eur.format(ht);
-$("ttva").textContent = eur.format(ttc - ht);
-$("tttc").textContent = eur.format(ttc);
-$("tport").textContent = $("bport").textContent = done ? "Offert" : eur.format(port);
-$("portbox").classList.toggle("free", done);
-$("tpay").textContent = $("bttc").textContent = eur.format(ttc + port);
-$("meter").style.width = Math.min(q / SEUIL, 1) * 100 + "%";
-$("goal").classList.toggle("done", done);
-$("goalcount").textContent = `${q} / ${SEUIL} bouteilles`;
-$("bchip").textContent = done ? "Port offert" : `${q} / ${SEUIL}`;
-$("bchip").classList.toggle("done", done);
-$("portmsg").textContent = done ? "Bravo, le port est offert !"
-: q === 0 ? `Port offert d\u00e8s ${SEUIL} bouteilles, panachage possible.`
-: `Encore ${left} bouteille${left > 1 ? "s" : ""} et vous \u00e9conomisez ${eur.format(port)} de port.`;
-save();
-}
-const idx = el => +el.closest(".line").dataset.i;
-$("lines").addEventListener("change", e => {
-const k = e.target.dataset.k; if (!k || k === "q") return;
-const i = idx(e.target), l = lines[i];
-l.auto = (l.auto || []).filter(x => x !== k);
-if (k === "c") { l.auto.forEach(x => l[x] = ""); l.auto = []; l.m = ""; }
-l[k] = e.target.value;
-renderLine(i); totals();
-const el = $("lines").children[i];
-const next = el.querySelector(l.c ? '[data-k="m"]:not(:disabled)' : '[data-k="c"]:not(:disabled)');
-if (k !== "m" && next && !next.value) next.focus();
-});
-$("lines").addEventListener("input", e => {
-if (e.target.dataset.k !== "q") return;
-const i = idx(e.target);
-lines[i].q = Math.max(0, parseInt(e.target.value, 10) || 0);
-fillPrices($("lines").children[i], lines[i]); totals();
-});
-$("lines").addEventListener("click", e => {
-const b = e.target.closest("button"); if (!b) return;
-const i = idx(b);
-if (b.classList.contains("del")) {
-lines.splice(i, 1); if (!lines.length) lines.push(blank()); renderAll(); return;
-}
-if (b.dataset.step) {
-const l = lines[i]; l.q = Math.max(0, l.q + +b.dataset.step);
-const el = $("lines").children[i]; el.querySelector('[data-k="q"]').value = l.q;
-fillPrices(el, l); totals();
-}
-});
-$("add").addEventListener("click", () => {
-lines.push(blank()); renderAll();
-$("lines").lastElementChild.querySelector("select").focus();
-});
-const WIN = {0x20AC:0x80,0x201A:0x82,0x2026:0x85,0x2022:0x95,0x2018:0x91,0x2019:0x92,0x201C:0x93,0x201D:0x94,0x2013:0x96,0x2014:0x97,0x0152:0x8C,0x0153:0x9C,0x00A0:0x20,0x202F:0x20,0x2009:0x20};
-function pdfStr(t){
-let o = "";
-for (const ch of String(t)) {
-let c = ch.codePointAt(0);
-if (WIN[c] !== undefined) c = WIN[c]; else if (c > 255 || (c >= 0x80 && c < 0xA0)) c = 63;
-if (c === 40 || c === 41 || c === 92) o += "\\" + ch;
-else if (c < 32 || c > 126) o += "\\" + c.toString(8).padStart(3,"0");
-else o += String.fromCharCode(c);
-}
-return o;
-}
-const HW = {" ":278,",":278,".":278,"-":333,"/":278,"%":889,"(":333,")":333,":":278,"\u20ac":556};
-const tw = (t, size) => [...String(t).replace(/[\u00a0\u202f]/g," ")].reduce((w, ch) => w + (/[0-9]/.test(ch) ? 556 : HW[ch] || (/[A-Z\u00c0-\u00dd]/.test(ch) ? 680 : /[il]/.test(ch) ? 222 : 520)), 0) * size / 1000;
-const cut = (t, n) => { t = String(t); return t.length > n ? t.slice(0, n - 1) + "\u2026" : t; };
-function makePDF(o){
-const W = 595, H = 842, M = 40, pages = [];
-let ops = [], y = 0;
-const rgb = h => [1,3,5].map(i => (parseInt(h.substr(i, 2), 16) / 255).toFixed(3)).join(" ");
-const rect = (x, yy, w, h, col) => ops.push(`${rgb(col)} rg ${x} ${H - yy - h} ${w} ${h} re f`);
-const line = (x1, yy, x2, col, wd) => ops.push(`${rgb(col)} RG ${wd || .6} w ${x1} ${H - yy} m ${x2} ${H - yy} l S`);
-const text = (t, x, yy, size, opt = {}) => {
-const xx = opt.right ? x - tw(t, size) : x;
-ops.push(`BT /${opt.bold ? "F2" : "F1"} ${size} Tf ${rgb(opt.col || "#1d1416")} rg ${xx.toFixed(1)} ${(H - yy).toFixed(1)} Td (${pdfStr(t)}) Tj ET`);
-};
-const newPage = () => { if (ops.length) pages.push(ops.join("\n")); ops = []; y = M; };
-const need = h => { if (y + h > H - 70) { footer(); newPage(); } };
-const footer = () => {
-line(M, H - 52, W - M,"#e7dde0");
-text("Domaine La Ligi\u00e8re \u00b7 Vacqueyras \u00b7 philippebernard@laligiere.fr", M, H - 38, 8, {col: "#6b5c60"});
-text("L'abus d'alcool est dangereux pour la sant\u00e9, \u00e0 consommer avec mod\u00e9ration.", W - M, H - 38, 8, {col: "#6b5c60", right: true});
-};
-newPage();
-rect(0, 0, W, 132,"#6b1a2c");
-text("Mon vin sous le sapin", M, 58, 28, {bold: true, col: "#ffffff"});
-text("Bon de commande \u00b7 Six vignerons, une seule commande", M, 82, 11, {col: "#ffffff"});
-text("Port offert d\u00e8s 18 bouteilles  \u00b7  Commandes jusqu'au 11 d\u00e9cembre  \u00b7  Livraison avant No\u00ebl", M, 110, 9.5, {bold: true, col: "#f6d78f"});
-const tx = W - 95;
-rect(tx + 21, 22, 8, 8,"#f6d78f");
-[[tx + 18, 36], [tx + 6, 62], [tx + 30, 62], [tx - 6, 88], [tx + 18, 88], [tx + 42, 88]].forEach(([bx, by]) => { rect(bx + 4, by, 6, 5,"#2c6b4c"); rect(bx, by + 6, 14, 18,"#2c6b4c"); });
-rect(tx + 19, 113, 12, 9,"#3a1d12");
-y = 160;
-text(`Commande n\u00b0 ${o.ref}`, M, y, 12, {bold: true});
-text(`Le ${o.date}`, W - M, y, 10, {right: true, col: "#6b5c60"});
-y += 26;
-rect(M, y - 14, W - 2 * M, 72,"#faf6f7");
-text("Client", M + 12, y + 2, 9, {bold: true, col: "#6b1a2c"});
-text(o.client, M + 12, y + 18, 11, {bold: true});
-text(`${o.email}  \u00b7  ${o.tel}`, M + 12, y + 33, 9.5);
-text(cut(`Livraison : ${o.adresse}`, 95), M + 12, y + 48, 9.5);
-y += 80;
-if (o.message) { text(cut(`Message : ${o.message}`, 110), M, y, 9, {col: "#6b5c60"}); y += 18; }
-const cQ = M + 8, cV = M + 46, cPU = W - M - 90, cT = W - M - 8;
-const head = () => {
-rect(M, y, W - 2 * M, 22,"#1f4a35");
-text("Qt\u00e9", cQ, y + 15, 9, {bold: true, col: "#ffffff"});
-text("Vin", cV, y + 15, 9, {bold: true, col: "#ffffff"});
-text("Prix TTC", cPU, y + 15, 9, {bold: true, col: "#ffffff", right: true});
-text("Total TTC", cT, y + 15, 9, {bold: true, col: "#ffffff", right: true});
-y += 22;
-};
-head();
-o.lines.forEach((l, i) => {
-if (y + 36 > H - 70) { footer(); newPage(); head(); }
-if (i % 2) rect(M, y, W - 2 * M, 34,"#faf6f7");
-text(String(l.q), cQ + 6, y + 14, 10, {bold: true});
-text(cut(`${l.c} \u00b7 ${l.m} \u00b7 ${l.col}`, 62), cV, y + 14, 10, {bold: true});
-text(cut(`${l.d}${l.cert ? " \u00b7 " + l.cert : ""} \u00b7 ${l.a}`, 82), cV, y + 27, 8.5, {col: "#6b5c60"});
-text(l.pu, cPU, y + 14, 10, {right: true});
-text(l.tot, cT, y + 14, 10, {right: true, bold: true});
-y += 34;
-});
-line(M, y, W - M,"#6b1a2c", 1.2);
-y += 18;
-need(150);
-const tl = W - M - 230;
-o.totals.forEach(([k, v, big]) => {
-if (big) { rect(tl - 10, y - 15, W - M - tl + 10, 26,"#6b1a2c"); text(k, tl, y + 2, 11, {bold: true, col: "#ffffff"}); text(v, W - M - 10, y + 2, 12, {bold: true, col: "#ffffff", right: true}); y += 30; }
-else { text(k, tl, y, 10, {col: "#6b5c60"}); text(v, W - M - 10, y, 10, {right: true}); y += 17; }
-});
-if (o.note) { text(o.note, M, y + 4, 9, {col: "#6b1a2c"}); y += 18; }
-y += 10; need(70);
-rect(M, y, W - 2 * M, 54,"#eef6f1");
-text("Votre commande est bien enregistr\u00e9e.", M + 14, y + 20, 11, {bold: true, col: "#1f4a35"});
-text("Nous revenons vers vous par SMS pour le r\u00e8glement de cette commande en ligne. Livraison avant No\u00ebl.", M + 14, y + 38, 9.5, {col: "#1f4a35"});
-footer();
-pages.push(ops.join("\n"));
-const objs = [];
-const kids = pages.map((_, i) => `${5 + i * 2} 0 R`).join(" ");
-objs[1] = "<< /Type /Catalog /Pages 2 0 R >>";
-objs[2] = `<< /Type /Pages /Kids [${kids}] /Count ${pages.length} >>`;
-objs[3] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>";
-objs[4] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>";
-pages.forEach((c, i) => {
-objs[5 + i * 2] = `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${6 + i * 2} 0 R >>`;
-objs[6 + i * 2] = `<< /Length ${c.length} >>\nstream\n${c}\nendstream`;
-});
-let out = "%PDF-1.4\n", offs = [];
-for (let i = 1; i < objs.length; i++) { offs[i] = out.length; out += `${i} 0 obj\n${objs[i]}\nendobj\n`; }
-const xref = out.length;
-out += `xref\n0 ${objs.length}\n0000000000 65535 f \n` + offs.slice(1).map(n => String(n).padStart(10,"0") + " 00000 n \n").join("");
-out += `trailer\n<< /Size ${objs.length} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
-return new Blob([out], {type: "application/pdf"});
-}
-$("form").addEventListener("submit", e => {
-e.preventDefault();
-const ok = lines.filter(l => resolve(l).item && l.q > 0);
-const bad = lines.some(l => (l.d || l.a || l.col || l.c) && !(resolve(l).item));
-const problems = [], badIds = [];
-if (!ok.length) problems.push("Votre commande : ajoutez au moins un vin.");
-else if (bad) problems.push("Votre commande : une ligne est incompl\u00e8te (choisissez la cuv\u00e9e et le mill\u00e9sime, ou supprimez la ligne).");
-for (const [id, name] of REQ) {
-const v = $(id).value.trim();
-if (!v) { problems.push(`${name} : non renseign\u00e9`); badIds.push(id); continue; }
-const chk = CHECK[id];
-if (chk && !chk.re.test(id === "email" ? v : v.replace(/[\s.\-]/g,""))) { problems.push(`${name} : ${chk.msg}`); badIds.push(id); }
-}
-REQ.forEach(([id]) => $(id).setAttribute("aria-invalid", badIds.includes(id) ? "true" : "false"));
-if (problems.length) {
-$("err").innerHTML = `<p>Votre commande ne peut pas \u00eatre valid\u00e9e. ${problems.length > 1 ? "Ces points sont \u00e0 corriger" : "Ce point est \u00e0 corriger"} :</p><ul>${problems.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
-$("err").focus({preventScroll: true});
-$("err").scrollIntoView({block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
-return;
-}
-$("err").innerHTML = "";
-let q = 0, ttc = 0, nq = 0;
-const now = new Date(), p2 = n => String(n).padStart(2,"0");
-const ref = `MVS-${String(now.getFullYear()).slice(2)}${p2(now.getMonth() + 1)}${p2(now.getDate())}-${p2(now.getHours())}${p2(now.getMinutes())}${p2(now.getSeconds())}`;
-const pdfLines = [];
-const rows = ok.map(l => {
-const it = resolve(l).item; q += l.q;
-pdfLines.push({q: l.q, c: it.c, m: l.m, col: it.col, d: it.d, a: it.a, cert: CERT[it.d] || "",
-pu: it.ttc == null ? "Sur demande" : eur.format(it.ttc), tot: it.ttc == null ? "\u00c0 confirmer" : eur.format(it.ttc * l.q)});
-const head = `- ${l.q} x ${it.d}${CERT[it.d] ? " (" + CERT[it.d] + ")" : ""} | ${it.a} \u00ab ${it.c} \u00bb ${l.m} ${it.col}`;
-if (it.ttc == null) { nq += l.q; return `${head} | prix sur demande`; }
-ttc += it.ttc * l.q;
-return `${head} | ${eur.format(it.ttc)} TTC/btl = ${eur.format(it.ttc * l.q)}`;
-});
-const ht = ttc / (1 + TVA);
-const txt = `COMMANDE \u00ab MON VIN SOUS LE SAPIN \u00bb \u2013 N\u00b0 ${ref}
-${rows.join("\n")}
-Total : ${q} bouteille${q > 1 ? "s" : ""}
-Total HT : ${eur.format(ht)}
-TVA 20 % : ${eur.format(ttc - ht)}
-Total vins TTC : ${eur.format(ttc)}
-Frais de port : ${q >= SEUIL ? "offerts" : eur.format(shipping(q)) + ` (${q} x ${eur.format(PORT_BTL)})`}
-TOTAL \u00c0 PAYER TTC : ${eur.format(ttc + shipping(q))}${nq ? `
-+ ${nq} bouteille(s) au prix sur demande, \u00e0 confirmer par le domaine` : ""}
-Client : ${$("prenom").value.trim()} ${$("nom").value.trim()}
-E-mail : ${$("email").value.trim()}
-T\u00e9l\u00e9phone : ${$("tel").value.trim()}
-Livraison : ${$("adr").value.trim()}, ${$("cp").value.trim()} ${$("ville").value.trim()}${$("msg").value.trim() ? "\nMessage : " + $("msg").value.trim() : ""}`;
-$("recaptxt").textContent = txt;
-const port = shipping(q);
-const blob = makePDF({
-ref, date: now.toLocaleDateString("fr-FR", {day: "numeric", month: "long", year: "numeric"}),
-client: `${$("prenom").value.trim()} ${$("nom").value.trim()}`, email: $("email").value.trim(), tel: $("tel").value.trim(),
-adresse: `${$("adr").value.trim()}, ${$("cp").value.trim()} ${$("ville").value.trim()}`, message: $("msg").value.trim(),
-lines: pdfLines,
-totals: [["Total bouteilles", String(q)], ["Total vins HT", eur.format(ht)], ["TVA 20 %", eur.format(ttc - ht)], ["Total vins TTC", eur.format(ttc)],
-["Frais de port", q >= SEUIL ? "Offerts" : `${eur.format(port)} (${q} x ${eur.format(PORT_BTL)})`], ["Total \u00e0 payer TTC", eur.format(ttc + port), true]],
-note: nq ? `+ ${nq} bouteille${nq > 1 ? "s" : ""} au prix sur demande, confirm\u00e9${nq > 1 ? "s" : ""} par le domaine avant r\u00e8glement.` : ""
-});
-try { if ($("pdf").dataset.url) URL.revokeObjectURL($("pdf").dataset.url); } catch (e) {}
-const url = URL.createObjectURL(blob);
-$("pdf").href = url; $("pdf").dataset.url = url; $("pdf").download = `Bon-de-commande-${ref}.pdf`;
-pdfFile = {blob, name: `Bon-de-commande-${ref}.pdf`};
-$("mailtxt").textContent = EMAIL;
-const subj = encodeURIComponent(`Commande Mon vin sous le sapin ${ref} \u2013 ` + $("nom").value.trim()), bod = encodeURIComponent(txt);
-const cc = encodeURIComponent($("email").value.trim());
-const mobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
-if (mobile) {
-$("gmail").href = `mailto:${EMAIL}?cc=${cc}&subject=${subj}&body=${bod}`;
-$("gmail").removeAttribute("target");
-$("gmail").textContent = "Envoyer ma commande par e-mail";
-} else {
-$("gmail").href = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(EMAIL)}&cc=${cc}&su=${subj}&body=${bod}`;
-}
-$("done").hidden = true;
-$("recap").style.display = "block";
-$("recap").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
-});
-for (const [id] of REQ) $(id).addEventListener("input", () => {
-if ($(id).getAttribute("aria-invalid") === "true" && $(id).value.trim()) $(id).setAttribute("aria-invalid","false");
-});
-let pdfFile = null, dlNs = null;
-try { if (window.claude && typeof window.claude.use === "function") window.claude.use("downloads").then(n => { dlNs = n; }).catch(() => {}); } catch (e) {}
-$("pdf").addEventListener("click", e => {
-if (!dlNs || !pdfFile) return;
-e.preventDefault();
-dlNs.save({filename: pdfFile.name, data: pdfFile.blob}).catch(err => {
-if (err && err.code === "declined") return;
-$("pdf").hidden = true;
-$("alt").innerHTML = "Le t\u00e9l\u00e9chargement du bon de commande PDF n'est pas disponible depuis ce lien. Vous n'avez pas Gmail ? S\u00e9lectionnez le r\u00e9capitulatif ci-dessus, copiez-le (Ctrl + C) et envoyez-le-nous depuis votre messagerie habituelle \u00e0 <strong>philippebernard@laligiere.fr</strong>.";
-$("alt").scrollIntoView({block: "nearest"});
-});
-});
-$("barsubmit").addEventListener("click", e => {
-e.preventDefault();
-$("form").requestSubmit();
-});
-["gmail"].forEach(id => $(id).addEventListener("click", () => {
-$("done").hidden = false;
-setTimeout(() => $("done").scrollIntoView({block: "nearest"}), 300);
-}));
-renderAll();
+try{const st=JSON.parse(localStorage.getItem("mvsls")||"null");if(st){$("fDom").value=st.d||"";$("fCol").value=st.c||"";$("fApp").value=st.a||"";$("fSort").value=st.so||"dom"}}catch(e){}
+["fDom","fCol","fApp","fSort"].forEach(id=>$(id).addEventListener("change",render));
+$("fQ").addEventListener("input",render);
+document.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{const s=b.dataset.s;const on=!spec.has(s);on?spec.add(s):spec.delete(s);b.setAttribute("aria-pressed",on);render()}));
+$("grid").addEventListener("click",e=>{const b=e.target.closest("[data-buy]");if(!b)return;const i=+b.dataset.buy;
+ if(!cart[i])cart[i]=1;saveCart();window._hl=i;window._lastHl=i;
+ if(location.hash==="#commande")route();else location.hash="commande"});
+$("cart").addEventListener("click",e=>{const r=e.target.closest(".cl");if(!r)return;const i=+r.dataset.i;
+ if(e.target.closest(".rm")){delete cart[i];drawCart();return}
+ const st=e.target.closest("[data-st]");if(st){setQ(i,(cart[i]||0)+ +st.dataset.st);if(cart[i]){r.querySelector("[data-q]").value=cart[i];r.querySelector(".lt").textContent=W[i].p?eur(W[i].p*cart[i]):"À confirmer";sums()}else drawCart()}});
+$("cart").addEventListener("change",e=>{if(!e.target.matches("[data-q]"))return;const i=+e.target.closest(".cl").dataset.i;setQ(i,parseInt(e.target.value,10)||0);drawCart()});
+const REQ=[["nom","Nom"],["prenom","Prénom"],["email","E-mail"],["tel","Téléphone"],["adr","Adresse de livraison"],["cp","Code postal"],["ville","Ville"]];
+const CHK={email:[/^[^\s@]+@[^\s@]+\.[^\s@]+$/,"adresse invalide"],tel:[/^\+?\d{9,15}$/,"numéro invalide"],cp:[/^\d{5}$/,"5 chiffres attendus"]};
+$("form").addEventListener("submit",e=>{e.preventDefault();const pb=[],bad=[];const t=totals();
+ if(!t.q)pb.push("Votre commande est vide.");
+ for(const[id,l]of REQ){const v=$(id).value.trim();if(!v){pb.push(l+" : non renseigné");bad.push(id);continue}
+  const c=CHK[id];if(c&&!c[0].test(id==="email"?v:v.replace(/[\s.\-]/g,""))){pb.push(l+" : "+c[1]);bad.push(id)}}
+ REQ.forEach(([id])=>$(id).setAttribute("aria-invalid",bad.includes(id)));
+ if(pb.length){$("err").innerHTML=`<b>À corriger :</b><ul>${pb.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;$("recap").hidden=true;return}
+ $("err").innerHTML="";
+ const rows=Object.entries(cart).map(([i,k])=>{const w=W[i];return `- ${k} x ${w.n}${w.m?" "+w.m:""} (${w.d}, ${w.a}, ${w.c}) | ${w.p?eur(w.p)+" = "+eur(w.p*k):"prix sur demande"}`});
+ const txt=`COMMANDE « MON VIN SOUS LE SAPIN »\n${rows.join("\n")}\n\nBouteilles : ${t.q}\nTotal vins TTC : ${eur(t.v)}\nFrais de port : ${t.q>=SEUIL?"offerts":eur(t.port)}\nTOTAL À PAYER TTC : ${eur(t.v+t.port)}${t.n?`\n+ ${t.n} bouteille(s) au prix sur demande`:""}\n\nClient : ${$("prenom").value.trim()} ${$("nom").value.trim()}\nE-mail : ${$("email").value.trim()}\nTéléphone : ${$("tel").value.trim()}\nLivraison : ${$("adr").value.trim()}, ${$("cp").value.trim()} ${$("ville").value.trim()}${$("msg").value.trim()?"\nMessage : "+$("msg").value.trim():""}`;
+ $("rtxt").textContent=txt;
+ $("mailto").href=`mailto:philippebernard@laligiere.fr?subject=${encodeURIComponent("Commande Mon vin sous le sapin – "+$("nom").value.trim())}&body=${encodeURIComponent(txt)}`;
+ $("okmsg").hidden=true;$("recap").hidden=false;$("recap").scrollIntoView({block:"start"})});
+$("mailto").addEventListener("click",()=>{$("okmsg").hidden=false});
+$("copy").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("rtxt").textContent);$("copied").textContent="Copié."}catch(e){$("copied").textContent="Sélectionnez le texte ci-dessus pour le copier."}});
+window.addEventListener("hashchange",route);
+badge();route();
 }
 </script>
 </body>
