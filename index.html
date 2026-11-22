@@ -115,6 +115,16 @@ body[data-view=cmd] .tot .big b{color:#9b1c2c}
 .buy{background:var(--gr);border-color:var(--gr)}
 .buy.in{color:var(--gr)}
 @media(prefers-reduced-motion:reduce){body,header,.tabs{transition:none}}
+
+/* Onglets encadrés aux couleurs de leur page */
+.tabs{gap:10px;padding-top:10px;padding-bottom:10px;align-items:center}
+.tabs a{border-radius:10px;padding:10px 18px;min-height:44px;display:inline-flex;align-items:center;border:2px solid rgba(255,255,255,.45);border-bottom-width:2px;opacity:.85}
+#tTarif{background:#14462f}
+#tCmd{background:#9b1c2c}
+.tabs a[aria-current=page]{opacity:1;border-color:#f3d9a0;box-shadow:0 0 0 2px rgba(243,217,160,.35)}
+.tabs a:hover{opacity:1}
+.bar{top:68px}
+@media(max-width:600px){.tabs{gap:8px;padding-inline:12px}.tabs a{flex:1;justify-content:center;text-align:center;white-space:normal;line-height:1.2;padding:8px 10px;font-size:14px}}
 </style>
 </head>
 <body>
@@ -134,7 +144,7 @@ body[data-view=cmd] .tot .big b{color:#9b1c2c}
 
 <nav class="tabs" aria-label="Navigation">
   <a href="#tarif" id="tTarif">Descriptif des vins</a>
-  <a href="#commande" id="tCmd">Commander <b id="tCount" hidden>0</b></a>
+  <a href="#commande" id="tCmd">Consulter et commander <b id="tCount" hidden>0</b></a>
 </nav>
 <div id="vTarif">
 <div class="bar">
