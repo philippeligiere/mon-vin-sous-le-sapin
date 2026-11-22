@@ -125,6 +125,22 @@ body[data-view=cmd] .tot .big b{color:#9b1c2c}
 .tabs a:hover{opacity:1}
 .bar{top:68px}
 @media(max-width:600px){.tabs{gap:8px;padding-inline:12px}.tabs a{flex:1;justify-content:center;text-align:center;white-space:normal;line-height:1.2;padding:8px 10px;font-size:14px}}
+
+/* Lisibilité et parcours */
+.hint{max-width:1240px;margin:0 auto 10px;font-size:14.5px;color:var(--mut)}
+.reset{font:600 14px Inter,sans-serif;min-height:40px;padding:6px 14px;border-radius:999px;border:1px dashed var(--gr);background:transparent;color:var(--gr);cursor:pointer}
+.card{transition:transform .2s,box-shadow .2s}.card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.08)}
+.buy{width:100%;font-size:16px}
+.steps{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:20px 0 4px}
+.steps li{display:flex;align-items:center;gap:8px;padding:6px 14px 6px 6px;border-radius:999px;background:var(--tint);color:var(--mut);font-weight:600;font-size:14px}
+.steps b{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--line);color:var(--ink)}
+.steps li.on{color:var(--ink)}.steps li.on b{background:var(--gr);color:#fff}
+#vTarif main{padding-bottom:110px}
+.mini{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:7;display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;background:#9b1c2c;color:#fff;padding:10px 12px 10px 20px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.25);border:2px solid #f3d9a0;max-width:calc(100% - 24px)}
+.mini b{color:#f3d9a0}.mi-t{font-size:15px}#mim{display:block;font-size:12.5px;opacity:.9}
+.mi-go{background:#f3d9a0;color:#3a0f1a;font-weight:700;text-decoration:none;padding:10px 16px;border-radius:999px;white-space:nowrap}
+@media(max-width:600px){.mini{bottom:10px;border-radius:16px;padding:10px 12px}.card:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){.card{transition:none}}
 </style>
 </head>
 <body>
@@ -143,21 +159,22 @@ body[data-view=cmd] .tot .big b{color:#9b1c2c}
 </div></header>
 
 <nav class="tabs" aria-label="Navigation">
-  <a href="#tarif" id="tTarif">Descriptif des vins</a>
+  <a href="#tarif" id="tTarif">Découvrir les vins</a>
   <a href="#commande" id="tCmd">Commander <b id="tCount" hidden>0</b></a>
 </nav>
 <div id="vTarif">
 <div class="bar">
+  <p class="hint">Choisissez vos vins, cliquez sur « Commander » : vous pouvez panacher librement, le port est offert dès 18 bouteilles.</p>
   <div class="ctl">
     <label class="f">Domaine<select id="fDom"></select></label>
     <label class="f">Couleur<select id="fCol"></select></label>
     <label class="f">Appellation<select id="fApp"></select></label>
     <label class="f">Trier par<select id="fSort">
+      <option value="pd" selected>Prix décroissant</option>
+      <option value="pa">Prix croissant</option>
       <option value="dom">Domaine</option>
       <option value="col">Couleur</option>
       <option value="app">Appellation</option>
-      <option value="pa">Prix croissant</option>
-      <option value="pd">Prix décroissant</option>
       <option value="nom">Nom de cuvée</option>
     </select></label>
     <label class="f"><span>Rechercher</span><input type="search" id="fQ" placeholder="Cuvée, cépage, plat…"></label>
@@ -167,16 +184,19 @@ body[data-view=cmd] .tot .big b{color:#9b1c2c}
     <button class="chip" data-s="Low alcool" aria-pressed="false">Low alcool</button>
     <button class="chip" data-s="Sans sulfites ajoutés" aria-pressed="false">Sans sulfites ajoutés</button>
     <button class="chip" data-s="BIO" aria-pressed="false">Bio</button>
-    <span class="count" id="count"></span>
+    <button class="reset" id="reset" type="button" hidden>Tout afficher</button><span class="count" id="count"></span>
   </div>
 </div>
 
 <main class="band"><div class="grid" id="grid"></div></main>
+<div class="mini" id="mini" hidden><div class="mi-t"><b id="miq">0</b> bouteille(s) · <b id="mit">0 €</b><span id="mim"></span></div><a class="mi-go" href="#commande">Voir ma commande →</a></div>
 </div>
 <section id="vCmd" class="band" hidden><div class="wrap">
-  <a class="back" href="#tarif">← Retourner au descriptif des vins</a>
+  <a class="back" href="#tarif">← Découvrir les vins</a>
+  <ol class="steps" aria-label="Étapes de la commande"><li class="on"><b>1</b> Vos vins</li><li><b>2</b> Vos coordonnées</li><li><b>3</b> Envoi</li></ol>
   <h2>Votre commande</h2>
   <div id="cart"></div>
+  <div class="row"><a class="back" href="#tarif">+ Ajouter d'autres vins</a></div>
   <div class="tot" aria-live="polite">
     <div><span>Bouteilles</span><b id="kq">0</b></div>
     <div><span>Total vins TTC</span><b id="kv">0 €</b></div>
@@ -186,7 +206,7 @@ body[data-view=cmd] .tot .big b{color:#9b1c2c}
   <div class="meter" id="meter"><i id="mi"></i></div>
   <p class="sub" id="pmsg"></p>
   <p class="sub" id="dem"></p>
-  <h2>Vos coordonnées</h2>
+  <h2 id="coord">Vos coordonnées</h2>
   <p class="sub">Les champs marqués <b class="req">*</b> sont obligatoires. Le règlement vous est demandé ensuite par SMS.</p>
   <form id="form" class="form" novalidate>
     <label class="f"><span>Nom <b class="req">*</b></span><input id="nom" autocomplete="family-name"></label>
@@ -207,12 +227,12 @@ body[data-view=cmd] .tot .big b{color:#9b1c2c}
     <div class="row"><a class="main" id="mailto" href="#">Envoyer ma commande</a><button class="back" id="copy" type="button">Copier le récapitulatif</button><span class="sub" id="copied"></span></div>
     <div class="ok-msg" id="okmsg" hidden><b>Merci ! Pensez à cliquer sur « Envoyer » dans votre messagerie.</b> Si elle ne s'est pas ouverte, copiez le récapitulatif et envoyez-le à philippebernard@laligiere.fr. Nous revenons vers vous par SMS pour le règlement.</div>
   </div>
-  <div class="row"><a class="back" href="#tarif">← Retourner au descriptif des vins</a></div>
+  <div class="row"><a class="back" href="#tarif">← Découvrir les vins</a></div>
 </div></section>
 
 <footer class="band"><div class="wrap">
   <p>Prix TTC la bouteille 75 cl, sauf mention contraire. « Prix sur demande » : tarif non communiqué à ce jour.</p>
-  <p>Visuels non contractuels. Les cépages marqués « à valider » sont ceux de l'appellation ou une estimation, à confirmer avec chaque domaine avant diffusion. Les descriptifs de dégustation et accords sont rédigés pour ce tarif.</p>
+  <p>Visuels non contractuels. Les descriptifs de dégustation et accords sont rédigés pour ce tarif.</p>
   <p>L'abus d'alcool est dangereux pour la santé, à consommer avec modération.</p>
 </div></footer>
 
@@ -235,14 +255,14 @@ const W=[
 {d:LL,a:"AOP Vacqueyras",n:"Le Classique",img:"ll-classique",c:"Rouge",b:"BIO",m:"2024",p:14,g:"Grenache, syrah, mourvèdre",t:"Fruits noirs mûrs, épices et garrigue, belle structure.",x:"Daube provençale, gigot, côte de bœuf."},
 {d:LL,a:"AOP Vacqueyras",n:"Mourre de la Caille",img:"ll-mourre",c:"Rouge",b:"BIO",m:"2024",p:16,r:"Existe en magnum",g:"Grenache, syrah, mourvèdre",t:"Cuvée de terroir, concentrée : cassis, réglisse, thym.",x:"Gibier, bœuf braisé, plats truffés."},
 {d:LL,a:"AOP Vacqueyras",n:"Fumitarde",img:"ll-fumitarde",c:"Rouge",b:"BIO",m:"2023",p:18,r:"Existe en magnum",g:"Grenache, syrah, mourvèdre",t:"Puissant et profond, notes fumées et fruits confiturés.",x:"Civet, magret, plats mijotés."},
-{d:LL,a:"AOP Vacqueyras",n:".G",img:"ll-g",c:"Rouge",b:"BIO",m:"2023",p:22,g:"Assemblage Vacqueyras, à préciser",t:"Haut de gamme, dense et soyeux, beau potentiel de garde.",x:"Filet de bœuf, pigeon, fromages de caractère."},
+{d:LL,a:"AOP Vacqueyras",n:".G",img:"ll-g",c:"Rouge",b:"BIO",m:"2023",p:22,g:"Assemblage Vacqueyras",t:"Haut de gamme, dense et soyeux, beau potentiel de garde.",x:"Filet de bœuf, pigeon, fromages de caractère."},
 {d:LL,a:"AOP Gigondas",n:"Les Bergines",img:"ll-bergines",c:"Rouge",b:"BIO",m:"2023",p:22,g:"Grenache, syrah, mourvèdre",t:"Puissance et finesse, fruits noirs, épices, touche minérale.",x:"Gibier, agneau de sept heures, cèpes."},
 {d:LL,a:"AOP Muscat de Beaumes-de-Venise",n:"Chante Coucou Blanc",img:"ll-muscat-blanc",c:"Vin doux",s:"",b:"BIO",m:"2024",p:14,g:"Muscat à petits grains",v:1,t:"Vin doux naturel au nez explosif : fruits exotiques, agrumes confits, fleurs.",x:"Apéritif, foie gras, melon, desserts aux fruits."},
 {d:LL,a:"AOP Muscat de Beaumes-de-Venise",n:"Chante Coucou Rosé",img:"ll-muscat-rose",c:"Vin doux",rose:1,b:"BIO",m:"2024",p:10,g:"Muscat à petits grains noirs",v:1,t:"Vin doux naturel, notes de rose, litchi et fruits rouges.",x:"Apéritif, fraisier, desserts aux fruits rouges."},
 {d:LL,a:"AOP Côtes-du-Rhône",n:"Ad Terraneus",img:"ll-adterraneus",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2023",p:13,g:"Grenache, syrah",t:"Fruit croquant, très digeste.",x:"Charcuterie, tapas, cuisine du marché."},
 {d:LL,a:"Vin de France",n:"C'est pas grave !",img:"ll-cestpasgrave",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2023",p:12,g:"Assemblage de cépages rouges",t:"Gourmand et désaltérant.",x:"Apéro entre amis, burgers, grillades."},
 {d:LL,a:"IGP Méditerranée",n:"Insomnia",img:"ll-insomnia",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2024",p:11,g:"Assemblage de cépages rouges méditerranéens",t:"Fruit pur et éclatant, souple.",x:"Viandes grillées, cuisine du monde."},
-{d:LL,a:"Boisson partiellement fermentée",n:"Je Veux des Bulles dans ma Vie",img:"ll-bulles",c:"Effervescent",s:"Low alcool",b:"BIO",m:"2025",p:10,r:"5,5 % vol.",g:"Raisin partiellement fermenté, cépage à préciser",t:"Bulles légères et fruitées, 5,5 % vol.",x:"Apéritif, brunch, desserts légers."},
+{d:LL,a:"Boisson partiellement fermentée",n:"Je Veux des Bulles dans ma Vie",img:"ll-bulles",c:"Effervescent",s:"Low alcool",b:"BIO",m:"2025",p:10,r:"5,5 % vol.",g:"Raisin partiellement fermenté",t:"Bulles légères et fruitées, 5,5 % vol.",x:"Apéritif, brunch, desserts légers."},
 {d:JA,a:"AOP Châteauneuf-du-Pape",n:"Cuvée Maxence",img:"ja-maxence",c:"Rouge",b:"HVE",m:"2018",p:43.5,g:"Grenache, syrah, mourvèdre",t:"Puissance, élégance et finesse, grande garde.",x:"Gibier, lièvre, plats truffés."},
 {d:JA,a:"AOP Châteauneuf-du-Pape",n:"Traditionnel",img:"ja-traditionnel",c:"Rouge",b:"HVE",m:"2022",p:30,g:"Grenache, syrah, mourvèdre",t:"La rondeur domine et gagne tout le palais, fruits noirs et épices.",x:"Agneau, bœuf en sauce, fromages affinés."},
 {d:JA,a:"AOP Cairanne",n:"Cuvée Maïlys",img:"ja-mailys",c:"Rouge",b:"HVE",m:"2021",p:15,g:"Grenache, syrah, mourvèdre",t:"Rond, ample et généreux, tanins souples et mûrs.",x:"Volaille rôtie, magret, ratatouille."},
@@ -268,13 +288,13 @@ const W=[
 {d:MV,a:"AOP Duché d'Uzès",n:"Urnia",img:"mv-urnia",c:"Rosé",g:"Grenache, cinsault, syrah",t:"Frais et fruité.",x:"Apéritif, cuisine d'été."},
 {d:TR,a:"AOP Bugey",n:"Chardonnay",img:"tr-chardonnay",c:"Blanc",b:"BIO",m:"2020",p:12,g:"Chardonnay",v:1,t:"Fin et minéral, fruits blancs et noisette.",x:"Poissons de lac, volaille, comté."},
 {d:TR,a:"AOC Roussette du Bugey",n:"Altesse",img:"tr-altesse",c:"Blanc",b:"BIO",m:"2025",p:14.5,g:"Altesse",v:1,t:"Amande, fruits secs, bergamote, belle fraîcheur.",x:"Fondue, poissons de lac, beaufort."},
-{d:TR,a:"AOP Bugey",n:"Et si on essayait ?",img:"tr-essayait",c:"Blanc",s:"Sans sulfites ajoutés",b:"BIO",m:"2025",p:12.5,g:"Cépage blanc à préciser",t:"Fruit pur et vivant.",x:"Apéritif, fruits de mer."},
+{d:TR,a:"AOP Bugey",n:"Et si on essayait ?",img:"tr-essayait",c:"Blanc",s:"Sans sulfites ajoutés",b:"BIO",m:"2025",p:12.5,g:"Chardonnay",t:"Fruit pur et vivant.",x:"Apéritif, fruits de mer."},
 {d:TR,a:"AOP Bugey",n:"Gamay « Petit Luc »",img:"tr-gamay",c:"Rouge",b:"BIO",m:"2019",p:10.5,g:"Gamay",v:1,t:"Léger et croquant, fruits rouges.",x:"Charcuterie, quiche, cuisine bistrot."},
 {d:TR,a:"AOP Bugey",n:"Pinot Noir",img:"tr-pinot",c:"Rouge",b:"BIO",m:"2023",p:11.5,g:"Pinot noir",v:1,t:"Fin et délicat, cerise et sous-bois.",x:"Volaille rôtie, saumon, champignons."},
 {d:TR,a:"AOP Bugey",n:"Mondeuse",img:"tr-mondeuse",c:"Rouge",b:"BIO",m:"2024",p:11.5,g:"Mondeuse",v:1,t:"Poivrée, violette et fruits noirs.",x:"Diots, gibier, plats savoyards."},
 {d:TR,a:"AOC Bugey tradition",n:"Extra-Brut",img:"tr-extra-brut2",c:"Effervescent",b:"BIO",p:12,g:"Chardonnay, pinot noir, molette, aligoté",v:1,t:"Bulles fines, très sec et ciselé.",x:"Apéritif, huîtres."},
 {d:TR,a:"AOC Bugey tradition",n:"Brut",img:"tr-brut2",c:"Effervescent",b:"BIO",p:12,g:"Chardonnay, pinot noir",t:"Bulles fines, fruité et frais.",x:"Apéritif, desserts légers."},
-{d:TR,a:"Vin de France",n:"Cuisse Rose",img:"tr-cuisse-rose2",c:"Effervescent",rose:1,s:"Low alcool",b:"BIO",p:12,r:"8-9 % vol., exclusivité du domaine",g:"Cépages à préciser",t:"Pétillant rosé léger, petits fruits rouges.",x:"Apéritif, desserts aux fruits rouges."},
+{d:TR,a:"Vin de France",n:"Cuisse Rose",img:"tr-cuisse-rose2",c:"Effervescent",rose:1,s:"Low alcool",b:"BIO",p:12,r:"8-9 % vol., exclusivité du domaine",g:"",t:"Pétillant rosé léger, petits fruits rouges.",x:"Apéritif, desserts aux fruits rouges."},
 {d:TR,a:"Jus de raisin",n:"Pétillant Zéro %",img:"tr-zero",c:"Sans alcool",s:"Sans alcool",b:"BIO",m:"2025",p:7.5,g:"100 % jus de raisin, pasteurisé et gazéifié",v:1,t:"Bulles et fruit, sans alcool.",x:"Apéritif pour tous, goûter de fête."},
 {d:TR,a:"Jus de raisin",n:"100 % Pur jus de raisin",img:"tr-jus",c:"Sans alcool",s:"Sans alcool",b:"BIO",m:"2025",p:5,g:"Assemblage de plusieurs cépages",v:1,t:"Pur jus, naturellement sucré.",x:"Petit-déjeuner, goûter."}
 ];
@@ -330,7 +350,7 @@ function card(w){
  <div class="top"><h3>${esc(w.n)}</h3>${price}</div>
  <div class="sub">${esc(w.d)} · ${esc(w.a)}</div>
  <div class="tags">${tags.join("")}</div>
- <dl><div><dt>Cépages${w.v?"":'<span class="tv">à valider</span>'}</dt><dd>${esc(w.g)}</dd></div>
+ <dl>${w.g?`<div><dt>Cépages</dt><dd>${esc(w.g)}</dd></div>`:""}
  <div><dt>Dégustation</dt><dd>${esc(w.t)}</dd></div>
  <div><dt>Accords mets et vins</dt><dd>${esc(w.x)}</dd></div></dl>
  <button class="buy${cart[w.i]?" in":""}" data-buy="${w.i}" type="button">${cart[w.i]?`Dans ma commande (${cart[w.i]}) · voir`:"Commander"}</button></div></article>`;
@@ -340,9 +360,11 @@ try{cart=JSON.parse(localStorage.getItem("mvsls-cart")||"{}")||{}}catch(e){}
 const saveCart=()=>{try{localStorage.setItem("mvsls-cart",JSON.stringify(cart))}catch(e){}};
 const SEUIL=18,PORT=2,ship=q=>q>0&&q<SEUIL?q*PORT:0;
 function totals(){let q=0,v=0,n=0;for(const[i,k]of Object.entries(cart)){q+=k;W[i].p?v+=W[i].p*k:n+=k}return{q,v,n,port:ship(q)}}
-function badge(){const{q}=totals();$("tCount").hidden=!q;$("tCount").textContent=q}
+function badge(){const t=totals();$("tCount").hidden=!t.q;$("tCount").textContent=t.q;
+ const m=$("mini");if(m){m.hidden=!t.q||location.hash==="#commande";$("miq").textContent=t.q;$("mit").textContent=eur(t.v+t.port);
+ $("mim").textContent=t.q>=SEUIL?"Port offert !":`Encore ${SEUIL-t.q} pour le port offert`}}
 function drawCart(hl){
- const ids=Object.keys(cart).map(Number);
+ const ids=Object.keys(cart).map(Number).sort((a,b)=>(W[b].p||0)-(W[a].p||0));
  $("cart").innerHTML=ids.length?ids.map(i=>{const w=W[i],k=cart[i];
   const vis=w.img?`<img src="img/${w.img}.webp" alt="">`:`<span class="mini">${bottle(w)}</span>`;
   return `<div class="cl${i===hl?" hl":""}" data-i="${i}" id="cl${i}">${vis}<div><div class="n">${esc(w.n)}${w.m?" "+w.m:""}</div><div class="s">${esc(w.d)} · ${esc(w.c)} · ${w.p?eur(w.p)+" la bouteille":"prix sur demande"}</div></div>
@@ -359,7 +381,7 @@ function sums(){const t=totals(),ok=t.q>=SEUIL;
  badge();saveCart();
 }
 function setQ(i,k){k=Math.max(0,k|0);if(k)cart[i]=k;else delete cart[i];}
-function route(){const c=location.hash==="#commande";document.body.dataset.view=c?"cmd":"tarif";$("vTarif").hidden=c;$("vCmd").hidden=!c;
+function route(){const c=location.hash==="#commande";setTimeout(badge,0);document.body.dataset.view=c?"cmd":"tarif";$("vTarif").hidden=c;$("vCmd").hidden=!c;
  $("tTarif").toggleAttribute("aria-current",!c);$("tCmd").toggleAttribute("aria-current",c);
  if(c){$("tCmd").setAttribute("aria-current","page")}else{$("tTarif").setAttribute("aria-current","page")}
  if(c)drawCart(window._hl);else render();window._hl=null;window.scrollTo(0,0);
@@ -386,10 +408,13 @@ function render(){
  }
  $("grid").innerHTML=html||`<p class="empty">Aucune cuvée ne correspond à ces critères.</p>`;
  $("count").textContent=`${list.length} cuvée${list.length>1?"s":""} sur ${W.length}`;
- try{localStorage.setItem("mvsls",JSON.stringify({d,c,a,so}))}catch(e){}
+ $("reset").hidden=!(d||c||a||q||spec.size);
+ try{localStorage.setItem("mvsls2",JSON.stringify({d,c,a,so}))}catch(e){}
 }
-try{const st=JSON.parse(localStorage.getItem("mvsls")||"null");if(st){$("fDom").value=st.d||"";$("fCol").value=st.c||"";$("fApp").value=st.a||"";$("fSort").value=st.so||"dom"}}catch(e){}
+try{const st=JSON.parse(localStorage.getItem("mvsls2")||"null");if(st){$("fDom").value=st.d||"";$("fCol").value=st.c||"";$("fApp").value=st.a||"";$("fSort").value=st.so||"pd"}}catch(e){}
 ["fDom","fCol","fApp","fSort"].forEach(id=>$(id).addEventListener("change",render));
+$("reset").addEventListener("click",()=>{["fDom","fCol","fApp"].forEach(id=>$(id).value="");$("fQ").value="";spec.clear();document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed","false"));render()});
+document.querySelectorAll("#form input").forEach(i=>i.addEventListener("focus",()=>{const st=document.querySelectorAll(".steps li");st[1].classList.add("on")}));
 $("fQ").addEventListener("input",render);
 document.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{const s=b.dataset.s;const on=!spec.has(s);on?spec.add(s):spec.delete(s);b.setAttribute("aria-pressed",on);render()}));
 $("grid").addEventListener("click",e=>{const b=e.target.closest("[data-buy]");if(!b)return;const i=+b.dataset.buy;
@@ -412,7 +437,7 @@ $("form").addEventListener("submit",e=>{e.preventDefault();const pb=[],bad=[];co
  const txt=`COMMANDE « MON VIN SOUS LE SAPIN »\n${rows.join("\n")}\n\nBouteilles : ${t.q}\nTotal vins TTC : ${eur(t.v)}\nFrais de port : ${t.q>=SEUIL?"offerts":eur(t.port)}\nTOTAL À PAYER TTC : ${eur(t.v+t.port)}${t.n?`\n+ ${t.n} bouteille(s) au prix sur demande`:""}\n\nClient : ${$("prenom").value.trim()} ${$("nom").value.trim()}\nE-mail : ${$("email").value.trim()}\nTéléphone : ${$("tel").value.trim()}\nLivraison : ${$("adr").value.trim()}, ${$("cp").value.trim()} ${$("ville").value.trim()}${$("msg").value.trim()?"\nMessage : "+$("msg").value.trim():""}`;
  $("rtxt").textContent=txt;
  $("mailto").href=`mailto:philippebernard@laligiere.fr?subject=${encodeURIComponent("Commande Mon vin sous le sapin – "+$("nom").value.trim())}&body=${encodeURIComponent(txt)}`;
- $("okmsg").hidden=true;$("recap").hidden=false;$("recap").scrollIntoView({block:"start"})});
+ $("okmsg").hidden=true;$("recap").hidden=false;document.querySelectorAll(".steps li").forEach(l=>l.classList.add("on"));$("recap").scrollIntoView({block:"start"})});
 $("mailto").addEventListener("click",()=>{$("okmsg").hidden=false});
 $("copy").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("rtxt").textContent);$("copied").textContent="Copié."}catch(e){$("copied").textContent="Sélectionnez le texte ci-dessus pour le copier."}});
 window.addEventListener("hashchange",route);
