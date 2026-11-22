@@ -152,6 +152,12 @@ body[data-view=cmd] .tot .big b{color:#9b1c2c}
 .logos::after{content:"Cliquez sur un logo pour voir les vins du domaine";flex-basis:100%;font-size:13px;opacity:.8}
 #grid{scroll-margin-top:260px}@media(max-width:600px){#grid{scroll-margin-top:90px}}
 @media(prefers-reduced-motion:reduce){.logo{transition:none}}
+
+/* Logos repris du visuel de l'emailing, avec le village */
+.logos{gap:6px 14px}
+.logos img{height:104px;max-width:190px;padding:6px 8px;background:transparent;border-radius:10px}
+.logo.on img{background:rgba(255,255,255,.14)}
+@media(max-width:600px){.logos img{height:62px;max-width:120px}}
 </style>
 </head>
 <body>
@@ -165,7 +171,7 @@ body[data-view=cmd] .tot .big b{color:#9b1c2c}
     <span>Commandes : philippebernard@laligiere.fr</span>
   </div>
   <div class="logos" aria-label="Les 6 domaines">
-    <img src="img/logo-ll.webp" alt="Domaine La Ligière"><img src="img/logo-ja.webp" alt="Domaine Juliette Avril"><img src="img/logo-dc.webp" alt="Domaine des Combat"><img src="img/logo-am.webp" alt="Domaine de l'Amauve"><img src="img/logo-mv.webp" alt="Mas des Volques"><img src="img/logo-tr.webp" alt="Domaine Trichon">
+    <img src="img/logo2-ll.webp" alt="Domaine La Ligière"><img src="img/logo2-ja.webp" alt="Domaine Juliette Avril"><img src="img/logo2-dc.webp" alt="Domaine des Combat"><img src="img/logo2-am.webp" alt="Domaine de l'Amauve"><img src="img/logo2-mv.webp" alt="Mas des Volques"><img src="img/logo2-tr.webp" alt="Domaine Trichon">
   </div>
 </div></header>
 
@@ -481,7 +487,7 @@ return new Blob([out], {type: "application/pdf"});
  box.innerHTML="";
  DOMS.forEach(d=>{const im=imgs.find(i=>i.alt===d);if(!im)return;const b=document.createElement("button");b.type="button";b.className="logo";b.dataset.d=d;b.title="Voir les vins : "+d;b.setAttribute("aria-label","Voir les vins du "+d);b.appendChild(im);box.appendChild(b)});
  box.addEventListener("click",e=>{const b=e.target.closest(".logo");if(!b)return;
-  ["fCol","fApp"].forEach(id=>$(id).value="");$("fQ").value="";$("fDom").value=b.dataset.d;
+  ["fCol","fApp"].forEach(id=>$(id).value="");$("fQ").value="";$("fDom").value=b.dataset.d;$("fSort").value="pd";
   if(location.hash!=="#tarif")location.hash="tarif";else render();
   setTimeout(()=>{const g=$("grid");if(g)g.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"})},80)});}
 let cart={};
@@ -542,8 +548,9 @@ function render(){
  document.querySelectorAll(".logo").forEach(b=>b.classList.toggle("on",b.dataset.d===d));
 }
 
+$("fDom").addEventListener("change",()=>{$("fSort").value=$("fDom").value?"pd":"rnd"});
 ["fDom","fCol","fApp","fSort"].forEach(id=>$(id).addEventListener("change",render));
-$("reset").addEventListener("click",()=>{["fDom","fCol","fApp"].forEach(id=>$(id).value="");$("fQ").value="";spec.clear();document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed","false"));render()});
+$("reset").addEventListener("click",()=>{["fDom","fCol","fApp"].forEach(id=>$(id).value="");$("fSort").value="rnd";$("fQ").value="";spec.clear();document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed","false"));render()});
 document.querySelectorAll("#form input").forEach(i=>i.addEventListener("focus",()=>{const st=document.querySelectorAll(".steps li");st[1].classList.add("on")}));
 $("fQ").addEventListener("input",render);
 document.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{const s=b.dataset.s;const on=!spec.has(s);on?spec.add(s):spec.delete(s);b.setAttribute("aria-pressed",on);render()}));
