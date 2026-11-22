@@ -137,11 +137,21 @@ body[data-view=cmd] .tot .big b{color:#9b1c2c}
 .steps b{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--line);color:var(--ink)}
 .steps li.on{color:var(--ink)}.steps li.on b{background:var(--gr);color:#fff}
 #vTarif main{padding-bottom:110px}
+.mini[hidden]{display:none}
 .mini{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:7;display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;background:#9b1c2c;color:#fff;padding:10px 12px 10px 20px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.25);border:2px solid #f3d9a0;max-width:calc(100% - 24px)}
 .mini b{color:#f3d9a0}.mi-t{font-size:15px}#mim{display:block;font-size:12.5px;opacity:.9}
 .mi-go{background:#f3d9a0;color:#3a0f1a;font-weight:700;text-decoration:none;padding:10px 16px;border-radius:999px;white-space:nowrap}
 @media(max-width:600px){.mini{bottom:10px;border-radius:16px;padding:10px 12px}.card:hover{transform:none}}
 @media(prefers-reduced-motion:reduce){.card{transition:none}}
+
+.logo{all:unset;cursor:pointer;border-radius:10px;transition:transform .15s}
+.logo img{display:block;border:2px solid transparent}
+.logo:hover{transform:translateY(-2px)}.logo:hover img,.logo:focus-visible img{border-color:rgba(243,217,160,.7)}
+.logo.on img{border-color:#f3d9a0;background:rgba(255,255,255,.22)}
+.logo:focus-visible{outline:3px solid #f3d9a0;outline-offset:2px}
+.logos::after{content:"Cliquez sur un logo pour voir les vins du domaine";flex-basis:100%;font-size:13px;opacity:.8}
+#grid{scroll-margin-top:260px}@media(max-width:600px){#grid{scroll-margin-top:90px}}
+@media(prefers-reduced-motion:reduce){.logo{transition:none}}
 </style>
 </head>
 <body>
@@ -171,7 +181,8 @@ body[data-view=cmd] .tot .big b{color:#9b1c2c}
     <label class="f">Couleur<select id="fCol"></select></label>
     <label class="f">Appellation<select id="fApp"></select></label>
     <label class="f">Trier par<select id="fSort">
-      <option value="pd" selected>Prix décroissant</option>
+      <option value="rnd" selected>Au hasard</option>
+      <option value="pd">Prix décroissant</option>
       <option value="pa">Prix croissant</option>
       <option value="dom">Domaine</option>
       <option value="col">Couleur</option>
@@ -302,7 +313,9 @@ const W=[
 {d:TR,a:"Jus de raisin",n:"100 % Pur jus de raisin",img:"tr-jus",c:"Sans alcool",s:"Sans alcool",b:"BIO",m:"2025",p:5,g:"Assemblage de plusieurs cépages",v:1,t:"Pur jus, naturellement sucré.",x:"Petit-déjeuner, goûter."}
 ];
 const COLS=["Rouge","Blanc","Rosé","Effervescent","Vin doux","Sans alcool"];
-const DOMS=[LL,JA,DC,AM,MV,TR];
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const DOMS=shuffle([LL,JA,DC,AM,MV,TR]);
+const RND=W.map(()=>Math.random());
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const eur=p=>p.toLocaleString("fr-FR",{minimumFractionDigits:p%1?2:0,maximumFractionDigits:2})+" €";
 const $=id=>document.getElementById(id);
@@ -464,8 +477,16 @@ out += `xref\n0 ${objs.length}\n0000000000 65535 f \n` + offs.slice(1).map(n => 
 out += `trailer\n<< /Size ${objs.length} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
 return new Blob([out], {type: "application/pdf"});
 }
+{const box=document.querySelector(".logos");const imgs=[...box.querySelectorAll("img")];
+ box.innerHTML="";
+ DOMS.forEach(d=>{const im=imgs.find(i=>i.alt===d);if(!im)return;const b=document.createElement("button");b.type="button";b.className="logo";b.dataset.d=d;b.title="Voir les vins : "+d;b.setAttribute("aria-label","Voir les vins du "+d);b.appendChild(im);box.appendChild(b)});
+ box.addEventListener("click",e=>{const b=e.target.closest(".logo");if(!b)return;
+  ["fCol","fApp"].forEach(id=>$(id).value="");$("fQ").value="";$("fDom").value=b.dataset.d;
+  if(location.hash!=="#tarif")location.hash="tarif";else render();
+  setTimeout(()=>{const g=$("grid");if(g)g.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"})},80)});}
 let cart={};
 try{cart=JSON.parse(localStorage.getItem("mvsls-cart")||"{}")||{}}catch(e){}
+for(const k of Object.keys(cart)){if(!(cart[k]>0)||!W[k])delete cart[k]}
 const saveCart=()=>{try{localStorage.setItem("mvsls-cart",JSON.stringify(cart))}catch(e){}};
 const SEUIL=18,PORT=2,ship=q=>q>0&&q<SEUIL?q*PORT:0;
 function totals(){let q=0,v=0,n=0;for(const[i,k]of Object.entries(cart)){q+=k;W[i].p?v+=W[i].p*k:n+=k}return{q,v,n,port:ship(q)}}
@@ -504,10 +525,10 @@ function render(){
   &&[...spec].every(s=>s==="BIO"?w.b==="BIO":(w.s||"")===s)
   &&(!q||norm([w.n,w.d,w.a,w.g,w.t,w.x,w.c].join(" ")).includes(q)));
  const key={dom:w=>w.d,col:w=>w.c,app:w=>w.a}[so];
- const cmp={dom:(x,y)=>DOMS.indexOf(x.d)-DOMS.indexOf(y.d)||x.i-y.i,
+ const cmp={dom:(x,y)=>DOMS.indexOf(x.d)-DOMS.indexOf(y.d)||RND[x.i]-RND[y.i],
   col:(x,y)=>COLS.indexOf(x.c)-COLS.indexOf(y.c)||DOMS.indexOf(x.d)-DOMS.indexOf(y.d)||x.i-y.i,
   app:(x,y)=>x.a.localeCompare(y.a,"fr")||(x.p||999)-(y.p||999),
-  pa:(x,y)=>(x.p||1e9)-(y.p||1e9),pd:(x,y)=>(y.p||-1)-(x.p||-1),
+  rnd:(x,y)=>RND[x.i]-RND[y.i],pa:(x,y)=>(x.p||1e9)-(y.p||1e9),pd:(x,y)=>(y.p||-1)-(x.p||-1),
   nom:(x,y)=>x.n.localeCompare(y.n,"fr")}[so];
  list.sort(cmp);
  let html="",last=null;
@@ -518,9 +539,9 @@ function render(){
  $("grid").innerHTML=html||`<p class="empty">Aucune cuvée ne correspond à ces critères.</p>`;
  $("count").textContent=`${list.length} cuvée${list.length>1?"s":""} sur ${W.length}`;
  $("reset").hidden=!(d||c||a||q||spec.size);
- try{localStorage.setItem("mvsls2",JSON.stringify({d,c,a,so}))}catch(e){}
+ document.querySelectorAll(".logo").forEach(b=>b.classList.toggle("on",b.dataset.d===d));
 }
-try{const st=JSON.parse(localStorage.getItem("mvsls2")||"null");if(st){$("fDom").value=st.d||"";$("fCol").value=st.c||"";$("fApp").value=st.a||"";$("fSort").value=st.so||"pd"}}catch(e){}
+
 ["fDom","fCol","fApp","fSort"].forEach(id=>$(id).addEventListener("change",render));
 $("reset").addEventListener("click",()=>{["fDom","fCol","fApp"].forEach(id=>$(id).value="");$("fQ").value="";spec.clear();document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed","false"));render()});
 document.querySelectorAll("#form input").forEach(i=>i.addEventListener("focus",()=>{const st=document.querySelectorAll(".steps li");st[1].classList.add("on")}));
