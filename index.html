@@ -18,7 +18,7 @@
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
 .band{padding:clamp(24px,4vw,56px) max(5vw,16px)}
 .wrap{max-width:1240px;margin:0 auto}
-header{background:var(--gr);color:#fff}
+header{color:#fff}
 header h1{font:400 clamp(32px,5vw,52px)/1.05 "DM Serif Display",Georgia,serif;margin:0 0 8px;text-wrap:balance}
 header p{margin:0;max-width:62ch;opacity:.9}
 .cond{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:20px;font-size:15px}
@@ -56,7 +56,7 @@ dl{margin:0;font-size:14.5px;display:grid;gap:6px}
 dt{font-weight:600;font-size:13px;color:var(--mut)}
 dd{margin:0}
 .tv{font-size:11.5px;color:var(--acc);font-weight:600;margin-left:4px;white-space:nowrap}
-.tabs{position:sticky;top:0;z-index:6;background:var(--gr);display:flex;gap:4px;padding:0 max(5vw,16px);overflow-x:auto}
+.tabs{position:sticky;top:0;z-index:6;display:flex;gap:4px;padding:0 max(5vw,16px);overflow-x:auto}
 .tabs a{color:#fff;opacity:.8;text-decoration:none;font-weight:600;padding:14px 16px;border-bottom:3px solid transparent;white-space:nowrap;min-height:48px}
 .tabs a[aria-current=page]{opacity:1;border-color:#f3d9a0}
 .tabs b{background:#f3d9a0;color:#3a0f1a;border-radius:99px;padding:1px 8px;margin-left:6px;font-size:13px}
@@ -102,6 +102,19 @@ footer p{max-width:80ch;margin:0 0 6px}
 .vis svg{width:56px}.bar{position:static}}
 @media print{.bar{display:none}header{background:none;color:#000}.logos{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;align-items:center}.logos img{height:52px;width:auto;max-width:150px;object-fit:contain;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,.1)}
 .cond b{color:#000}.card{border-color:#ccc}}
+
+/* Thèmes de Noël : vert sapin pour le descriptif, rouge Noël pour la commande */
+body{transition:background-color .4s}
+body[data-view=tarif]{--gr:#14462f;--bg:light-dark(#f5f9f5,#0e1a14);--tint:light-dark(#eaf2ec,#16261d);--line:light-dark(#dbe6de,#24372b)}
+body[data-view=cmd]{--gr:#9b1c2c;--bg:light-dark(#fdf6f4,#1a0f10);--tint:light-dark(#f8eae8,#2a1618);--line:light-dark(#efdcd9,#3a2426)}
+header,.tabs{background-color:var(--gr);transition:background-color .4s}
+header{background-image:radial-gradient(rgba(255,255,255,.22) 1px,transparent 1.6px),radial-gradient(rgba(255,255,255,.12) 1.2px,transparent 1.8px);background-size:30px 30px,52px 52px;background-position:0 0,15px 21px}
+.tabs{border-bottom:3px solid #c8963e}
+body[data-view=tarif] .price{color:#14462f}
+body[data-view=cmd] .tot .big b{color:#9b1c2c}
+.buy{background:var(--gr);border-color:var(--gr)}
+.buy.in{color:var(--gr)}
+@media(prefers-reduced-motion:reduce){body,header,.tabs{transition:none}}
 </style>
 </head>
 <body>
@@ -216,10 +229,10 @@ const W=[
 {d:LL,a:"AOP Gigondas",n:"Les Bergines",img:"ll-bergines",c:"Rouge",b:"BIO",m:"2023",p:22,g:"Grenache, syrah, mourvèdre",t:"Puissance et finesse, fruits noirs, épices, touche minérale.",x:"Gibier, agneau de sept heures, cèpes."},
 {d:LL,a:"AOP Muscat de Beaumes-de-Venise",n:"Chante Coucou Blanc",img:"ll-muscat-blanc",c:"Vin doux",s:"",b:"BIO",m:"2024",p:14,g:"Muscat à petits grains",v:1,t:"Vin doux naturel au nez explosif : fruits exotiques, agrumes confits, fleurs.",x:"Apéritif, foie gras, melon, desserts aux fruits."},
 {d:LL,a:"AOP Muscat de Beaumes-de-Venise",n:"Chante Coucou Rosé",img:"ll-muscat-rose",c:"Vin doux",rose:1,b:"BIO",m:"2024",p:10,g:"Muscat à petits grains noirs",v:1,t:"Vin doux naturel, notes de rose, litchi et fruits rouges.",x:"Apéritif, fraisier, desserts aux fruits rouges."},
-{d:LL,a:"AOP Côtes-du-Rhône",n:"Ad Terraneus",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2023",p:13,g:"Grenache, syrah",t:"Fruit croquant, très digeste.",x:"Charcuterie, tapas, cuisine du marché."},
-{d:LL,a:"Vin de France",n:"C'est pas grave !",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2023",p:12,g:"Assemblage de cépages rouges",t:"Gourmand et désaltérant.",x:"Apéro entre amis, burgers, grillades."},
-{d:LL,a:"IGP Méditerranée",n:"Insomnia",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2024",p:11,g:"Assemblage de cépages rouges méditerranéens",t:"Fruit pur et éclatant, souple.",x:"Viandes grillées, cuisine du monde."},
-{d:LL,a:"Boisson partiellement fermentée",n:"Je Veux des Bulles dans ma Vie",c:"Effervescent",s:"Low alcool",b:"BIO",m:"2025",p:10,r:"5,5 % vol.",g:"Raisin partiellement fermenté, cépage à préciser",t:"Bulles légères et fruitées, 5,5 % vol.",x:"Apéritif, brunch, desserts légers."},
+{d:LL,a:"AOP Côtes-du-Rhône",n:"Ad Terraneus",img:"ll-adterraneus",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2023",p:13,g:"Grenache, syrah",t:"Fruit croquant, très digeste.",x:"Charcuterie, tapas, cuisine du marché."},
+{d:LL,a:"Vin de France",n:"C'est pas grave !",img:"ll-cestpasgrave",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2023",p:12,g:"Assemblage de cépages rouges",t:"Gourmand et désaltérant.",x:"Apéro entre amis, burgers, grillades."},
+{d:LL,a:"IGP Méditerranée",n:"Insomnia",img:"ll-insomnia",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2024",p:11,g:"Assemblage de cépages rouges méditerranéens",t:"Fruit pur et éclatant, souple.",x:"Viandes grillées, cuisine du monde."},
+{d:LL,a:"Boisson partiellement fermentée",n:"Je Veux des Bulles dans ma Vie",img:"ll-bulles",c:"Effervescent",s:"Low alcool",b:"BIO",m:"2025",p:10,r:"5,5 % vol.",g:"Raisin partiellement fermenté, cépage à préciser",t:"Bulles légères et fruitées, 5,5 % vol.",x:"Apéritif, brunch, desserts légers."},
 {d:JA,a:"AOP Châteauneuf-du-Pape",n:"Cuvée Maxence",img:"ja-maxence",c:"Rouge",b:"HVE",m:"2018",p:43.5,g:"Grenache, syrah, mourvèdre",t:"Puissance, élégance et finesse, grande garde.",x:"Gibier, lièvre, plats truffés."},
 {d:JA,a:"AOP Châteauneuf-du-Pape",n:"Traditionnel",c:"Rouge",b:"HVE",m:"2022",p:30,g:"Grenache, syrah, mourvèdre",t:"La rondeur domine et gagne tout le palais, fruits noirs et épices.",x:"Agneau, bœuf en sauce, fromages affinés."},
 {d:JA,a:"AOP Cairanne",n:"Cuvée Maïlys",c:"Rouge",b:"HVE",m:"2021",p:15,g:"Grenache, syrah, mourvèdre",t:"Rond, ample et généreux, tanins souples et mûrs.",x:"Volaille rôtie, magret, ratatouille."},
@@ -229,20 +242,20 @@ const W=[
 {d:DC,a:"AOP Crozes-Hermitage",n:"Cuvée Domaine Rouge",img:"dc-rouge",c:"Rouge",b:"HVE",g:"Syrah",v:1,t:"Syrah du nord : fruits noirs, violette, poivre.",x:"Côte de bœuf, saucisson, cuisine bistrot."},
 {d:DC,a:"AOP Crozes-Hermitage",n:"Cuvée Bacchus",img:"dc-bacchus",c:"Rouge",b:"HVE",g:"Syrah",v:1,t:"Plus structuré : mûre, réglisse, épices.",x:"Gibier, agneau, fromages affinés."},
 {d:DC,a:"AOP Crozes-Hermitage",n:"Cuvée Exception'Elle",img:"dc-exception",c:"Rouge",b:"HVE",g:"Syrah",v:1,t:"Cuvée de prestige, dense et élégante, belle garde.",x:"Filet de bœuf, pigeon, plats en sauce."},
-{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"La Daurèle",c:"Blanc",b:"BIO",g:"Grenache blanc, clairette, viognier, ugni blanc",v:1,t:"Frais et floral, notes de fruits blancs.",x:"Apéritif, poissons, chèvre frais."},
-{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Le rosé de Simone",c:"Rosé",b:"BIO",g:"Grenache noir, mourvèdre, cinsault, carignan",v:1,t:"Rosé de caractère, fruits rouges et épices.",x:"Cuisine méditerranéenne, grillades."},
-{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Laurances",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Fruits rouges, souple et frais.",x:"Viandes blanches, charcuterie."},
-{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Estelles",c:"Rouge",b:"BIO",g:"Grenache noir, syrah, mourvèdre",v:1,t:"Fruits noirs, garrigue, belle structure.",x:"Agneau, daube."},
-{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Les Merrelies",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Concentré, fruits mûrs et épices.",x:"Viandes rouges, gibier."},
-{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Réserve",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Ample et épicé, belle profondeur.",x:"Bœuf braisé, fromages affinés."},
+{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"La Daurèle",img:"am-daurele",c:"Blanc",b:"BIO",g:"Grenache blanc, clairette, viognier, ugni blanc",v:1,t:"Frais et floral, notes de fruits blancs.",x:"Apéritif, poissons, chèvre frais."},
+{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Le rosé de Simone",img:"am-simone",c:"Rosé",b:"BIO",g:"Grenache noir, mourvèdre, cinsault, carignan",v:1,t:"Rosé de caractère, fruits rouges et épices.",x:"Cuisine méditerranéenne, grillades."},
+{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Laurances",img:"am-laurances",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Fruits rouges, souple et frais.",x:"Viandes blanches, charcuterie."},
+{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Estelles",img:"am-estelles",c:"Rouge",b:"BIO",g:"Grenache noir, syrah, mourvèdre",v:1,t:"Fruits noirs, garrigue, belle structure.",x:"Agneau, daube."},
+{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Les Merrelies",img:"am-merrelies",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Concentré, fruits mûrs et épices.",x:"Viandes rouges, gibier."},
+{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Réserve",img:"am-reserve",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Ample et épicé, belle profondeur.",x:"Bœuf braisé, fromages affinés."},
 {d:AM,a:"AOP Côtes-du-Rhône",n:"Le Vin d'Adrien",img:"am-adrien",c:"Rouge",b:"BIO",g:"Grenache noir, syrah, cinsault, carignan",v:1,t:"Fruité et facile, plaisir immédiat.",x:"Repas du quotidien, pizza."},
-{d:AM,a:"IGP Vaucluse",n:"Le rosé d'Yvonne",c:"Rosé",b:"BIO",g:"Grenache noir, caladoc",v:1,t:"Léger et fruité.",x:"Apéritif, salades."},
-{d:AM,a:"IGP Vaucluse",n:"La vigne de Louis",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Gourmand et souple.",x:"Grillades, barbecue."},
-{d:MV,a:"AOP Duché d'Uzès",n:"Alba Dolia",c:"Blanc",g:"Viognier, grenache blanc, roussanne",t:"Fruits blancs et fleurs, bouche fraîche.",x:"Poissons grillés, brandade."},
-{d:MV,a:"AOP Duché d'Uzès (à confirmer)",n:"Esus",c:"Rouge",g:"Syrah, grenache",t:"Fruits noirs et garrigue.",x:"Viandes rouges, gardiane de taureau."},
-{d:MV,a:"IGP Cévennes",n:"Les Portes de Dieu",img:"mv-portes",c:"Blanc",g:"Chardonnay",v:1,t:"Ample, fruits jaunes et notes beurrées.",x:"Volaille, poissons en sauce."},
-{d:MV,a:"AOP Duché d'Uzès",n:"Volcae",c:"Rouge",g:"Syrah, grenache",t:"Structuré, fruits mûrs et épices.",x:"Gigot, côte de bœuf."},
-{d:MV,a:"AOP Duché d'Uzès",n:"Urnia",c:"Rosé",g:"Grenache, cinsault, syrah",t:"Frais et fruité.",x:"Apéritif, cuisine d'été."},
+{d:AM,a:"IGP Vaucluse",n:"Le rosé d'Yvonne",img:"am-yvonne",c:"Rosé",b:"BIO",g:"Grenache noir, caladoc",v:1,t:"Léger et fruité.",x:"Apéritif, salades."},
+{d:AM,a:"IGP Vaucluse",n:"La vigne de Louis",img:"am-louis",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Gourmand et souple.",x:"Grillades, barbecue."},
+{d:MV,a:"AOP Duché d'Uzès",n:"Alba Dolia",img:"mv-alba",c:"Blanc",g:"Viognier, grenache blanc, roussanne",t:"Fruits blancs et fleurs, bouche fraîche.",x:"Poissons grillés, brandade."},
+{d:MV,a:"AOP Duché d'Uzès (à confirmer)",n:"Esus",img:"mv-esus",c:"Rouge",g:"Syrah, grenache",t:"Fruits noirs et garrigue.",x:"Viandes rouges, gardiane de taureau."},
+{d:MV,a:"IGP Cévennes",n:"Les Portes de Dieu",img:"mv-portes2",c:"Blanc",g:"Chardonnay",v:1,t:"Ample, fruits jaunes et notes beurrées.",x:"Volaille, poissons en sauce."},
+{d:MV,a:"AOP Duché d'Uzès",n:"Volcae",img:"mv-volcae",c:"Rouge",g:"Syrah, grenache",t:"Structuré, fruits mûrs et épices.",x:"Gigot, côte de bœuf."},
+{d:MV,a:"AOP Duché d'Uzès",n:"Urnia",img:"mv-urnia",c:"Rosé",g:"Grenache, cinsault, syrah",t:"Frais et fruité.",x:"Apéritif, cuisine d'été."},
 {d:TR,a:"AOP Bugey",n:"Chardonnay",img:"tr-chardonnay",c:"Blanc",b:"BIO",m:"2020",p:12,g:"Chardonnay",v:1,t:"Fin et minéral, fruits blancs et noisette.",x:"Poissons de lac, volaille, comté."},
 {d:TR,a:"AOC Roussette du Bugey",n:"Altesse",img:"tr-altesse",c:"Blanc",b:"BIO",m:"2025",p:14.5,g:"Altesse",v:1,t:"Amande, fruits secs, bergamote, belle fraîcheur.",x:"Fondue, poissons de lac, beaufort."},
 {d:TR,a:"AOP Bugey",n:"Et si on essayait ?",img:"tr-essayait",c:"Blanc",s:"Sans sulfites ajoutés",b:"BIO",m:"2025",p:12.5,g:"Cépage blanc à préciser",t:"Fruit pur et vivant.",x:"Apéritif, fruits de mer."},
@@ -336,7 +349,7 @@ function sums(){const t=totals(),ok=t.q>=SEUIL;
  badge();saveCart();
 }
 function setQ(i,k){k=Math.max(0,k|0);if(k)cart[i]=k;else delete cart[i];}
-function route(){const c=location.hash==="#commande";$("vTarif").hidden=c;$("vCmd").hidden=!c;
+function route(){const c=location.hash==="#commande";document.body.dataset.view=c?"cmd":"tarif";$("vTarif").hidden=c;$("vCmd").hidden=!c;
  $("tTarif").toggleAttribute("aria-current",!c);$("tCmd").toggleAttribute("aria-current",c);
  if(c){$("tCmd").setAttribute("aria-current","page")}else{$("tTarif").setAttribute("aria-current","page")}
  if(c)drawCart(window._hl);else render();window._hl=null;window.scrollTo(0,0);
