@@ -226,14 +226,23 @@ body.order-locked .buy{opacity:.5;pointer-events:none}
 .cancelbox{margin-top:18px;padding:16px;border-radius:12px;border:2px dashed #9b1c2c;background:light-dark(#fdf3f3,#2a1416)}
 .cancelbox h3{margin:0 0 6px;font:400 22px/1.2 "DM Serif Display",Georgia,serif;color:#9b1c2c}
 .cancelbtn{display:inline-flex;align-items:center;min-height:44px;padding:10px 18px;border-radius:8px;background:#fff;border:2px solid #9b1c2c;color:#9b1c2c;font:700 15px Inter,sans-serif;text-decoration:none}
+
+/* Retour au mail */
+.backmail{margin-left:auto;min-height:44px;padding:8px 14px;border-radius:10px;border:2px dashed rgba(243,217,160,.8);background:transparent;color:#f3d9a0;font:600 14px Inter,sans-serif;cursor:pointer;white-space:nowrap}
+.backmail:hover,.backmail:focus-visible{background:rgba(243,217,160,.15)}
+.backmsg{position:fixed;left:50%;transform:translateX(-50%);top:84px;z-index:30;max-width:min(560px,calc(100% - 24px));margin:0;padding:12px 16px;border-radius:12px;background:#fbf6ea;color:#1d1716;border:2px solid #c8963e;box-shadow:0 12px 30px rgba(0,0,0,.3);font-size:15px}
+.backmsg button{margin-left:8px;min-height:36px;padding:4px 12px;border-radius:8px;border:1px solid #c8963e;background:#fff;cursor:pointer}
+@media(max-width:600px){.tabs{flex-wrap:wrap;row-gap:6px}.backmail{order:9;margin-left:0;flex:1 1 100%;min-height:34px;padding:4px 10px;font-size:13px}}
 </style>
 </head>
 <body>
 <div class="neige" aria-hidden="true"></div>
+<p class="backmsg" id="backMsg" hidden role="status">Votre mail est resté ouvert dans l'onglet ou la fenêtre précédente de votre navigateur (ou dans votre application de messagerie). <button type="button" onclick="this.parentNode.hidden=true">OK</button></p>
 <nav class="tabs" aria-label="Navigation">
   <a href="#tarif" id="tTarif">Découvrir les vins</a>
   <a href="#huile" id="tHuile">Notre huile d'olive</a>
   <a href="#commande" id="tCmd">Commander <b id="tCount" hidden>0</b></a>
+  <button type="button" id="backMail" class="backmail" title="Revenir au mail Mon vin sous le sapin">← Revenir au mail</button>
 </nav>
 <header class="band"><div class="wrap">
   <h1>Mon vin sous le sapin</h1>
@@ -799,6 +808,13 @@ $("newOrder").addEventListener("click",()=>{location.hash="tarif";location.reloa
 $("payGo").addEventListener("click",()=>{if(!$("payOk").checked)return;payAccepted=true;closePay();lockOrder();
  if(payNext==="gmail"){const a=$("gmail");if(a.target==="_blank")window.open(a.href,"_blank","noopener");else location.href=a.href;$("okmsg").hidden=false;setTimeout(()=>$("okmsg").scrollIntoView({block:"nearest"}),300)}
  else $("pdf").click()});
+/* Retour au mail : on compte les étapes faites dans le site pour revenir d'un coup avant elles */
+let lastD=0;
+try{if(!history.state)history.replaceState({d:0},"");lastD=history.state.d||0}catch(e){}
+window.addEventListener("hashchange",()=>{try{if(!history.state)history.replaceState({d:lastD+1},"");lastD=history.state.d||0}catch(e){}});
+$("backMail").addEventListener("click",()=>{const d=(history.state&&history.state.d)||0;
+ if(history.length>d+1)history.go(-(d+1));else window.close();
+ setTimeout(()=>{$("backMsg").hidden=false},500)});
 window.addEventListener("hashchange",route);
 document.querySelectorAll(".tabs a").forEach(a=>a.addEventListener("click",()=>{if(a.getAttribute("href")===location.hash)setTimeout(toView,0)}));
 badge();route();
