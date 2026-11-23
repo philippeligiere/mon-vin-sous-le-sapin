@@ -182,12 +182,37 @@ footer{color:#d8d0c2;border-top-color:rgba(243,217,160,.25)}
 .tabs a{opacity:1;font-size:16px;font-weight:700;letter-spacing:.01em;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35);border:2px solid rgba(255,255,255,.7)}
 .tabs a:hover,.tabs a:focus-visible{border-color:#f3d9a0;filter:brightness(1.15);box-shadow:0 0 0 3px rgba(243,217,160,.35)}
 .tabs a[aria-current=page]{border-width:3px;border-color:#f3d9a0;box-shadow:0 0 0 3px rgba(243,217,160,.45)}
+
+/* Zoom sur la bouteille au survol */
+.card{overflow:visible}
+.vis{border-radius:12px 0 0 12px;position:relative;z-index:1}
+.vis img{transition:transform .35s ease,filter .35s ease;transform-origin:center center;cursor:zoom-in;position:relative}
+.vis img:hover{transform:scale(2.1);z-index:6;filter:drop-shadow(0 14px 22px rgba(0,0,0,.35))}
+.card:has(.vis img:hover){z-index:5}
+@media(prefers-reduced-motion:reduce){.vis img{transition:none}}
+
+/* Onglet huile d'olive */
+#vHuile,#vCmd{min-height:calc(100vh - 60px)}
+#tHuile{background:#5f6f22}
+body[data-view=huile]{--gr:#4f5d1c;background-color:#1a2410}
+body[data-view=huile] .tabs,body[data-view=huile] header{background-color:#4f5d1c}
+.oilwrap{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:center;background:var(--card);border-radius:18px;padding:clamp(18px,3vw,40px);border:2px solid rgba(243,217,160,.4);box-shadow:0 18px 50px rgba(0,0,0,.35)}
+.oilpic{display:flex;justify-content:center;background:radial-gradient(circle at 50% 60%,#f4efd8,#fff 70%);border-radius:14px;padding:20px}
+.oilpic img{height:340px;width:auto;transition:transform .35s ease;cursor:zoom-in}.oilpic img:hover{transform:scale(1.25)}
+.oilkick{margin:0;color:#6b7a2a;font-weight:600;font-size:14px}
+#vHuile h2{font:400 clamp(30px,4vw,44px)/1.05 "DM Serif Display",Georgia,serif;margin:6px 0 10px}
+.oillead{font-size:17px;margin:0 0 14px;max-width:60ch}
+.oilbuy{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:18px}
+.oilprice{font:600 30px Inter,sans-serif;color:#4f5d1c;white-space:nowrap}
+.oilgo{width:auto;margin-top:0;background:#4f5d1c;border-color:#4f5d1c}
+@media(max-width:700px){.oilwrap{grid-template-columns:minmax(0,1fr)}.oilpic img{height:260px}}
 </style>
 </head>
 <body>
 <div class="neige" aria-hidden="true"></div>
 <nav class="tabs" aria-label="Navigation">
   <a href="#tarif" id="tTarif">Découvrir les vins</a>
+  <a href="#huile" id="tHuile">Notre huile d'olive</a>
   <a href="#commande" id="tCmd">Commander <b id="tCount" hidden>0</b></a>
 </nav>
 <header class="band"><div class="wrap">
@@ -304,6 +329,21 @@ footer{color:#d8d0c2;border-top-color:rgba(243,217,160,.25)}
 <main class="band"><div class="grid" id="grid"></div></main>
 <div class="mini" id="mini" hidden><div class="mi-t"><b id="miq">0</b> bouteille(s) · <b id="mit">0 €</b><span id="mim"></span></div><a class="mi-go" href="#commande">Voir ma commande →</a></div>
 </div>
+<section id="vHuile" class="band" hidden><div class="wrap oilwrap">
+  <div class="oilpic"><img id="oilImg" src="img/ll-huile.webp" alt="Bouteille d'huile d'olive du Domaine La Ligière, 75 cl"></div>
+  <div class="oiltxt">
+    <p class="oilkick">Domaine La Ligière · Vacqueyras</p>
+    <h2>Notre huile d'olive</h2>
+    <p class="oillead">Nous cultivons nos oliviers à Vacqueyras, en agriculture biologique. Ajoutez notre huile à votre carton : elle se panache avec les vins.</p>
+    <div class="tags"><span class="tag">Huile d'olive vierge extra</span><span class="tag bio">Bio</span><span class="tag">Bouteille 75 cl</span></div>
+    <dl><div><dt>Dégustation</dt><dd>L'huile de nos oliviers, cultivés en agriculture biologique à Vacqueyras.</dd></div>
+    <div><dt>Accords</dt><dd>Salades, légumes grillés, poissons, ou tout simplement sur une tranche de pain grillé.</dd></div></dl>
+    <div class="oilbuy"><span class="oilprice">22 €</span>
+      <div class="qty"><button type="button" id="oilMinus" aria-label="Retirer une bouteille">−</button><input type="number" id="oilQ" min="1" value="1" aria-label="Nombre de bouteilles d'huile"><button type="button" id="oilPlus" aria-label="Ajouter une bouteille">+</button></div>
+      <button class="buy oilgo" id="oilAdd" type="button">Ajouter à ma commande</button></div>
+    <p class="sub" id="oilIn"></p>
+  </div>
+</div></section>
 <section id="vCmd" class="band" hidden><div class="wrap">
   <a class="back" href="#tarif">← Découvrir les vins</a>
   <ol class="steps" aria-label="Étapes de la commande"><li class="on"><b>1</b> Vos vins</li><li><b>2</b> Vos coordonnées</li><li><b>3</b> Envoi</li></ol>
@@ -346,7 +386,7 @@ footer{color:#d8d0c2;border-top-color:rgba(243,217,160,.25)}
 </div></section>
 
 <footer class="band"><div class="wrap">
-  <p>Prix TTC la bouteille 75 cl, sauf mention contraire. « Prix sur demande » : tarif non communiqué à ce jour.</p>
+  <p>Prix TTC la bouteille de 75 cl.</p>
   <p>Visuels non contractuels. Les descriptifs de dégustation et accords sont rédigés pour ce tarif.</p>
   <p>L'abus d'alcool est dangereux pour la santé, à consommer avec modération.</p>
 </div></footer>
@@ -360,16 +400,16 @@ const DCOL={[LL]:"#6d1b2e",[JA]:"#1f3d5c",[DC]:"#3c2a4d",[AM]:"#8a5a1f",[MV]:"#2
 const W=[
 {d:LL,a:"IGP Méditerranée",n:"Sud Absolu",c:"Blanc",img:"ll-sud-blanc",b:"BIO",m:"2024",p:8,g:"Assemblage de cépages blancs méditerranéens",t:"Vif et fruité, notes d'agrumes et de fleurs blanches.",x:"Apéritif, salades composées, poissons grillés."},
 {d:LL,a:"IGP Méditerranée",n:"Le Viognier",img:"ll-viognier",c:"Blanc",b:"BIO",m:"2026",p:10,g:"Viognier",v:1,t:"Nez d'abricot et de pêche blanche, bouche ronde et florale.",x:"Cuisine asiatique, volaille à la crème, chèvre frais."},
-{d:LL,a:"AOP Vacqueyras",n:"Le Chemin Blanc",img:"ll-chemin-blanc",c:"Blanc",b:"BIO",m:"2024",p:16,r:"Existe en magnum",g:"Grenache blanc, clairette, roussanne, viognier",t:"Ample, fruits jaunes et amande, finale fraîche.",x:"Saint-Jacques, poissons en sauce, volaille."},
+{d:LL,a:"AOP Vacqueyras",n:"Le Chemin Blanc",img:"ll-chemin-blanc",c:"Blanc",b:"BIO",r:"Existe en magnum",m:"2024",p:16,g:"Grenache blanc, clairette, roussanne, viognier",t:"Ample, fruits jaunes et amande, finale fraîche.",x:"Saint-Jacques, poissons en sauce, volaille."},
 {d:LL,a:"IGP Méditerranée",n:"Sud Absolu",c:"Rosé",img:"ll-sud-rose",b:"BIO",m:"2025",p:8,g:"Grenache, cinsault",t:"Léger et désaltérant, fruits rouges acidulés.",x:"Apéritif, grillades, cuisine d'été."},
 {d:LL,a:"AOP Vacqueyras",n:"La Ligière rosé",img:"ll-rose",c:"Rosé",b:"BIO",m:"2025",p:14,g:"Grenache, cinsault, syrah",t:"Rosé de gastronomie, structuré, fruits rouges et épices douces.",x:"Tapenade, tian provençal, cuisine épicée."},
 {d:LL,a:"IGP Méditerranée",n:"Le Canébier",img:"ll-canebier",c:"Rouge",b:"BIO",m:"2022",p:9,g:"Grenache, syrah, carignan",t:"Fruité et gourmand, à boire sur le fruit.",x:"Charcuterie, pizza, barbecue."},
 {d:LL,a:"AOP Côtes-du-Rhône",n:"Les Costebelles",img:"ll-costebelles",c:"Rouge",b:"BIO",m:"2024",p:10.5,g:"Grenache, syrah",t:"Fruits rouges, souple et digeste.",x:"Viandes blanches, pâtes, repas du quotidien."},
 {d:LL,a:"AOP Côtes-du-Rhône",n:"Les Capelles",img:"ll-capelles",c:"Rouge",b:"BIO",m:"2023",p:11.5,g:"Grenache, syrah, mourvèdre",t:"Fruits noirs, garrigue, tanins fondus.",x:"Côte de porc, lasagnes, fromages doux."},
-{d:LL,a:"AOP Beaumes-de-Venise",n:"Les Garennes",img:"ll-garennes",c:"Rouge",b:"BIO",m:"2024",p:14,r:"Existe en magnum",g:"Grenache, syrah",t:"Fraîcheur des Dentelles, fruits noirs et poivre.",x:"Agneau, gibier à plume, fromages affinés."},
+{d:LL,a:"AOP Beaumes-de-Venise",n:"Les Garennes",img:"ll-garennes",c:"Rouge",b:"BIO",r:"Existe en magnum",m:"2024",p:14,g:"Grenache, syrah",t:"Fraîcheur des Dentelles, fruits noirs et poivre.",x:"Agneau, gibier à plume, fromages affinés."},
 {d:LL,a:"AOP Vacqueyras",n:"Le Classique",img:"ll-classique",c:"Rouge",b:"BIO",m:"2024",p:14,g:"Grenache, syrah, mourvèdre",t:"Fruits noirs mûrs, épices et garrigue, belle structure.",x:"Daube provençale, gigot, côte de bœuf."},
-{d:LL,a:"AOP Vacqueyras",n:"Mourre de la Caille",img:"ll-mourre",c:"Rouge",b:"BIO",m:"2024",p:16,r:"Existe en magnum",g:"Grenache, syrah, mourvèdre",t:"Cuvée de terroir, concentrée : cassis, réglisse, thym.",x:"Gibier, bœuf braisé, plats truffés."},
-{d:LL,a:"AOP Vacqueyras",n:"Fumitarde",img:"ll-fumitarde",c:"Rouge",b:"BIO",m:"2023",p:18,r:"Existe en magnum",g:"Grenache, syrah, mourvèdre",t:"Puissant et profond, notes fumées et fruits confiturés.",x:"Civet, magret, plats mijotés."},
+{d:LL,a:"AOP Vacqueyras",n:"Mourre de la Caille",img:"ll-mourre",c:"Rouge",b:"BIO",r:"Existe en magnum",m:"2024",p:16,g:"Grenache, syrah, mourvèdre",t:"Cuvée de terroir, concentrée : cassis, réglisse, thym.",x:"Gibier, bœuf braisé, plats truffés."},
+{d:LL,a:"AOP Vacqueyras",n:"Fumitarde",img:"ll-fumitarde",c:"Rouge",b:"BIO",r:"Existe en magnum",m:"2023",p:18,g:"Grenache, syrah, mourvèdre",t:"Puissant et profond, notes fumées et fruits confiturés.",x:"Civet, magret, plats mijotés."},
 {d:LL,a:"AOP Vacqueyras",n:".G",img:"ll-g",c:"Rouge",b:"BIO",m:"2023",p:22,g:"Assemblage Vacqueyras",t:"Haut de gamme, dense et soyeux, beau potentiel de garde.",x:"Filet de bœuf, pigeon, fromages de caractère."},
 {d:LL,a:"AOP Gigondas",n:"Les Bergines",img:"ll-bergines",c:"Rouge",b:"BIO",m:"2023",p:22,g:"Grenache, syrah, mourvèdre",t:"Puissance et finesse, fruits noirs, épices, touche minérale.",x:"Gibier, agneau de sept heures, cèpes."},
 {d:LL,a:"AOP Muscat de Beaumes-de-Venise",n:"Chante Coucou Blanc",img:"ll-muscat-blanc",c:"Vin doux",s:"",b:"BIO",m:"2024",p:14,g:"Muscat à petits grains",v:1,t:"Vin doux naturel au nez explosif : fruits exotiques, agrumes confits, fleurs.",x:"Apéritif, foie gras, melon, desserts aux fruits."},
@@ -377,30 +417,24 @@ const W=[
 {d:LL,a:"AOP Côtes-du-Rhône",n:"Ad Terraneus",img:"ll-adterraneus",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2023",p:13,g:"Grenache, syrah",t:"Fruit croquant, très digeste.",x:"Charcuterie, tapas, cuisine du marché."},
 {d:LL,a:"Vin de France",n:"C'est pas grave !",img:"ll-cestpasgrave",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2023",p:12,g:"Assemblage de cépages rouges",t:"Gourmand et désaltérant.",x:"Apéro entre amis, burgers, grillades."},
 {d:LL,a:"IGP Méditerranée",n:"Insomnia",img:"ll-insomnia",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2024",p:11,g:"Assemblage de cépages rouges méditerranéens",t:"Fruit pur et éclatant, souple.",x:"Viandes grillées, cuisine du monde."},
-{d:LL,a:"Boisson partiellement fermentée",n:"Je Veux des Bulles dans ma Vie",img:"ll-bulles",c:"Effervescent",s:"Low alcool",b:"BIO",m:"2025",p:10,r:"5,5 % vol.",g:"Raisin partiellement fermenté",t:"Bulles légères et fruitées, 5,5 % vol.",x:"Apéritif, brunch, desserts légers."},
+{d:LL,a:"Boisson partiellement fermentée",n:"Je Veux des Bulles dans ma Vie",img:"ll-bulles",c:"Effervescent",s:"Low alcool",b:"BIO",r:"5,5 % vol.",m:"2025",p:10,g:"Raisin partiellement fermenté",t:"Bulles légères et fruitées, 5,5 % vol.",x:"Apéritif, brunch, desserts légers."},
+{d:LL,oil:1,a:"Huile d'olive vierge extra",n:"Huile d'olive La Ligière",img:"ll-huile",c:"Huile d'olive",b:"BIO",p:22,r:"Bouteille 75 cl",g:"",t:"L'huile de nos oliviers, cultivés en agriculture biologique à Vacqueyras.",x:"Salades, légumes grillés, poissons, ou tout simplement sur une tranche de pain grillé."},
 {d:JA,a:"AOP Châteauneuf-du-Pape",n:"Cuvée Maxence",img:"ja-maxence",c:"Rouge",b:"HVE",m:"2018",p:43.5,g:"Grenache, syrah, mourvèdre",t:"Puissance, élégance et finesse, grande garde.",x:"Gibier, lièvre, plats truffés."},
 {d:JA,a:"AOP Châteauneuf-du-Pape",n:"Traditionnel",img:"ja-traditionnel",c:"Rouge",b:"HVE",m:"2022",p:30,g:"Grenache, syrah, mourvèdre",t:"La rondeur domine et gagne tout le palais, fruits noirs et épices.",x:"Agneau, bœuf en sauce, fromages affinés."},
 {d:JA,a:"AOP Cairanne",n:"Cuvée Maïlys",img:"ja-mailys",c:"Rouge",b:"HVE",m:"2021",p:15,g:"Grenache, syrah, mourvèdre",t:"Rond, ample et généreux, tanins souples et mûrs.",x:"Volaille rôtie, magret, ratatouille."},
 {d:JA,a:"AOP Côtes-du-Rhône Villages Plan de Dieu",n:"Cuvée Léandre",img:"ja-leandre",c:"Rouge",b:"HVE",m:"2021",p:12.5,g:"Grenache, syrah",t:"Belle concentration tannique, avec rondeur et souplesse.",x:"Grillades, côte de veau, terrines."},
 {d:JA,a:"AOP Côtes-du-Rhône",n:"Côtes-du-Rhône",img:"ja-cdr",c:"Rouge",b:"HVE",m:"2022",p:10.5,g:"Grenache, syrah",t:"Plus riche qu'un Côtes-du-Rhône classique, fruité et gourmand.",x:"Pizza, charcuterie, plats du quotidien."},
-{d:DC,a:"AOP Crozes-Hermitage",n:"Cuvée Domaine Blanc",img:"dc-blanc",c:"Blanc",b:"HVE",g:"Marsanne, roussanne",t:"Fleurs blanches et fruits jaunes, bouche ronde et fraîche.",x:"Poissons de rivière, volaille à la crème, chèvre."},
-{d:DC,a:"AOP Crozes-Hermitage",n:"Cuvée Domaine Rouge",img:"dc-rouge",c:"Rouge",b:"HVE",g:"Syrah",v:1,t:"Syrah du nord : fruits noirs, violette, poivre.",x:"Côte de bœuf, saucisson, cuisine bistrot."},
-{d:DC,a:"AOP Crozes-Hermitage",n:"Cuvée Bacchus",img:"dc-bacchus",c:"Rouge",b:"HVE",g:"Syrah",v:1,t:"Plus structuré : mûre, réglisse, épices.",x:"Gibier, agneau, fromages affinés."},
-{d:DC,a:"AOP Crozes-Hermitage",n:"Cuvée Exception'Elle",img:"dc-exception",c:"Rouge",b:"HVE",g:"Syrah",v:1,t:"Cuvée de prestige, dense et élégante, belle garde.",x:"Filet de bœuf, pigeon, plats en sauce."},
-{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"La Daurèle",img:"am-daurele",c:"Blanc",b:"BIO",g:"Grenache blanc, clairette, viognier, ugni blanc",v:1,t:"Frais et floral, notes de fruits blancs.",x:"Apéritif, poissons, chèvre frais."},
-{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Le rosé de Simone",img:"am-simone",c:"Rosé",b:"BIO",g:"Grenache noir, mourvèdre, cinsault, carignan",v:1,t:"Rosé de caractère, fruits rouges et épices.",x:"Cuisine méditerranéenne, grillades."},
-{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Laurances",img:"am-laurances",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Fruits rouges, souple et frais.",x:"Viandes blanches, charcuterie."},
-{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Estelles",img:"am-estelles",c:"Rouge",b:"BIO",g:"Grenache noir, syrah, mourvèdre",v:1,t:"Fruits noirs, garrigue, belle structure.",x:"Agneau, daube."},
-{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Les Merrelies",img:"am-merrelies",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Concentré, fruits mûrs et épices.",x:"Viandes rouges, gibier."},
-{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Réserve",img:"am-reserve",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Ample et épicé, belle profondeur.",x:"Bœuf braisé, fromages affinés."},
-{d:AM,a:"AOP Côtes-du-Rhône",n:"Le Vin d'Adrien",img:"am-adrien",c:"Rouge",b:"BIO",g:"Grenache noir, syrah, cinsault, carignan",v:1,t:"Fruité et facile, plaisir immédiat.",x:"Repas du quotidien, pizza."},
-{d:AM,a:"IGP Vaucluse",n:"Le rosé d'Yvonne",img:"am-yvonne",c:"Rosé",b:"BIO",g:"Grenache noir, caladoc",v:1,t:"Léger et fruité.",x:"Apéritif, salades."},
-{d:AM,a:"IGP Vaucluse",n:"La vigne de Louis",img:"am-louis",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Gourmand et souple.",x:"Grillades, barbecue."},
-{d:MV,a:"AOP Duché d'Uzès",n:"Alba Dolia",img:"mv-alba",c:"Blanc",g:"Viognier, grenache blanc, roussanne",t:"Fruits blancs et fleurs, bouche fraîche.",x:"Poissons grillés, brandade."},
-{d:MV,a:"AOP Duché d'Uzès",n:"Esus",img:"mv-esus",c:"Rouge",g:"Syrah, grenache",t:"Fruits noirs et garrigue.",x:"Viandes rouges, gardiane de taureau."},
-{d:MV,a:"IGP Cévennes",n:"Les Portes de Dieu",img:"mv-portes2",c:"Blanc",g:"Chardonnay",v:1,t:"Ample, fruits jaunes et notes beurrées.",x:"Volaille, poissons en sauce."},
-{d:MV,a:"AOP Duché d'Uzès",n:"Volcae",img:"mv-volcae",c:"Rouge",g:"Syrah, grenache",t:"Structuré, fruits mûrs et épices.",x:"Gigot, côte de bœuf."},
-{d:MV,a:"AOP Duché d'Uzès",n:"Urnia",img:"mv-urnia",c:"Rosé",g:"Grenache, cinsault, syrah",t:"Frais et fruité.",x:"Apéritif, cuisine d'été."},
+{d:DC,a:"AOP Crozes-Hermitage",n:"Cuvée Domaine Blanc",img:"dc-blanc",c:"Blanc",b:"HVE",m:"2023",p:18.5,g:"Marsanne, roussanne",t:"Fleurs blanches et fruits jaunes, bouche ronde et fraîche.",x:"Poissons de rivière, volaille à la crème, chèvre."},
+{d:DC,a:"AOP Crozes-Hermitage",n:"Cuvée Domaine Rouge",img:"dc-rouge",c:"Rouge",b:"HVE",m:"2022",p:17.5,g:"Syrah",v:1,t:"Syrah du nord : fruits noirs, violette, poivre.",x:"Côte de bœuf, saucisson, cuisine bistrot."},
+{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Laurances",img:"am-laurances",c:"Rouge",b:"BIO",m:"2023",p:11.5,g:"Grenache noir, syrah",v:1,t:"Fruits rouges, souple et frais.",x:"Viandes blanches, charcuterie."},
+{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Estelles",img:"am-estelles",c:"Rouge",b:"BIO",m:"2023",p:13.5,g:"Grenache noir, syrah, mourvèdre",v:1,t:"Fruits noirs, garrigue, belle structure.",x:"Agneau, daube."},
+{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Les Merrelies",img:"am-merrelies",c:"Rouge",b:"BIO",m:"2023",p:15.5,g:"Grenache noir, syrah",v:1,t:"Concentré, fruits mûrs et épices.",x:"Viandes rouges, gibier."},
+{d:AM,a:"AOP Côtes-du-Rhône Villages Séguret",n:"Réserve",img:"am-reserve",c:"Rouge",b:"BIO",m:"2024",p:25,g:"Grenache noir, syrah",v:1,t:"Ample et épicé, belle profondeur.",x:"Bœuf braisé, fromages affinés."},
+{d:AM,a:"IGP Vaucluse",n:"La vigne de Louis",img:"am-louis",c:"Rouge",b:"BIO",m:"2024",p:9.5,g:"Grenache noir, syrah",v:1,t:"Gourmand et souple.",x:"Grillades, barbecue."},
+{d:MV,a:"AOP Duché d'Uzès",n:"Alba Dolia",img:"mv-alba",c:"Blanc",m:"2023",p:14,g:"Viognier, grenache blanc, roussanne",t:"Fruits blancs et fleurs, bouche fraîche.",x:"Poissons grillés, brandade."},
+{d:MV,a:"AOP Duché d'Uzès",n:"Esus",img:"mv-esus",c:"Rouge",m:"2022",p:9.5,g:"Syrah, grenache",t:"Fruits noirs et garrigue.",x:"Viandes rouges, gardiane de taureau."},
+{d:MV,a:"IGP Cévennes",n:"Les Portes de Dieu",img:"mv-portes2",c:"Blanc",m:"2024",p:9.5,g:"Chardonnay",v:1,t:"Ample, fruits jaunes et notes beurrées.",x:"Volaille, poissons en sauce."},
+{d:MV,a:"AOP Duché d'Uzès",n:"Volcae",img:"mv-volcae",c:"Rouge",m:"2019",p:14,g:"Syrah, grenache",t:"Structuré, fruits mûrs et épices.",x:"Gigot, côte de bœuf."},
 {d:TR,a:"AOP Bugey",n:"Chardonnay",img:"tr-chardonnay",c:"Blanc",b:"BIO",m:"2020",p:12,g:"Chardonnay",v:1,t:"Fin et minéral, fruits blancs et noisette.",x:"Poissons de lac, volaille, comté."},
 {d:TR,a:"AOC Roussette du Bugey",n:"Altesse",img:"tr-altesse",c:"Blanc",b:"BIO",m:"2025",p:14.5,g:"Altesse",v:1,t:"Amande, fruits secs, bergamote, belle fraîcheur.",x:"Fondue, poissons de lac, beaufort."},
 {d:TR,a:"AOP Bugey",n:"Et si on essayait ?",img:"tr-essayait",c:"Blanc",s:"Sans sulfites ajoutés",b:"BIO",m:"2025",p:12.5,g:"Chardonnay",t:"Fruit pur et vivant.",x:"Apéritif, fruits de mer."},
@@ -409,7 +443,7 @@ const W=[
 {d:TR,a:"AOP Bugey",n:"Mondeuse",img:"tr-mondeuse",c:"Rouge",b:"BIO",m:"2024",p:11.5,g:"Mondeuse",v:1,t:"Poivrée, violette et fruits noirs.",x:"Diots, gibier, plats savoyards."},
 {d:TR,a:"AOC Bugey tradition",n:"Extra-Brut",img:"tr-extra-brut2",c:"Effervescent",b:"BIO",p:12,g:"Chardonnay, pinot noir, molette, aligoté",v:1,t:"Bulles fines, très sec et ciselé.",x:"Apéritif, huîtres."},
 {d:TR,a:"AOC Bugey tradition",n:"Brut",img:"tr-brut2",c:"Effervescent",b:"BIO",p:12,g:"Chardonnay, pinot noir",t:"Bulles fines, fruité et frais.",x:"Apéritif, desserts légers."},
-{d:TR,a:"Vin de France",n:"Cuisse Rose",img:"tr-cuisse-rose2",c:"Effervescent",rose:1,s:"Low alcool",b:"BIO",p:12,r:"8-9 % vol., exclusivité du domaine",g:"",t:"Pétillant rosé léger, petits fruits rouges.",x:"Apéritif, desserts aux fruits rouges."},
+{d:TR,a:"Vin de France",n:"Cuisse Rose",img:"tr-cuisse-rose2",c:"Effervescent",rose:1,s:"Low alcool",b:"BIO",r:"8-9 % vol., exclusivité du domaine",p:12,g:"",t:"Pétillant rosé léger, petits fruits rouges.",x:"Apéritif, desserts aux fruits rouges."},
 {d:TR,a:"Jus de raisin",n:"Pétillant Zéro %",img:"tr-zero",c:"Sans alcool",s:"Sans alcool",b:"BIO",m:"2025",p:7.5,g:"100 % jus de raisin, pasteurisé et gazéifié",v:1,t:"Bulles et fruit, sans alcool.",x:"Apéritif pour tous, goûter de fête."},
 {d:TR,a:"Jus de raisin",n:"100 % Pur jus de raisin",img:"tr-jus",c:"Sans alcool",s:"Sans alcool",b:"BIO",m:"2025",p:5,g:"Assemblage de plusieurs cépages",v:1,t:"Pur jus, naturellement sucré.",x:"Petit-déjeuner, goûter."}
 ];
@@ -423,7 +457,7 @@ const $=id=>document.getElementById(id);
 const fill=(el,label,arr)=>el.innerHTML=`<option value="">${label}</option>`+arr.map(v=>`<option>${esc(v)}</option>`).join("");
 fill($("fDom"),"Tous les domaines",DOMS);
 fill($("fCol"),"Toutes les couleurs",COLS);
-fill($("fApp"),"Toutes les appellations",[...new Set(W.map(w=>w.a))].sort((a,b)=>a.localeCompare(b,"fr")));
+fill($("fApp"),"Toutes les appellations",[...new Set(W.filter(w=>!w.oil).map(w=>w.a))].sort((a,b)=>a.localeCompare(b,"fr")));
 
 const SH={
  bourg:{d:"M24 6h12v52c0 14 16 22 16 42v88a6 6 0 0 1-6 6H14a6 6 0 0 1-6-6v-88c0-20 16-28 16-42z",cap:[24,6,12,22],lab:[10,118,40,50]},
@@ -616,22 +650,27 @@ let viewTimer=[];
 function toView(){viewTimer.forEach(clearTimeout);viewTimer=[];place();[60,250,700].forEach(ms=>viewTimer.push(setTimeout(place,ms)));}
 addEventListener("wheel",()=>{viewTimer.forEach(clearTimeout);viewTimer=[]},{passive:true});
 addEventListener("touchmove",()=>{viewTimer.forEach(clearTimeout);viewTimer=[]},{passive:true});
-function place(){const c=location.hash==="#commande";
+function place(){const c=location.hash==="#commande",h=location.hash==="#huile";
  if(!location.hash){window.scrollTo(0,0);return}
- const el=c?$("vCmd"):$("vTarif"),tb=document.querySelector(".tabs");
+ const el=c?$("vCmd"):h?$("vHuile"):$("vTarif"),tb=document.querySelector(".tabs");
  const y=el.getBoundingClientRect().top+window.scrollY-(tb?tb.offsetHeight:0);
  window.scrollTo({top:Math.max(0,y),behavior:"auto"})}
-function route(){const c=location.hash==="#commande";setTimeout(badge,0);document.body.dataset.view=c?"cmd":"tarif";$("vTarif").hidden=c;$("vCmd").hidden=!c;
- $("tTarif").toggleAttribute("aria-current",!c);$("tCmd").toggleAttribute("aria-current",c);
- if(c){$("tCmd").setAttribute("aria-current","page")}else{$("tTarif").setAttribute("aria-current","page")}
- if(c)drawCart(window._hl);else render();window._hl=null;toView();
+function route(){const c=location.hash==="#commande",h=location.hash==="#huile";setTimeout(badge,0);document.body.dataset.view=c?"cmd":h?"huile":"tarif";
+ $("vTarif").hidden=c||h;$("vCmd").hidden=!c;$("vHuile").hidden=!h;
+ ["tTarif","tHuile","tCmd"].forEach(id=>$(id).removeAttribute("aria-current"));$(c?"tCmd":h?"tHuile":"tTarif").setAttribute("aria-current","page");
+ if(c)drawCart(window._hl);else if(h)drawOil();else render();window._hl=null;toView();
  window._lastHl=null}
+const OIL=W.findIndex(w=>w.oil);
+function drawOil(){const k=cart[OIL]||0;$("oilIn").textContent=k?`Déjà dans votre commande : ${k} bouteille${k>1?"s":""}.`:""}
+$("oilMinus").addEventListener("click",()=>{$("oilQ").value=Math.max(1,(parseInt($("oilQ").value,10)||1)-1)});
+$("oilPlus").addEventListener("click",()=>{$("oilQ").value=(parseInt($("oilQ").value,10)||0)+1});
+$("oilAdd").addEventListener("click",()=>{const q=Math.max(1,parseInt($("oilQ").value,10)||1);cart[OIL]=(cart[OIL]||0)+q;saveCart();window._hl=OIL;location.hash="commande"});
 const spec=new Set();
 const norm=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
 function render(){
  uid=0;
  const d=$("fDom").value,c=$("fCol").value,a=$("fApp").value,so=$("fSort").value,q=norm($("fQ").value.trim());
- let list=W.map((w,i)=>({...w,i})).filter(w=>(!d||w.d===d)&&(!c||w.c===c)&&(!a||w.a===a)
+ let list=W.map((w,i)=>({...w,i})).filter(w=>!w.oil&&(!d||w.d===d)&&(!c||w.c===c)&&(!a||w.a===a)
   &&[...spec].every(s=>s==="BIO"?w.b==="BIO":(w.s||"")===s)
   &&(!q||norm([w.n,w.d,w.a,w.g,w.t,w.x,w.c].join(" ")).includes(q)));
  const key={dom:w=>w.d,col:w=>w.c,app:w=>w.a}[so];
@@ -647,7 +686,7 @@ function render(){
   html+=card(w);
  }
  $("grid").innerHTML=html||`<p class="empty">Aucune cuvée ne correspond à ces critères.</p>`;
- $("count").textContent=`${list.length} cuvée${list.length>1?"s":""} sur ${W.length}`;
+ $("count").textContent=`${list.length} cuvée${list.length>1?"s":""} sur ${W.filter(w=>!w.oil).length}`;
  $("reset").hidden=!(d||c||a||q||spec.size);
  document.querySelectorAll(".logo").forEach(b=>b.classList.toggle("on",b.dataset.d===d));
 }
