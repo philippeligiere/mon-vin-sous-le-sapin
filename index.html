@@ -223,6 +223,7 @@ body[data-view=huile] .tabs,body[data-view=huile] header{background-color:#4f5d1
     <span>Nous offrons <b>le port dès 18 bouteilles</b></span>
     <span><b>2 €</b> de port par bouteille en dessous</span>
     <span>Commandez avant le <b>11 décembre</b> : nous livrons avant Noël</span>
+    <span>Livraison en <b>France métropolitaine</b> uniquement</span>
     <span hidden>Commandes : philippebernard@laligiere.fr</span>
   </div>
   <div class="logos" aria-label="Les 6 domaines">
@@ -301,7 +302,7 @@ body[data-view=huile] .tabs,body[data-view=huile] header{background-color:#4f5d1
 
 <div id="vTarif">
 <div class="bar">
-  <p class="hint">Choisissez vos vins et cliquez sur « Commander » : nous acceptons les commandes dès 12 bouteilles, panachées librement, et nous offrons le port dès 18 bouteilles.</p>
+  <p class="hint">Choisissez vos vins et cliquez sur « Commander » : nous acceptons les commandes dès 12 bouteilles, panachées librement, et nous offrons le port dès 18 bouteilles. Livraison en France métropolitaine uniquement.</p>
   <div class="ctl">
     <label class="f">Domaine<select id="fDom"></select></label>
     <label class="f">Couleur<select id="fCol"></select></label>
@@ -335,7 +336,7 @@ body[data-view=huile] .tabs,body[data-view=huile] header{background-color:#4f5d1
     <p class="oilkick">Domaine La Ligière · Vacqueyras</p>
     <h2>Notre huile d'olive</h2>
     <p class="oillead">Nous cultivons nos oliviers à Vacqueyras, en agriculture biologique. Ajoutez notre huile à votre carton : elle se panache avec les vins.</p>
-    <div class="tags"><span class="tag">Huile d'olive vierge extra</span><span class="tag bio">Bio</span><span class="tag">Bouteille 75 cl</span></div>
+    <div class="tags"><span class="tag">Huile d'olive vierge</span><span class="tag bio">Bio</span><span class="tag">Bouteille 75 cl</span></div>
     <dl><div><dt>Dégustation</dt><dd>L'huile de nos oliviers, cultivés en agriculture biologique à Vacqueyras.</dd></div>
     <div><dt>Accords</dt><dd>Salades, légumes grillés, poissons, ou tout simplement sur une tranche de pain grillé.</dd></div></dl>
     <div class="oilbuy"><span class="oilprice">22 €</span>
@@ -360,7 +361,7 @@ body[data-view=huile] .tabs,body[data-view=huile] header{background-color:#4f5d1
   <p class="sub" id="pmsg"></p>
   <p class="sub" id="dem"></p>
   <h2 id="coord">Vos coordonnées</h2>
-  <p class="sub">Les champs marqués <b class="req">*</b> sont obligatoires. Nous vous demandons ensuite le règlement par SMS.</p>
+  <p class="sub">Les champs marqués <b class="req">*</b> sont obligatoires. Nous livrons en France métropolitaine uniquement, et nous vous demandons ensuite le règlement par SMS.</p>
   <form id="form" class="form" novalidate>
     <label class="f"><span>Nom <b class="req">*</b></span><input id="nom" autocomplete="family-name"></label>
     <label class="f"><span>Prénom <b class="req">*</b></span><input id="prenom" autocomplete="given-name"></label>
@@ -418,7 +419,7 @@ const W=[
 {d:LL,a:"Vin de France",n:"C'est pas grave !",img:"ll-cestpasgrave",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2023",p:12,g:"Assemblage de cépages rouges",t:"Gourmand et désaltérant.",x:"Apéro entre amis, burgers, grillades."},
 {d:LL,a:"IGP Méditerranée",n:"Insomnia",img:"ll-insomnia",c:"Rouge",s:"Sans sulfites ajoutés",b:"BIO",m:"2024",p:11,g:"Assemblage de cépages rouges méditerranéens",t:"Fruit pur et éclatant, souple.",x:"Viandes grillées, cuisine du monde."},
 {d:LL,a:"Boisson partiellement fermentée",n:"Je Veux des Bulles dans ma Vie",img:"ll-bulles",c:"Effervescent",s:"Low alcool",b:"BIO",r:"5,5 % vol.",m:"2025",p:10,g:"Raisin partiellement fermenté",t:"Bulles légères et fruitées, 5,5 % vol.",x:"Apéritif, brunch, desserts légers."},
-{d:LL,oil:1,a:"Huile d'olive vierge extra",n:"Huile d'olive La Ligière",img:"ll-huile",c:"Huile d'olive",b:"BIO",p:22,r:"Bouteille 75 cl",g:"",t:"L'huile de nos oliviers, cultivés en agriculture biologique à Vacqueyras.",x:"Salades, légumes grillés, poissons, ou tout simplement sur une tranche de pain grillé."},
+{d:LL,oil:1,a:"Huile d'olive vierge",n:"Huile d'olive La Ligière",img:"ll-huile",c:"Huile d'olive",b:"BIO",p:22,r:"Bouteille 75 cl",g:"",t:"L'huile de nos oliviers, cultivés en agriculture biologique à Vacqueyras.",x:"Salades, légumes grillés, poissons, ou tout simplement sur une tranche de pain grillé."},
 {d:JA,a:"AOP Châteauneuf-du-Pape",n:"Cuvée Maxence",img:"ja-maxence",c:"Rouge",b:"HVE",m:"2018",p:43.5,g:"Grenache, syrah, mourvèdre",t:"Puissance, élégance et finesse, grande garde.",x:"Gibier, lièvre, plats truffés."},
 {d:JA,a:"AOP Châteauneuf-du-Pape",n:"Traditionnel",img:"ja-traditionnel",c:"Rouge",b:"HVE",m:"2022",p:30,g:"Grenache, syrah, mourvèdre",t:"La rondeur domine et gagne tout le palais, fruits noirs et épices.",x:"Agneau, bœuf en sauce, fromages affinés."},
 {d:JA,a:"AOP Cairanne",n:"Cuvée Maïlys",img:"ja-mailys",c:"Rouge",b:"HVE",m:"2021",p:15,g:"Grenache, syrah, mourvèdre",t:"Rond, ample et généreux, tanins souples et mûrs.",x:"Volaille rôtie, magret, ratatouille."},
@@ -710,7 +711,8 @@ $("form").addEventListener("submit",e=>{e.preventDefault();const pb=[],bad=[];co
  if(!t.q)pb.push("Votre commande est vide.");
  else if(t.q<MINI)pb.push(`La commande est possible dès ${MINI} bouteilles : ajoutez encore ${MINI-t.q} bouteille${MINI-t.q>1?"s":""}.`);
  for(const[id,l]of REQ){const v=$(id).value.trim();if(!v){pb.push(l+" : non renseigné");bad.push(id);continue}
-  const c=CHK[id];if(c&&!c[0].test(id==="email"?v:v.replace(/[\s.\-]/g,""))){pb.push(l+" : "+c[1]);bad.push(id)}}
+  const c=CHK[id];if(c&&!c[0].test(id==="email"?v:v.replace(/[\s.\-]/g,""))){pb.push(l+" : "+c[1]);bad.push(id)}
+  else if(id==="cp"&&/^9[78]/.test(v.replace(/\s/g,""))){pb.push("Code postal : nous livrons en France métropolitaine uniquement");bad.push(id)}}
  REQ.forEach(([id])=>$(id).setAttribute("aria-invalid",bad.includes(id)));
  if(pb.length){$("err").innerHTML=`<b>À corriger :</b><ul>${pb.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;$("recap").hidden=true;return}
  $("err").innerHTML="";
