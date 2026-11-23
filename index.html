@@ -206,6 +206,17 @@ body[data-view=huile] .tabs,body[data-view=huile] header{background-color:#4f5d1
 .oilprice{font:600 30px Inter,sans-serif;color:#4f5d1c;white-space:nowrap}
 .oilgo{width:auto;margin-top:0;background:#4f5d1c;border-color:#4f5d1c}
 @media(max-width:700px){.oilwrap{grid-template-columns:minmax(0,1fr)}.oilpic img{height:260px}}
+
+/* Étape paiement */
+.modal{position:fixed;inset:0;z-index:20;background:rgba(5,15,10,.72);display:grid;place-items:center;padding:16px}
+.modal[hidden]{display:none}
+.mbox{background:var(--card);color:var(--ink);max-width:560px;width:100%;border-radius:18px;padding:clamp(20px,4vw,34px);border:2px solid #c8963e;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.mstep{margin:0;font-size:13px;font-weight:700;color:#9b1c2c;text-transform:none}
+.mbox h3{font:400 28px/1.15 "DM Serif Display",Georgia,serif;margin:6px 0 12px}
+.mbox p{margin:0 0 10px;font-size:16px}
+.chk{display:flex;gap:12px;align-items:flex-start;margin:16px 0 4px;padding:14px;border-radius:12px;background:var(--tint);cursor:pointer;font-size:15px}
+.chk input{width:22px;height:22px;flex:none;margin-top:2px;accent-color:#9b1c2c}
+#payGo[disabled]{opacity:.45;cursor:not-allowed}
 </style>
 </head>
 <body>
@@ -347,7 +358,7 @@ body[data-view=huile] .tabs,body[data-view=huile] header{background-color:#4f5d1
 </div></section>
 <section id="vCmd" class="band" hidden><div class="wrap">
   <a class="back" href="#tarif">← Découvrir les vins</a>
-  <ol class="steps" aria-label="Étapes de la commande"><li class="on"><b>1</b> Vos vins</li><li><b>2</b> Vos coordonnées</li><li><b>3</b> Envoi</li></ol>
+  <ol class="steps" aria-label="Étapes de la commande"><li class="on"><b>1</b> Vos vins</li><li><b>2</b> Vos coordonnées</li><li><b>3</b> Paiement</li><li><b>4</b> Envoi</li></ol>
   <h2>Votre commande</h2>
   <div id="cart"></div>
   <div class="row"><a class="back" href="#tarif">+ Ajouter d'autres vins</a></div>
@@ -361,7 +372,7 @@ body[data-view=huile] .tabs,body[data-view=huile] header{background-color:#4f5d1
   <p class="sub" id="pmsg"></p>
   <p class="sub" id="dem"></p>
   <h2 id="coord">Vos coordonnées</h2>
-  <p class="sub">Les champs marqués <b class="req">*</b> sont obligatoires. Nous livrons en France métropolitaine uniquement, et nous vous demandons ensuite le règlement par SMS.</p>
+  <p class="sub">Les champs marqués <b class="req">*</b> sont obligatoires. Nous livrons en France métropolitaine uniquement. Le paiement se fait ensuite par un lien sécurisé Up2Pay, envoyé par SMS ou par e-mail.</p>
   <form id="form" class="form" novalidate>
     <label class="f"><span>Nom <b class="req">*</b></span><input id="nom" autocomplete="family-name"></label>
     <label class="f"><span>Prénom <b class="req">*</b></span><input id="prenom" autocomplete="given-name"></label>
@@ -381,7 +392,7 @@ body[data-view=huile] .tabs,body[data-view=huile] header{background-color:#4f5d1
     <div class="row"><a class="main" id="gmail" href="#" target="_blank" rel="noopener">Envoyer avec Gmail</a></div>
     <div class="row"><a class="back" id="pdf" href="#" download>Télécharger mon bon de commande (PDF)</a></div>
     <p class="alt" id="alt">Vous n'avez pas Gmail ? Téléchargez votre bon de commande en PDF avec le bouton ci-dessus, puis envoyez-le-nous en pièce jointe depuis votre messagerie habituelle à <strong class="om"></strong>.</p>
-    <div class="ok-msg" id="okmsg" hidden><b>Votre commande est bien enregistrée, nous revenons vers vous par SMS pour le règlement de cette commande en ligne.</b><br>Dernière étape : votre messagerie s'est ouverte avec la commande déjà rédigée (vous êtes en copie pour la recevoir aussi), pensez à cliquer sur « Envoyer ». Sans Gmail, renvoyez-nous votre bon de commande PDF à <span class="om"></span>. Pensez à télécharger votre bon de commande en PDF pour le conserver.</div>
+    <div class="ok-msg" id="okmsg" hidden><b>Votre commande est bien enregistrée.</b> Nous vous envoyons un lien de paiement sécurisé Up2Pay, valable 48 heures, par SMS ou par e-mail : votre commande sera définitive une fois le paiement réalisé.<br>Dernière étape : votre messagerie s'est ouverte avec la commande déjà rédigée (vous êtes en copie pour la recevoir aussi), pensez à cliquer sur « Envoyer ». Sans Gmail, renvoyez-nous votre bon de commande PDF à <span class="om"></span>. Pensez à télécharger votre bon de commande en PDF pour le conserver.</div>
   </div>
   <div class="row"><a class="back" href="#tarif">← Découvrir les vins</a></div>
 </div></section>
@@ -392,6 +403,16 @@ body[data-view=huile] .tabs,body[data-view=huile] header{background-color:#4f5d1
   <p>L'abus d'alcool est dangereux pour la santé, à consommer avec modération.</p>
 </div></footer>
 
+<div class="modal" id="payModal" hidden role="dialog" aria-modal="true" aria-labelledby="payT">
+  <div class="mbox">
+    <p class="mstep">Avant l'envoi de votre commande</p>
+    <h3 id="payT">Comment se passe le paiement ?</h3>
+    <p>Une fois votre bon de commande reçu, <b>nous vous envoyons un lien de paiement sécurisé Up2Pay</b>, par <b>SMS ou par e-mail</b>.</p>
+    <p>Ce lien est <b>valable 48 heures</b>. Votre commande sera <b>définitive une fois le paiement réalisé</b>.</p>
+    <label class="chk"><input type="checkbox" id="payOk"> <span>J'ai bien compris : je paierai ma commande par le lien sécurisé Up2Pay reçu par SMS ou e-mail, valable 48 heures, et ma commande sera définitive après paiement.</span></label>
+    <div class="row"><button class="main" id="payGo" type="button" disabled>Valider et continuer</button><button class="back" id="payNo" type="button">Retour</button></div>
+  </div>
+</div>
 <script>
 {
 const LL="Domaine La Ligière",JA="Domaine Juliette Avril",DC="Domaine des Combat",AM="Domaine de l'Amauve",MV="Mas des Volques",TR="Domaine Trichon";
@@ -593,7 +614,7 @@ if (o.note) { text(o.note, M, y + 4, 9, {col: "#6b1a2c"}); y += 18; }
 y += 10; need(70);
 rect(M, y, W - 2 * M, 54,"#eef6f1");
 text("Votre commande est bien enregistr\u00e9e.", M + 14, y + 20, 11, {bold: true, col: "#1f4a35"});
-text("Nous revenons vers vous par SMS pour le r\u00e8glement de cette commande en ligne. Livraison avant No\u00ebl.", M + 14, y + 38, 9.5, {col: "#1f4a35"});
+text("Paiement par lien s\u00e9curis\u00e9 Up2Pay (SMS ou e-mail, valable 48 h). Commande d\u00e9finitive apr\u00e8s paiement.", M + 14, y + 38, 9.5, {col: "#1f4a35"});
 footer();
 pages.push(ops.join("\n"));
 const objs = [];
@@ -736,6 +757,17 @@ $("form").addEventListener("submit",e=>{e.preventDefault();const pb=[],bad=[];co
  else{$("gmail").href=`https://mail.google.com/mail/?view=cm&fs=1&to=${to}&cc=${cc}&su=${subj}&body=${bod}`}
  $("okmsg").hidden=true;$("recap").hidden=false;document.querySelectorAll(".steps li").forEach(l=>l.classList.add("on"));$("recap").scrollIntoView({block:"start"})});
 $("gmail").addEventListener("click",()=>{$("okmsg").hidden=false;setTimeout(()=>$("okmsg").scrollIntoView({block:"nearest"}),300)});
+let payAccepted=false,payNext=null,payFrom=null;
+function openPay(next,from){payNext=next;payFrom=from;$("payOk").checked=false;$("payGo").disabled=true;$("payModal").hidden=false;$("payOk").focus()}
+function closePay(){$("payModal").hidden=true;if(payFrom)payFrom.focus()}
+["gmail","pdf"].forEach(id=>$(id).addEventListener("click",e=>{if(payAccepted)return;e.preventDefault();e.stopImmediatePropagation();openPay(id,$(id))},true));
+$("payOk").addEventListener("change",()=>{$("payGo").disabled=!$("payOk").checked});
+$("payNo").addEventListener("click",closePay);
+$("payModal").addEventListener("click",e=>{if(e.target===$("payModal"))closePay()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("payModal").hidden)closePay()});
+$("payGo").addEventListener("click",()=>{if(!$("payOk").checked)return;payAccepted=true;closePay();
+ if(payNext==="gmail"){const a=$("gmail");if(a.target==="_blank")window.open(a.href,"_blank","noopener");else location.href=a.href;$("okmsg").hidden=false;setTimeout(()=>$("okmsg").scrollIntoView({block:"nearest"}),300)}
+ else $("pdf").click()});
 window.addEventListener("hashchange",route);
 document.querySelectorAll(".tabs a").forEach(a=>a.addEventListener("click",()=>{if(a.getAttribute("href")===location.hash)setTimeout(toView,0)}));
 badge();route();
