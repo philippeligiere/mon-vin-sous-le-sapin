@@ -164,7 +164,7 @@ body[data-view=tarif]{background-color:#0f2a1f}
 body[data-view=cmd]{background-color:#2a0d14}
 body{background-image:radial-gradient(1.3px 1.3px at 23px 41px,#fff 50%,transparent 52%),radial-gradient(1px 1px at 97px 13px,rgba(255,255,255,.8) 50%,transparent 52%),radial-gradient(1.6px 1.6px at 151px 87px,#f3d9a0 50%,transparent 52%),radial-gradient(1px 1px at 61px 129px,rgba(255,255,255,.7) 50%,transparent 52%),radial-gradient(1.3px 1.3px at 189px 171px,#fff 50%,transparent 52%),radial-gradient(1px 1px at 131px 199px,rgba(243,217,160,.85) 50%,transparent 52%),radial-gradient(1px 1px at 11px 211px,rgba(255,255,255,.6) 50%,transparent 52%);background-size:211px 223px;background-attachment:fixed}
 header{padding-bottom:0;position:relative}
-.scene{position:relative;height:clamp(150px,28vw,340px);margin:8px calc(-1*max(5vw,16px)) 0;overflow:hidden}
+.scene{position:relative;height:clamp(140px,22vw,280px);margin:8px calc(-1*max(5vw,16px)) 0;overflow:hidden}
 .scene svg{position:absolute;inset:0;width:100%;height:100%}
 .bar{background:rgba(9,28,20,.88);backdrop-filter:blur(6px);border-bottom-color:rgba(243,217,160,.25)}
 body[data-view=cmd] .bar{background:rgba(42,13,20,.9)}
@@ -177,17 +177,28 @@ footer{color:#d8d0c2;border-top-color:rgba(243,217,160,.25)}
 @keyframes neige{from{background-position:0 0,0 0,0 0,0 0}to{background-position:40px 520px,-30px 520px,20px 520px,-10px 520px}}
 @media(prefers-reduced-motion:reduce){.neige{animation:none;display:none}}
 @media print{.neige,.scene{display:none}body{background:#fff}}
+
+/* Onglets plus lisibles */
+.tabs a{opacity:1;font-size:16px;font-weight:700;letter-spacing:.01em;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35);border:2px solid rgba(255,255,255,.7)}
+.tabs a:hover,.tabs a:focus-visible{border-color:#f3d9a0;filter:brightness(1.15);box-shadow:0 0 0 3px rgba(243,217,160,.35)}
+.tabs a[aria-current=page]{border-width:3px;border-color:#f3d9a0;box-shadow:0 0 0 3px rgba(243,217,160,.45)}
 </style>
 </head>
 <body>
+<div class="neige" aria-hidden="true"></div>
+<nav class="tabs" aria-label="Navigation">
+  <a href="#tarif" id="tTarif">Découvrir les vins</a>
+  <a href="#commande" id="tCmd">Commander <b id="tCount" hidden>0</b></a>
+</nav>
 <header class="band"><div class="wrap">
   <h1>Mon vin sous le sapin</h1>
-  <p>Le tarif complet des 6 domaines partenaires réunis par le Domaine La Ligière. Vous pouvez panacher les bouteilles dans vos cartons, au prix caveau.</p>
+  <p>Pour Noël, nous sommes six vignerons amis à réunir nos vins dans une seule commande. Nous vous proposons de composer vos cartons panachés, au prix du domaine, et nous vous les livrons avant Noël.</p>
   <div class="cond">
-    <span><b>Port offert</b> dès 18 bouteilles</span>
+    <span>Nous acceptons les commandes <b>dès 12 bouteilles</b></span>
+    <span>Nous offrons <b>le port dès 18 bouteilles</b></span>
     <span><b>2 €</b> de port par bouteille en dessous</span>
-    <span>Commande avant le <b>11 décembre</b>, livrée avant Noël</span>
-    <span>Commandes : philippebernard@laligiere.fr</span>
+    <span>Commandez avant le <b>11 décembre</b> : nous livrons avant Noël</span>
+    <span hidden>Commandes : philippebernard@laligiere.fr</span>
   </div>
   <div class="logos" aria-label="Les 6 domaines">
     <img src="img/logo2-ll.webp" alt="Domaine La Ligière"><img src="img/logo2-ja.webp" alt="Domaine Juliette Avril"><img src="img/logo2-dc.webp" alt="Domaine des Combat"><img src="img/logo2-am.webp" alt="Domaine de l'Amauve"><img src="img/logo2-mv.webp" alt="Mas des Volques"><img src="img/logo2-tr.webp" alt="Domaine Trichon">
@@ -202,9 +213,9 @@ footer{color:#d8d0c2;border-top-color:rgba(243,217,160,.25)}
 <path d="M-21,-2 l-6,-4" stroke-width="3"/></g></defs>
 
 <circle cx="415" cy="38" r="0.8" fill="#fff" opacity="0.84"/><circle cx="120" cy="146" r="1.0" fill="#fff" opacity="0.40"/><circle cx="535" cy="60" r="1.6" fill="#fff" opacity="0.85"/><circle cx="158" cy="56" r="0.8" fill="#f3d9a0" opacity="0.70"/><circle cx="63" cy="55" r="1.0" fill="#fff" opacity="0.60"/><circle cx="692" cy="143" r="1.0" fill="#fff" opacity="0.70"/><circle cx="818" cy="93" r="0.8" fill="#f3d9a0" opacity="0.39"/><circle cx="264" cy="170" r="1.6" fill="#fff" opacity="0.63"/><circle cx="1182" cy="90" r="1.0" fill="#fff" opacity="0.77"/><circle cx="312" cy="144" r="1.6" fill="#fff" opacity="0.79"/><circle cx="369" cy="245" r="0.8" fill="#f3d9a0" opacity="0.60"/><circle cx="969" cy="38" r="1.6" fill="#fff" opacity="0.37"/><circle cx="855" cy="191" r="1.2" fill="#fff" opacity="0.77"/><circle cx="761" cy="145" r="1.6" fill="#fff" opacity="0.85"/><circle cx="1209" cy="119" r="0.8" fill="#fff" opacity="0.79"/><circle cx="396" cy="144" r="1.6" fill="#fff" opacity="0.78"/><circle cx="1135" cy="87" r="1.6" fill="#fff" opacity="0.45"/><circle cx="150" cy="15" r="1.2" fill="#fff" opacity="0.79"/><circle cx="509" cy="229" r="1.6" fill="#fff" opacity="0.45"/><circle cx="514" cy="69" r="1.0" fill="#fff" opacity="0.87"/><circle cx="356" cy="104" r="1.2" fill="#f3d9a0" opacity="0.88"/><circle cx="1226" cy="38" r="1.0" fill="#fff" opacity="0.49"/><circle cx="299" cy="121" r="1.0" fill="#fff" opacity="0.52"/><circle cx="186" cy="134" r="1.2" fill="#fff" opacity="0.76"/><circle cx="660" cy="154" r="0.8" fill="#fff" opacity="0.89"/><circle cx="998" cy="219" r="1.6" fill="#fff" opacity="0.59"/><circle cx="133" cy="159" r="0.8" fill="#fff" opacity="0.39"/><circle cx="267" cy="41" r="1.2" fill="#f3d9a0" opacity="0.38"/><circle cx="0" cy="38" r="0.8" fill="#fff" opacity="0.72"/><circle cx="90" cy="52" r="1.6" fill="#fff" opacity="0.73"/><circle cx="1223" cy="151" r="1.6" fill="#fff" opacity="0.42"/><circle cx="625" cy="244" r="1.6" fill="#fff" opacity="0.54"/><circle cx="184" cy="187" r="1.2" fill="#fff" opacity="0.85"/><circle cx="207" cy="6" r="1.2" fill="#fff" opacity="0.76"/><circle cx="1170" cy="190" r="1.2" fill="#f3d9a0" opacity="0.87"/><circle cx="891" cy="65" r="1.2" fill="#fff" opacity="0.56"/><circle cx="285" cy="135" r="1.2" fill="#f3d9a0" opacity="0.48"/><circle cx="1039" cy="246" r="1.0" fill="#fff" opacity="0.84"/><circle cx="947" cy="57" r="1.6" fill="#fff" opacity="0.79"/><circle cx="1267" cy="198" r="1.6" fill="#fff" opacity="0.47"/><circle cx="775" cy="86" r="1.2" fill="#fff" opacity="0.40"/><circle cx="131" cy="118" r="1.2" fill="#fff" opacity="0.64"/><circle cx="1261" cy="153" r="0.8" fill="#fff" opacity="0.90"/><circle cx="440" cy="161" r="0.8" fill="#fff" opacity="0.82"/><circle cx="960" cy="120" r="1.0" fill="#fff" opacity="0.82"/><circle cx="426" cy="200" r="1.6" fill="#fff" opacity="0.59"/><circle cx="1212" cy="181" r="1.0" fill="#fff" opacity="0.37"/><circle cx="756" cy="116" r="1.0" fill="#f3d9a0" opacity="0.85"/><circle cx="1255" cy="164" r="1.2" fill="#fff" opacity="0.68"/><circle cx="168" cy="4" r="0.8" fill="#f3d9a0" opacity="0.80"/><circle cx="178" cy="247" r="1.0" fill="#fff" opacity="0.37"/><circle cx="272" cy="125" r="1.2" fill="#fff" opacity="0.68"/><circle cx="1068" cy="15" r="1.2" fill="#fff" opacity="0.75"/><circle cx="1043" cy="129" r="1.0" fill="#f3d9a0" opacity="0.44"/><circle cx="654" cy="218" r="1.0" fill="#f3d9a0" opacity="0.35"/><circle cx="1023" cy="43" r="1.6" fill="#f3d9a0" opacity="0.79"/><circle cx="712" cy="81" r="1.6" fill="#fff" opacity="0.88"/><circle cx="73" cy="48" r="0.8" fill="#fff" opacity="0.65"/><circle cx="719" cy="190" r="0.8" fill="#fff" opacity="0.55"/><circle cx="1246" cy="152" r="1.0" fill="#f3d9a0" opacity="0.52"/><circle cx="650" cy="202" r="1.0" fill="#f3d9a0" opacity="0.66"/><circle cx="1121" cy="232" r="1.0" fill="#fff" opacity="0.43"/><circle cx="156" cy="111" r="0.8" fill="#f3d9a0" opacity="0.49"/><circle cx="94" cy="167" r="0.8" fill="#fff" opacity="0.91"/><circle cx="824" cy="92" r="1.2" fill="#fff" opacity="0.93"/><circle cx="281" cy="238" r="1.6" fill="#fff" opacity="0.45"/><circle cx="855" cy="56" r="1.6" fill="#f3d9a0" opacity="0.59"/><circle cx="539" cy="89" r="0.8" fill="#f3d9a0" opacity="0.57"/><circle cx="433" cy="115" r="0.8" fill="#fff" opacity="0.55"/><circle cx="799" cy="128" r="0.8" fill="#fff" opacity="0.94"/><circle cx="1009" cy="243" r="0.8" fill="#fff" opacity="0.51"/><circle cx="51" cy="195" r="1.2" fill="#fff" opacity="0.84"/><circle cx="1087" cy="169" r="1.2" fill="#fff" opacity="0.44"/><circle cx="1177" cy="143" r="1.2" fill="#fff" opacity="0.52"/><circle cx="1023" cy="46" r="0.8" fill="#fff" opacity="0.91"/><circle cx="812" cy="200" r="0.8" fill="#f3d9a0" opacity="0.86"/><circle cx="85" cy="216" r="1.6" fill="#fff" opacity="0.55"/><circle cx="708" cy="232" r="1.2" fill="#f3d9a0" opacity="0.43"/><circle cx="674" cy="60" r="0.8" fill="#fff" opacity="0.51"/><circle cx="232" cy="233" r="1.2" fill="#f3d9a0" opacity="0.81"/><circle cx="371" cy="125" r="1.0" fill="#fff" opacity="0.56"/><circle cx="23" cy="63" r="0.8" fill="#fff" opacity="0.79"/><circle cx="705" cy="47" r="1.6" fill="#fff" opacity="0.91"/><circle cx="136" cy="205" r="1.6" fill="#f3d9a0" opacity="0.65"/><circle cx="1068" cy="98" r="1.2" fill="#f3d9a0" opacity="0.48"/><circle cx="294" cy="50" r="1.0" fill="#fff" opacity="0.94"/><circle cx="1257" cy="209" r="0.8" fill="#fff" opacity="0.73"/><circle cx="1126" cy="108" r="0.8" fill="#fff" opacity="0.75"/><circle cx="488" cy="126" r="1.2" fill="#f3d9a0" opacity="0.50"/><circle cx="375" cy="115" r="1.0" fill="#fff" opacity="0.62"/><circle cx="337" cy="240" r="1.2" fill="#fff" opacity="0.37"/><circle cx="1129" cy="54" r="1.0" fill="#fff" opacity="0.55"/><circle cx="107" cy="70" r="1.0" fill="#fff" opacity="0.65"/><circle cx="6" cy="66" r="0.8" fill="#fff" opacity="0.59"/><circle cx="53" cy="6" r="1.2" fill="#f3d9a0" opacity="0.49"/><circle cx="750" cy="132" r="1.0" fill="#f3d9a0" opacity="0.89"/><circle cx="1004" cy="149" r="1.2" fill="#f3d9a0" opacity="0.94"/><circle cx="191" cy="181" r="1.0" fill="#fff" opacity="0.84"/><circle cx="915" cy="128" r="1.6" fill="#f3d9a0" opacity="0.77"/><circle cx="647" cy="227" r="0.8" fill="#f3d9a0" opacity="0.70"/><circle cx="1143" cy="171" r="1.0" fill="#fff" opacity="0.37"/><circle cx="170" cy="90" r="0.8" fill="#fff" opacity="0.85"/><circle cx="715" cy="157" r="1.0" fill="#fff" opacity="0.51"/><circle cx="585" cy="18" r="0.8" fill="#f3d9a0" opacity="0.67"/><circle cx="955" cy="118" r="0.8" fill="#fff" opacity="0.49"/><circle cx="968" cy="58" r="1.6" fill="#fff" opacity="0.86"/><circle cx="98" cy="228" r="1.2" fill="#fff" opacity="0.72"/><circle cx="823" cy="19" r="1.0" fill="#fff" opacity="0.50"/><circle cx="951" cy="76" r="1.0" fill="#fff" opacity="0.64"/><circle cx="622" cy="243" r="0.8" fill="#f3d9a0" opacity="0.48"/><circle cx="627" cy="177" r="1.2" fill="#fff" opacity="0.63"/><circle cx="982" cy="248" r="1.0" fill="#fff" opacity="0.94"/><circle cx="1198" cy="4" r="1.6" fill="#fff" opacity="0.84"/><circle cx="1239" cy="112" r="1.2" fill="#fff" opacity="0.48"/><circle cx="1210" cy="53" r="0.8" fill="#fff" opacity="0.80"/><circle cx="335" cy="90" r="1.2" fill="#fff" opacity="0.77"/><circle cx="296" cy="224" r="1.6" fill="#fff" opacity="0.36"/><circle cx="5" cy="123" r="1.6" fill="#fff" opacity="0.53"/><circle cx="180" cy="86" r="1.2" fill="#fff" opacity="0.85"/><circle cx="2" cy="188" r="1.6" fill="#fff" opacity="0.91"/><circle cx="251" cy="3" r="1.2" fill="#fff" opacity="0.57"/><circle cx="503" cy="250" r="0.8" fill="#fff" opacity="0.91"/><circle cx="967" cy="214" r="1.2" fill="#fff" opacity="0.38"/><circle cx="847" cy="159" r="1.0" fill="#fff" opacity="0.93"/><circle cx="558" cy="79" r="1.2" fill="#fff" opacity="0.88"/><circle cx="1039" cy="158" r="1.0" fill="#f3d9a0" opacity="0.40"/><circle cx="1195" cy="103" r="1.0" fill="#f3d9a0" opacity="0.87"/><circle cx="622" cy="228" r="1.0" fill="#fff" opacity="0.63"/><circle cx="440" cy="74" r="1.2" fill="#fff" opacity="0.74"/><circle cx="385" cy="139" r="1.6" fill="#fff" opacity="0.45"/><circle cx="207" cy="52" r="1.6" fill="#f3d9a0" opacity="0.48"/><circle cx="1160" cy="249" r="1.6" fill="#fff" opacity="0.43"/><circle cx="246" cy="23" r="1.2" fill="#f3d9a0" opacity="0.40"/><circle cx="306" cy="65" r="1.0" fill="#fff" opacity="0.80"/><circle cx="528" cy="103" r="1.0" fill="#fff" opacity="0.51"/><circle cx="963" cy="125" r="1.2" fill="#fff" opacity="0.76"/><circle cx="677" cy="198" r="1.0" fill="#fff" opacity="0.51"/><circle cx="318" cy="100" r="1.6" fill="#fff" opacity="0.92"/><circle cx="1086" cy="218" r="0.8" fill="#fff" opacity="0.37"/><circle cx="908" cy="224" r="1.6" fill="#f3d9a0" opacity="0.64"/>
-<circle cx="1120" cy="70" r="80" fill="url(#glowx)"/><mask id="mn"><circle cx="1120" cy="70" r="30" fill="#fff"/><circle cx="1133" cy="62" r="27" fill="#000"/></mask><circle cx="1120" cy="70" r="30" fill="#f6ead0" mask="url(#mn)"/>
-<path d="M300,150 Q520,60 830,70" stroke="#f3d9a0" stroke-width="1.5" stroke-dasharray="2 9" fill="none" opacity=".7"/>
-<g transform="translate(560,92) rotate(-6)">
+<circle cx="1120" cy="160" r="80" fill="url(#glowx)"/><mask id="mn"><circle cx="1120" cy="160" r="30" fill="#fff"/><circle cx="1133" cy="152" r="27" fill="#000"/></mask><circle cx="1120" cy="160" r="30" fill="#f6ead0" mask="url(#mn)"/>
+<path d="M290,235 Q520,160 830,168" stroke="#f3d9a0" stroke-width="1.5" stroke-dasharray="2 9" fill="none" opacity=".7"/>
+<g transform="translate(560,190) rotate(-5)">
 <use href="#rdx" x="190" y="-14"/><use href="#rdx" x="130" y="-6"/><use href="#rdx" x="70" y="2"/>
 <path d="M18,8 L222,-30" stroke="#e6c98a" stroke-width="1.2"/>
 <g fill="#e6c98a"><path d="M-70,0 L10,0 Q22,0 18,14 L12,26 L-66,26 Q-78,26 -76,14Z"/>
@@ -262,14 +273,10 @@ footer{color:#d8d0c2;border-top-color:rgba(243,217,160,.25)}
 </svg></div>
 </header>
 
-<div class="neige" aria-hidden="true"></div>
-<nav class="tabs" aria-label="Navigation">
-  <a href="#tarif" id="tTarif">Découvrir les vins</a>
-  <a href="#commande" id="tCmd">Commander <b id="tCount" hidden>0</b></a>
-</nav>
+
 <div id="vTarif">
 <div class="bar">
-  <p class="hint">Choisissez vos vins, cliquez sur « Commander » : vous pouvez panacher librement, le port est offert dès 18 bouteilles.</p>
+  <p class="hint">Choisissez vos vins et cliquez sur « Commander » : nous acceptons les commandes dès 12 bouteilles, panachées librement, et nous offrons le port dès 18 bouteilles.</p>
   <div class="ctl">
     <label class="f">Domaine<select id="fDom"></select></label>
     <label class="f">Couleur<select id="fCol"></select></label>
@@ -313,7 +320,7 @@ footer{color:#d8d0c2;border-top-color:rgba(243,217,160,.25)}
   <p class="sub" id="pmsg"></p>
   <p class="sub" id="dem"></p>
   <h2 id="coord">Vos coordonnées</h2>
-  <p class="sub">Les champs marqués <b class="req">*</b> sont obligatoires. Le règlement vous est demandé ensuite par SMS.</p>
+  <p class="sub">Les champs marqués <b class="req">*</b> sont obligatoires. Nous vous demandons ensuite le règlement par SMS.</p>
   <form id="form" class="form" novalidate>
     <label class="f"><span>Nom <b class="req">*</b></span><input id="nom" autocomplete="family-name"></label>
     <label class="f"><span>Prénom <b class="req">*</b></span><input id="prenom" autocomplete="given-name"></label>
@@ -582,11 +589,11 @@ let cart={};
 try{cart=JSON.parse(localStorage.getItem("mvsls-cart")||"{}")||{}}catch(e){}
 for(const k of Object.keys(cart)){if(!(cart[k]>0)||!W[k])delete cart[k]}
 const saveCart=()=>{try{localStorage.setItem("mvsls-cart",JSON.stringify(cart))}catch(e){}};
-const SEUIL=18,PORT=2,ship=q=>q>0&&q<SEUIL?q*PORT:0;
+const MINI=12,SEUIL=18,PORT=2,ship=q=>q>0&&q<SEUIL?q*PORT:0;
 function totals(){let q=0,v=0,n=0;for(const[i,k]of Object.entries(cart)){q+=k;W[i].p?v+=W[i].p*k:n+=k}return{q,v,n,port:ship(q)}}
 function badge(){const t=totals();$("tCount").hidden=!t.q;$("tCount").textContent=t.q;
  const m=$("mini");if(m){m.hidden=!t.q||location.hash==="#commande";$("miq").textContent=t.q;$("mit").textContent=eur(t.v+t.port);
- $("mim").textContent=t.q>=SEUIL?"Port offert !":`Encore ${SEUIL-t.q} pour le port offert`}}
+ $("mim").textContent=t.q<MINI?`Commande dès ${MINI} bouteilles : encore ${MINI-t.q}`:t.q>=SEUIL?"Port offert !":`Encore ${SEUIL-t.q} pour le port offert`}}
 function drawCart(hl){
  const ids=Object.keys(cart).map(Number).sort((a,b)=>(W[b].p||0)-(W[a].p||0));
  $("cart").innerHTML=ids.length?ids.map(i=>{const w=W[i],k=cart[i];
@@ -594,13 +601,13 @@ function drawCart(hl){
   return `<div class="cl${i===hl?" hl":""}" data-i="${i}" id="cl${i}">${vis}<div><div class="n">${esc(w.n)}${w.m?" "+w.m:""}</div><div class="s">${esc(w.d)} · ${esc(w.c)} · ${w.p?eur(w.p)+" la bouteille":"prix sur demande"}</div></div>
   <div class="qty"><button type="button" data-st="-1" aria-label="Retirer une bouteille">−</button><input type="number" min="0" value="${k}" aria-label="Quantité ${esc(w.n)}" data-q><button type="button" data-st="1" aria-label="Ajouter une bouteille">+</button></div>
   <div class="lt">${w.p?eur(w.p*k):"À confirmer"}</div><button class="rm" type="button" aria-label="Retirer ${esc(w.n)}">×</button></div>`}).join(""):
-  `<p class="sub">Votre commande est vide. Retournez au descriptif et cliquez sur « Commander » sous les vins de votre choix.</p>`;
+  `<p class="sub">Votre commande est vide (commande possible dès 12 bouteilles). Retournez à « Découvrir les vins » et cliquez sur « Commander » sous les vins de votre choix.</p>`;
  sums();
 }
 function sums(){const t=totals(),ok=t.q>=SEUIL;
  $("kq").textContent=t.q;$("kv").textContent=eur(t.v);$("kp").textContent=ok?"Offert":eur(t.port);$("kt").textContent=eur(t.v+t.port);
  $("mi").style.width=Math.min(t.q/SEUIL,1)*100+"%";$("meter").classList.toggle("ok",ok);
- $("pmsg").textContent=ok?"Port offert !":t.q?`Encore ${SEUIL-t.q} bouteille${SEUIL-t.q>1?"s":""} pour le port offert (vous économisez ${eur(t.port)}).`:`Port offert dès ${SEUIL} bouteilles, panachage possible.`;
+  $("pmsg").textContent=t.q&&t.q<MINI?`Commande possible dès ${MINI} bouteilles : encore ${MINI-t.q} bouteille${MINI-t.q>1?"s":""} à ajouter.`:ok?"Port offert !":t.q?`Encore ${SEUIL-t.q} bouteille${SEUIL-t.q>1?"s":""} pour le port offert (vous économisez ${eur(t.port)}).`:`Commande possible dès ${MINI} bouteilles, port offert dès ${SEUIL} bouteilles, panachage libre.`;
  $("dem").textContent=t.n?`Dont ${t.n} bouteille${t.n>1?"s":""} au prix sur demande, non comptée${t.n>1?"s":""} dans le total : le prix vous est confirmé avant règlement.`:"";
  badge();saveCart();
 }
@@ -653,6 +660,7 @@ const REQ=[["nom","Nom"],["prenom","Prénom"],["email","E-mail"],["tel","Télép
 const CHK={email:[/^[^\s@]+@[^\s@]+\.[^\s@]+$/,"adresse invalide"],tel:[/^\+?\d{9,15}$/,"numéro invalide"],cp:[/^\d{5}$/,"5 chiffres attendus"]};
 $("form").addEventListener("submit",e=>{e.preventDefault();const pb=[],bad=[];const t=totals();
  if(!t.q)pb.push("Votre commande est vide.");
+ else if(t.q<MINI)pb.push(`La commande est possible dès ${MINI} bouteilles : ajoutez encore ${MINI-t.q} bouteille${MINI-t.q>1?"s":""}.`);
  for(const[id,l]of REQ){const v=$(id).value.trim();if(!v){pb.push(l+" : non renseigné");bad.push(id);continue}
   const c=CHK[id];if(c&&!c[0].test(id==="email"?v:v.replace(/[\s.\-]/g,""))){pb.push(l+" : "+c[1]);bad.push(id)}}
  REQ.forEach(([id])=>$(id).setAttribute("aria-invalid",bad.includes(id)));
