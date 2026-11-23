@@ -46,7 +46,7 @@ h2.dom small{font:14px Inter,sans-serif;color:var(--mut)}
 .price{font:600 20px/1.2 Inter,sans-serif;white-space:nowrap;color:var(--gr)}
 :root[data-theme=dark] .price{color:#e7a2b0}
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]) .price{color:#e7a2b0}}
-.price.ask{font-size:13px;font-weight:500;color:var(--mut);text-align:right}
+.price.ask{white-space:normal;max-width:96px;line-height:1.25;font-size:13px;font-weight:500;color:var(--mut);text-align:right}
 .sub{font-size:14px;color:var(--mut);margin:2px 0 8px}
 .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 .tag{font-size:12.5px;padding:2px 8px;border-radius:6px;background:var(--tint);white-space:nowrap}
@@ -129,7 +129,7 @@ body[data-view=cmd] .tot .big b{color:#9b1c2c}
 
 /* Lisibilité et parcours */
 .hint{max-width:1240px;margin:0 auto 10px;font-size:14.5px;color:var(--mut)}
-.reset{font:600 14px Inter,sans-serif;min-height:40px;padding:6px 14px;border-radius:999px;border:1px dashed var(--gr);background:transparent;color:var(--gr);cursor:pointer}
+.reset{font:600 14px Inter,sans-serif;min-height:40px;padding:6px 14px;border-radius:999px;border:1px dashed #f3d9a0;background:transparent;color:#f3d9a0;cursor:pointer}
 .card{transition:transform .2s,box-shadow .2s}.card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.08)}
 .buy{width:100%;font-size:16px}
 .steps{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:20px 0 4px}
@@ -397,7 +397,7 @@ const W=[
 {d:AM,a:"IGP Vaucluse",n:"Le rosé d'Yvonne",img:"am-yvonne",c:"Rosé",b:"BIO",g:"Grenache noir, caladoc",v:1,t:"Léger et fruité.",x:"Apéritif, salades."},
 {d:AM,a:"IGP Vaucluse",n:"La vigne de Louis",img:"am-louis",c:"Rouge",b:"BIO",g:"Grenache noir, syrah",v:1,t:"Gourmand et souple.",x:"Grillades, barbecue."},
 {d:MV,a:"AOP Duché d'Uzès",n:"Alba Dolia",img:"mv-alba",c:"Blanc",g:"Viognier, grenache blanc, roussanne",t:"Fruits blancs et fleurs, bouche fraîche.",x:"Poissons grillés, brandade."},
-{d:MV,a:"AOP Duché d'Uzès (à confirmer)",n:"Esus",img:"mv-esus",c:"Rouge",g:"Syrah, grenache",t:"Fruits noirs et garrigue.",x:"Viandes rouges, gardiane de taureau."},
+{d:MV,a:"AOP Duché d'Uzès",n:"Esus",img:"mv-esus",c:"Rouge",g:"Syrah, grenache",t:"Fruits noirs et garrigue.",x:"Viandes rouges, gardiane de taureau."},
 {d:MV,a:"IGP Cévennes",n:"Les Portes de Dieu",img:"mv-portes2",c:"Blanc",g:"Chardonnay",v:1,t:"Ample, fruits jaunes et notes beurrées.",x:"Volaille, poissons en sauce."},
 {d:MV,a:"AOP Duché d'Uzès",n:"Volcae",img:"mv-volcae",c:"Rouge",g:"Syrah, grenache",t:"Structuré, fruits mûrs et épices.",x:"Gigot, côte de bœuf."},
 {d:MV,a:"AOP Duché d'Uzès",n:"Urnia",img:"mv-urnia",c:"Rosé",g:"Grenache, cinsault, syrah",t:"Frais et fruité.",x:"Apéritif, cuisine d'été."},
@@ -612,10 +612,15 @@ function sums(){const t=totals(),ok=t.q>=SEUIL;
  badge();saveCart();
 }
 function setQ(i,k){k=Math.max(0,k|0);if(k)cart[i]=k;else delete cart[i];}
+function toView(){const c=location.hash==="#commande";
+ if(!location.hash){window.scrollTo(0,0);return}
+ const el=c?$("vCmd"):$("vTarif"),tb=document.querySelector(".tabs");
+ const y=el.getBoundingClientRect().top+window.scrollY-(tb?tb.offsetHeight:0);
+ window.scrollTo({top:Math.max(0,y),behavior:"auto"})}
 function route(){const c=location.hash==="#commande";setTimeout(badge,0);document.body.dataset.view=c?"cmd":"tarif";$("vTarif").hidden=c;$("vCmd").hidden=!c;
  $("tTarif").toggleAttribute("aria-current",!c);$("tCmd").toggleAttribute("aria-current",c);
  if(c){$("tCmd").setAttribute("aria-current","page")}else{$("tTarif").setAttribute("aria-current","page")}
- if(c)drawCart(window._hl);else render();window._hl=null;window.scrollTo(0,0);
+ if(c)drawCart(window._hl);else render();window._hl=null;toView();
  if(c&&$("cl"+window._lastHl))$("cl"+window._lastHl).scrollIntoView({block:"center"});window._lastHl=null}
 const spec=new Set();
 const norm=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
@@ -687,6 +692,7 @@ $("form").addEventListener("submit",e=>{e.preventDefault();const pb=[],bad=[];co
  $("okmsg").hidden=true;$("recap").hidden=false;document.querySelectorAll(".steps li").forEach(l=>l.classList.add("on"));$("recap").scrollIntoView({block:"start"})});
 $("gmail").addEventListener("click",()=>{$("okmsg").hidden=false;setTimeout(()=>$("okmsg").scrollIntoView({block:"nearest"}),300)});
 window.addEventListener("hashchange",route);
+document.querySelectorAll(".tabs a").forEach(a=>a.addEventListener("click",()=>{if(a.getAttribute("href")===location.hash)setTimeout(toView,0)}));
 badge();route();
 }
 </script>
