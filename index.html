@@ -612,7 +612,11 @@ function sums(){const t=totals(),ok=t.q>=SEUIL;
  badge();saveCart();
 }
 function setQ(i,k){k=Math.max(0,k|0);if(k)cart[i]=k;else delete cart[i];}
-function toView(){const c=location.hash==="#commande";
+let viewTimer=[];
+function toView(){viewTimer.forEach(clearTimeout);viewTimer=[];place();[60,250,700].forEach(ms=>viewTimer.push(setTimeout(place,ms)));}
+addEventListener("wheel",()=>{viewTimer.forEach(clearTimeout);viewTimer=[]},{passive:true});
+addEventListener("touchmove",()=>{viewTimer.forEach(clearTimeout);viewTimer=[]},{passive:true});
+function place(){const c=location.hash==="#commande";
  if(!location.hash){window.scrollTo(0,0);return}
  const el=c?$("vCmd"):$("vTarif"),tb=document.querySelector(".tabs");
  const y=el.getBoundingClientRect().top+window.scrollY-(tb?tb.offsetHeight:0);
@@ -621,7 +625,7 @@ function route(){const c=location.hash==="#commande";setTimeout(badge,0);documen
  $("tTarif").toggleAttribute("aria-current",!c);$("tCmd").toggleAttribute("aria-current",c);
  if(c){$("tCmd").setAttribute("aria-current","page")}else{$("tTarif").setAttribute("aria-current","page")}
  if(c)drawCart(window._hl);else render();window._hl=null;toView();
- if(c&&$("cl"+window._lastHl))$("cl"+window._lastHl).scrollIntoView({block:"center"});window._lastHl=null}
+ window._lastHl=null}
 const spec=new Set();
 const norm=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
 function render(){
