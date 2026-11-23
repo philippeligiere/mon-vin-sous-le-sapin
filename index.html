@@ -217,6 +217,15 @@ body[data-view=huile] .tabs,body[data-view=huile] header{background-color:#4f5d1
 .chk{display:flex;gap:12px;align-items:flex-start;margin:16px 0 4px;padding:14px;border-radius:12px;background:var(--tint);cursor:pointer;font-size:15px}
 .chk input{width:22px;height:22px;flex:none;margin-top:2px;accent-color:#9b1c2c}
 #payGo[disabled]{opacity:.45;cursor:not-allowed}
+
+/* Commande validée : formulaire figé, annulation */
+body.order-locked #cart,body.order-locked #form,body.order-locked .tot,body.order-locked #meter,body.order-locked #pmsg{opacity:.5;filter:grayscale(1);pointer-events:none;user-select:none}
+.lockmsg{display:none;margin:12px 0;padding:10px 14px;border-radius:10px;background:var(--tint);font-size:14.5px;font-weight:600}
+body.order-locked .lockmsg{display:block}
+body.order-locked .buy{opacity:.5;pointer-events:none}
+.cancelbox{margin-top:18px;padding:16px;border-radius:12px;border:2px dashed #9b1c2c;background:light-dark(#fdf3f3,#2a1416)}
+.cancelbox h3{margin:0 0 6px;font:400 22px/1.2 "DM Serif Display",Georgia,serif;color:#9b1c2c}
+.cancelbtn{display:inline-flex;align-items:center;min-height:44px;padding:10px 18px;border-radius:8px;background:#fff;border:2px solid #9b1c2c;color:#9b1c2c;font:700 15px Inter,sans-serif;text-decoration:none}
 </style>
 </head>
 <body>
@@ -235,7 +244,7 @@ body[data-view=huile] .tabs,body[data-view=huile] header{background-color:#4f5d1
     <span><b>2 €</b> de port par bouteille en dessous</span>
     <span>Commandez avant le <b>11 décembre</b> : nous livrons avant Noël</span>
     <span>Livraison en <b>France métropolitaine</b> uniquement</span>
-    <span hidden>Commandes : philippebernard@laligiere.fr</span>
+    <span hidden>Commandes : contact@laligiere.fr</span>
   </div>
   <div class="logos" aria-label="Les 6 domaines">
     <img src="img/logo2-ll.webp" alt="Domaine La Ligière"><img src="img/logo2-ja.webp" alt="Domaine Juliette Avril"><img src="img/logo2-dc.webp" alt="Domaine des Combat"><img src="img/logo2-am.webp" alt="Domaine de l'Amauve"><img src="img/logo2-mv.webp" alt="Mas des Volques"><img src="img/logo2-tr.webp" alt="Domaine Trichon">
@@ -360,6 +369,7 @@ body[data-view=huile] .tabs,body[data-view=huile] header{background-color:#4f5d1
   <a class="back" href="#tarif">← Découvrir les vins</a>
   <ol class="steps" aria-label="Étapes de la commande"><li class="on"><b>1</b> Vos vins</li><li><b>2</b> Vos coordonnées</li><li><b>3</b> Paiement</li><li><b>4</b> Envoi</li></ol>
   <h2>Votre commande</h2>
+  <p class="lockmsg">Votre commande est validée : elle n'est plus modifiable. Pour la changer, annulez-la puis passez une nouvelle commande.</p>
   <div id="cart"></div>
   <div class="row"><a class="back" href="#tarif">+ Ajouter d'autres vins</a></div>
   <div class="tot" aria-live="polite">
@@ -373,7 +383,7 @@ body[data-view=huile] .tabs,body[data-view=huile] header{background-color:#4f5d1
   <p class="sub" id="dem"></p>
   <h2 id="coord">Vos coordonnées</h2>
   <p class="sub">Les champs marqués <b class="req">*</b> sont obligatoires. Nous livrons en France métropolitaine uniquement. Le paiement se fait ensuite par un lien sécurisé Up2Pay, envoyé par SMS ou par e-mail.</p>
-  <form id="form" class="form" novalidate>
+  <form id="form" class="form" novalidate autocomplete="off">
     <label class="f"><span>Nom <b class="req">*</b></span><input id="nom" autocomplete="family-name"></label>
     <label class="f"><span>Prénom <b class="req">*</b></span><input id="prenom" autocomplete="given-name"></label>
     <label class="f"><span>E-mail <b class="req">*</b></span><input id="email" type="email" autocomplete="email"></label>
@@ -386,13 +396,19 @@ body[data-view=huile] .tabs,body[data-view=huile] header{background-color:#4f5d1
   </form>
   <div class="err" id="err" role="alert"></div>
   <div id="recap" hidden>
-    <h2>Récapitulatif de votre commande</h2>
-    <p class="sub">Vérifiez votre commande puis envoyez-la au domaine (<strong class="om"></strong>) en cliquant sur « <span id="sendlbl">Envoyer avec Gmail</span> » :</p>
+    <h2>Vérifiez votre commande</h2>
+    <p class="sub">Vérifiez votre commande et envoyez-la au domaine directement par Gmail, ou téléchargez le PDF et envoyez-le-nous à <strong class="om"></strong>.<span id="sendlbl" hidden></span></p>
     <pre id="rtxt"></pre>
     <div class="row"><a class="main" id="gmail" href="#" target="_blank" rel="noopener">Envoyer avec Gmail</a></div>
     <div class="row"><a class="back" id="pdf" href="#" download>Télécharger mon bon de commande (PDF)</a></div>
     <p class="alt" id="alt">Vous n'avez pas Gmail ? Téléchargez votre bon de commande en PDF avec le bouton ci-dessus, puis envoyez-le-nous en pièce jointe depuis votre messagerie habituelle à <strong class="om"></strong>.</p>
     <div class="ok-msg" id="okmsg" hidden><b>Votre commande est bien enregistrée.</b> Nous vous envoyons un lien de paiement sécurisé Up2Pay, valable 48 heures, par SMS ou par e-mail : votre commande sera définitive une fois le paiement réalisé.<br>Dernière étape : votre messagerie s'est ouverte avec la commande déjà rédigée (vous êtes en copie pour la recevoir aussi), pensez à cliquer sur « Envoyer ». Sans Gmail, renvoyez-nous votre bon de commande PDF à <span class="om"></span>. Pensez à télécharger votre bon de commande en PDF pour le conserver.</div>
+    <div class="cancelbox" id="cancelBox" hidden>
+      <h3>Annuler cette commande</h3>
+      <p class="sub">Vous avez changé d'avis ? Envoyez-nous votre demande d'annulation par Gmail, ou téléchargez-la en PDF et envoyez-la-nous à <strong class="om"></strong>.</p>
+      <div class="row"><a class="cancelbtn" id="cGmail" href="#" target="_blank" rel="noopener">Annuler ma commande avec Gmail</a><a class="back" id="cPdf" href="#" download>Télécharger l'annulation (PDF)</a></div>
+      <p class="sub" id="cDone" hidden>Votre demande d'annulation est prête : pensez à cliquer sur « Envoyer » dans votre messagerie. <button type="button" class="back" id="newOrder">Passer une nouvelle commande</button></p>
+    </div>
   </div>
   <div class="row"><a class="back" href="#tarif">← Découvrir les vins</a></div>
 </div></section>
@@ -565,7 +581,7 @@ text("L'abus d'alcool est dangereux pour la sant\u00e9, \u00e0 consommer avec mo
 newPage();
 rect(0, 0, W, 132,"#6b1a2c");
 text("Mon vin sous le sapin", M, 58, 28, {bold: true, col: "#ffffff"});
-text("Bon de commande \u00b7 Six vignerons, une seule commande", M, 82, 11, {col: "#ffffff"});
+text(o.cancel?"ANNULATION DE COMMANDE":"Bon de commande \u00b7 Six vignerons, une seule commande", M, 82, o.cancel?13:11, {bold:!!o.cancel,col: "#ffffff"});
 text("Port offert d\u00e8s 18 bouteilles  \u00b7  Commandes jusqu'au 11 d\u00e9cembre  \u00b7  Livraison avant No\u00ebl", M, 110, 9.5, {bold: true, col: "#f6d78f"});
 const tx = W - 95;
 rect(tx + 21, 22, 8, 8,"#f6d78f");
@@ -613,8 +629,8 @@ else { text(k, tl, y, 10, {col: "#6b5c60"}); text(v, W - M - 10, y, 10, {right: 
 if (o.note) { text(o.note, M, y + 4, 9, {col: "#6b1a2c"}); y += 18; }
 y += 10; need(70);
 rect(M, y, W - 2 * M, 54,"#eef6f1");
-text("Votre commande est bien enregistr\u00e9e.", M + 14, y + 20, 11, {bold: true, col: "#1f4a35"});
-text("Paiement par lien s\u00e9curis\u00e9 Up2Pay (SMS ou e-mail, valable 48 h). Commande d\u00e9finitive apr\u00e8s paiement.", M + 14, y + 38, 9.5, {col: "#1f4a35"});
+text(o.cancel?`Demande d'annulation de la commande n\u00b0 ${o.ref}`:"Votre commande est bien enregistr\u00e9e.", M + 14, y + 20, 11, {bold: true, col: o.cancel?"#9b1c2c":"#1f4a35"});
+text(o.cancel?`Le client demande l'annulation de cette commande (demande du ${o.cdate}).`:"Paiement par lien s\u00e9curis\u00e9 Up2Pay (SMS ou e-mail, valable 48 h). Commande d\u00e9finitive apr\u00e8s paiement.", M + 14, y + 38, 9.5, {col: o.cancel?"#9b1c2c":"#1f4a35"});
 footer();
 pages.push(ops.join("\n"));
 const objs = [];
@@ -642,9 +658,9 @@ return new Blob([out], {type: "application/pdf"});
   if(location.hash!=="#tarif")location.hash="tarif";else render();
   setTimeout(()=>{const g=$("grid");if(g)g.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"})},80)});}
 let cart={};
-try{cart=JSON.parse(localStorage.getItem("mvsls-cart")||"{}")||{}}catch(e){}
+try{localStorage.removeItem("mvsls-cart")}catch(e){}
 for(const k of Object.keys(cart)){if(!(cart[k]>0)||!W[k])delete cart[k]}
-const saveCart=()=>{try{localStorage.setItem("mvsls-cart",JSON.stringify(cart))}catch(e){}};
+const saveCart=()=>{};
 const MINI=12,SEUIL=18,PORT=2,ship=q=>q>0&&q<SEUIL?q*PORT:0;
 function totals(){let q=0,v=0,n=0;for(const[i,k]of Object.entries(cart)){q+=k;W[i].p?v+=W[i].p*k:n+=k}return{q,v,n,port:ship(q)}}
 function badge(){const t=totals();$("tCount").hidden=!t.q;$("tCount").textContent=t.q;
@@ -745,10 +761,12 @@ $("form").addEventListener("submit",e=>{e.preventDefault();const pb=[],bad=[];co
  const txt=`COMMANDE « MON VIN SOUS LE SAPIN » – N° ${ref}\n\n${rows.join("\n")}\n\nBouteilles : ${t.q}\nTotal vins TTC : ${eur(t.v)}\nFrais de port : ${t.q>=SEUIL?"offerts":eur(t.port)}\nTOTAL À PAYER TTC : ${eur(t.v+t.port)}${t.n?`\n+ ${t.n} bouteille(s) au prix sur demande`:""}\n\nClient : ${who}\nE-mail : ${$("email").value.trim()}\nTéléphone : ${$("tel").value.trim()}\nLivraison : ${adr}${msg?"\nMessage : "+msg:""}`;
  $("rtxt").textContent=txt;
  const ht=t.v/1.2;
- const blob=makePDF({ref,date:now.toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"}),client:who,email:$("email").value.trim(),tel:$("tel").value.trim(),adresse:adr,message:msg,
+ const pdfArgs={ref,date:now.toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"}),client:who,email:$("email").value.trim(),tel:$("tel").value.trim(),adresse:adr,message:msg,
   lines:ids.map(i=>{const w=W[i],k=cart[i];return{q:k,c:w.n,m:w.m||"",col:w.c,d:w.d,a:w.a,cert:w.b==="BIO"?"Bio":(w.b||""),pu:w.p?eur(w.p):"Sur demande",tot:w.p?eur(w.p*k):"À confirmer"}}),
   totals:[["Total bouteilles",String(t.q)],["Total vins HT",eur(ht)],["TVA 20 %",eur(t.v-ht)],["Total vins TTC",eur(t.v)],["Frais de port",t.q>=SEUIL?"Offerts":`${eur(t.port)} (${t.q} x ${eur(PORT)})`],["Total à payer TTC",eur(t.v+t.port),true]],
-  note:t.n?`+ ${t.n} bouteille${t.n>1?"s":""} au prix sur demande, confirmé${t.n>1?"s":""} par le domaine avant règlement.`:""});
+  note:t.n?`+ ${t.n} bouteille${t.n>1?"s":""} au prix sur demande, confirmé${t.n>1?"s":""} par le domaine avant règlement.`:""};
+ const blob=makePDF(pdfArgs);
+ window._order={ref,txt,pdfArgs,nom:$("nom").value.trim(),cc:$("email").value.trim()};
  try{if($("pdf").dataset.url)URL.revokeObjectURL($("pdf").dataset.url)}catch(e){}
  const url=URL.createObjectURL(blob);$("pdf").href=url;$("pdf").dataset.url=url;$("pdf").download=`Bon-de-commande-${ref}.pdf`;
  const subj=encodeURIComponent(`Commande Mon vin sous le sapin ${ref} – `+$("nom").value.trim()),bod=encodeURIComponent(txt),cc=encodeURIComponent($("email").value.trim()),to=encodeURIComponent(ORDER_MAIL);
@@ -765,7 +783,20 @@ $("payOk").addEventListener("change",()=>{$("payGo").disabled=!$("payOk").checke
 $("payNo").addEventListener("click",closePay);
 $("payModal").addEventListener("click",e=>{if(e.target===$("payModal"))closePay()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("payModal").hidden)closePay()});
-$("payGo").addEventListener("click",()=>{if(!$("payOk").checked)return;payAccepted=true;closePay();
+function lockOrder(){document.body.classList.add("order-locked");
+ document.querySelectorAll("#cart input,#cart button,#form input,#form textarea,#form button,.buy,#oilAdd,#oilPlus,#oilMinus,#oilQ").forEach(el=>{el.disabled=true;el.setAttribute("aria-disabled","true")});
+ const o=window._order;if(!o)return;
+ const to=encodeURIComponent(ORDER_MAIL),subj=encodeURIComponent(`Annulation commande Mon vin sous le sapin ${o.ref} – ${o.nom}`);
+ const body=encodeURIComponent(`ANNULATION DE COMMANDE « MON VIN SOUS LE SAPIN »\n\nJe souhaite annuler ma commande n° ${o.ref}.\n\nRappel de la commande :\n\n${o.txt}`);
+ const mobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Macintosh/.test(navigator.userAgent));
+ if(mobile){$("cGmail").href=`mailto:${to}?cc=${encodeURIComponent(o.cc)}&subject=${subj}&body=${body}`;$("cGmail").removeAttribute("target");$("cGmail").textContent="Annuler ma commande par e-mail"}
+ else $("cGmail").href=`https://mail.google.com/mail/?view=cm&fs=1&to=${to}&cc=${encodeURIComponent(o.cc)}&su=${subj}&body=${body}`;
+ const cblob=makePDF({...o.pdfArgs,cancel:true,cdate:new Date().toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"})});
+ const cu=URL.createObjectURL(cblob);$("cPdf").href=cu;$("cPdf").download=`Annulation-commande-${o.ref}.pdf`;
+ $("cancelBox").hidden=false}
+["cGmail","cPdf"].forEach(id=>$(id).addEventListener("click",()=>{$("cDone").hidden=false}));
+$("newOrder").addEventListener("click",()=>{location.hash="tarif";location.reload()});
+$("payGo").addEventListener("click",()=>{if(!$("payOk").checked)return;payAccepted=true;closePay();lockOrder();
  if(payNext==="gmail"){const a=$("gmail");if(a.target==="_blank")window.open(a.href,"_blank","noopener");else location.href=a.href;$("okmsg").hidden=false;setTimeout(()=>$("okmsg").scrollIntoView({block:"nearest"}),300)}
  else $("pdf").click()});
 window.addEventListener("hashchange",route);
